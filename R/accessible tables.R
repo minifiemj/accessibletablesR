@@ -1,15 +1,4 @@
 ###################################################################################################################
-
-# Install the required packages if they are not already installed, then load the packages
-
-list.of.packages <- c("tidyverse", "openxlsx")
-new.packages <- list.of.packages[!(list.of.packages %in% utils::installed.packages()[,"Package"])]
-if(length(new.packages)) utils::install.packages(new.packages, dependencies = TRUE, type = "win.binary")
-
-library("tidyverse")
-library("openxlsx")
-
-###################################################################################################################
 ###################################################################################################################
 # CREATE WORKBOOK
 
@@ -25,6 +14,15 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
                      definitionstab = NULL, fontnm = "Arial", fontcol = "black",
                      fontsz = 12, fontszst = 14, fontszt = 16, title = NULL, creator = NULL,
                      subject = NULL, category = NULL) {
+  
+  # Install the required packages if they are not already installed, then load the packages
+  
+  list.of.packages <- c("tidyverse", "openxlsx")
+  new.packages <- list.of.packages[!(list.of.packages %in% utils::installed.packages()[,"Package"])]
+  if(length(new.packages)) utils::install.packages(new.packages, dependencies = TRUE, type = "win.binary")
+  
+  library("tidyverse")
+  library("openxlsx")
   
   # Cleaning some of the parameters to be either "Yes" or "No"
   
