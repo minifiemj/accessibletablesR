@@ -21,6 +21,9 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   new.packages <- list.of.packages[!(list.of.packages %in% utils::installed.packages()[,"Package"])]
   if(length(new.packages)) utils::install.packages(new.packages, dependencies = TRUE, type = "win.binary")
   
+  if (utils::packageVersion("tidyverse") < "2.0.0") {utils::install.packages("tidyverse", dependencies = TRUE, type = "win.binary")}
+  if (utils::packageVersion("openxlsx") < "4.2.5.2") {utils::install.packages("openxlsx", dependencies = TRUE, type = "win.binary")}
+  
   library("tidyverse")
   library("openxlsx")
   
