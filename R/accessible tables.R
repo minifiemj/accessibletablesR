@@ -417,6 +417,23 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   rm(table_data_temp2)
   
+  colsmiss <- colSums(is.na(table_data_temp))
+  colsmiss2 <- 0
+  
+  for (i in seq_along(colsmiss)) {
+    
+    if (colsmiss[i] == nrow(table_data_temp)) {colsmiss2 <- 1}
+    
+  }
+  
+  if (colsmiss2 == 1) {
+    
+    warning("There is at least one column missing data. Check to make sure there is not a problem. This code is not designed to produce worksheets with more than one table in them.")
+    
+  }
+  
+  rm(colsmiss, colsmiss2)
+  
   if (any(is.na(table_data_temp)) == TRUE) {
     
     warning("There are some blank cells present in the data. Check to make sure these are not a problem.")
@@ -634,41 +651,41 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
   }
   
-  columnwidths <- tolower(columnwidths)
+  if (!is.null(columnwidths)) {columnwidths <- tolower(columnwidths)}
   
   if (is.null(columnwidths)) {
     
     columnwidths <- "Default"
     
   } else if (length(columnwidths) > 1) {
-    
+      
     columnwidths <- "R_auto"
     warning("columnwidths should be a single word, not a vector. It will be changed back to the default of \"R_auto\".")
-    
+      
   } else if (columnwidths == "none" | columnwidths == "no" | columnwidths == "n" | columnwidths == "default") {
-    
+      
     columnwidths <- "Default"
-    
+      
   } else if (!is.null(columnwidths) & !is.character(columnwidths)) {
-    
+      
     columnwidths <- "R_auto"
     warning("columnwidths should be a character string. It will be changed back to the default of \"R_auto\".")
-  
+    
   } else if (columnwidths == "r_auto") {
-    
+      
     columnwidths <- "R_auto"
-    
+      
   } else if (columnwidths == "character") {
-    
+      
     columnwidths <- "characters"
-    
+      
   } else if (columnwidths != "r_auto" & columnwidths != "characters" & columnwidths != "specified") {
-    
+      
     columnwidths <- "R_auto"
     warning("columnwidths has not been set to \"R_auto\" or \"characters\" or \"specified\" or NULL. It will be changed back to the default of \"R_auto\".")
-    
+      
   }
-  
+    
   if (columnwidths == "specified" & is.null(colwid_spec)) {
     
     stop("The option to specify column widths has been selected but the widths have not been provided")
@@ -1628,7 +1645,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   
   if (reuse == "Yes") {
     
-    if (govdept == "ONS") {
+    if (govdept == "ONS" | govdept == "ons") {
       
       orgwording <- "the Office for National Statistics - Source: Office for National Statistics"
       
