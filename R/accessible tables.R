@@ -1645,13 +1645,17 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   
   if (reuse == "Yes") {
     
-    if (govdept == "ONS" | govdept == "ons") {
-      
-      orgwording <- "the Office for National Statistics - Source: Office for National Statistics"
-      
-    } else {
+    if (is.null(govdept)) {
       
       orgwording <- "our organisation"
+      
+    } else if (govdept != "ONS" & govdept != "ons") {
+      
+      orgwording <- "our organisation"
+      
+    } else if (!is.null(govdept) & (govdept == "ONS" | govdept == "ons")) {
+      
+      orgwording <- "the Office for National Statistics - Source: Office for National Statistics"
       
     }
     
