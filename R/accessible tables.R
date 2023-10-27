@@ -202,6 +202,12 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     
   }
   
+  if (fontsz < 12 | fontszst < 12 | fontszt < 12) {
+    
+    warning("GSS accessibility guidelines suggest minimum font size should be 12")
+    
+  }
+  
   # If workbook already exists, delete it and create a new, blank one
   
   if (exists("wb", envir = .GlobalEnv)) {
@@ -372,6 +378,7 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
 # Character class data columns will have thousand commas inserted as long as the column position is identified in numdatacols
 # Numeric class data columns will only have thousand commas inserted if numdatacolsdp is populated
 # numdatacolsdp either should be one value which will be applied to all numdatacols columns or a vector the same length as numdatacols
+# For character variables, the figure in Excel will only be the value rounded to the specified number of decimal places. For numeric variables, the figure in Excel will be maintained but the displayed figure will be the value rounded to the specified number of decimal places.
 # Enter 0 in numdatacolsdp if no decimal places wanted. If an element in numdatacols represents a non-character and non-numeric class column, enter 0 in the corresponding position in numdatacolsdp
 # tablename is the name of the table within the worksheet that a screen reader will detect. It is automatically selected to be the same as the sheetname unless tablename is populated.
 # gridlines is preset to "Yes", change to "No" if gridlines are not wanted
@@ -533,9 +540,33 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
   }
   
+  if (!is.null(numdatacols)) {
+    
+    if (any(numdatacols <= 0)) {
+      
+      stop("Column positions for numdatacols cannot be 0 or negative")
+      
+    } else if (any(numdatacols > ncol(table_data))) {
+      
+      stop("Column positions for numdatacols should not exceed the number of columns in the data")
+      
+    }
+    
+  }
+  
   if (!is.null(numdatacolsdp) & !is.numeric(numdatacolsdp)) {
     
     stop("numdatacolsdp either needs to be numeric (e.g., numdatacolsdp = 6 or numdatacolsdp = c(2,5) or NULL")
+    
+  }
+  
+  if (!is.null(numdatacolsdp)) {
+    
+    if (any(numdatacolsdp < 0)) {
+      
+      stop("numdatacolsdp cannot be negative")
+      
+    }
     
   }
   
@@ -565,6 +596,20 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   if (!is.null(othdatacols) & !is.numeric(othdatacols)) {
     
     stop("othdatacols either needs to be numeric (e.g., othdatacols = 6 or othdatacols = c(2,5) or NULL")
+    
+  }
+  
+  if (!is.null(othdatacols)) {
+    
+    if (any(othdatacols <= 0)) {
+      
+      stop("Column positions for othdatacols cannot be 0 or negative")
+      
+    } else if (any(othdatacols > ncol(table_data))) {
+      
+      stop("Column positions for othdatacols should not exceed the number of columns in the data")
+      
+    }
     
   }
   
@@ -683,6 +728,16 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       
     columnwidths <- "R_auto"
     warning("columnwidths has not been set to \"R_auto\" or \"characters\" or \"specified\" or NULL. It will be changed back to the default of \"R_auto\".")
+      
+  }
+  
+  if (!is.null(colwid_spec)) {
+    
+    if (any(colwid_spec <= 0)) {
+      
+      stop("Column widths cannot be 0 or negative")
+      
+    }
       
   }
     
@@ -832,8 +887,8 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
                                                                             "[x]", "[z]", "") ~ "0",
                                                     is.na(.[[numcharcols]]) ~ "0",
                                                     !is.na(.[[numcharcols]]) ~ gsub(",", "", .[[numcharcols]]))) %>%
-      dplyr::mutate(xxx_temp_xxx = as.numeric(xxx_temp_xxx)) %>%
-      dplyr::mutate(xxx_temp_xxx2 = format(xxx_temp_xxx, big.mark = ",", scientific = FALSE, nsmall = numcharcolsdp)) %>%
+      dplyr::mutate(xxx_temp_xxx = if (numcharcolsdp >= 2) as.numeric(xxx_temp_xxx) else round(as.numeric(xxx_temp_xxx), digits = numcharcolsdp)) %>%
+      dplyr::mutate(xxx_temp_xxx2 = if (numcharcolsdp >= 2) format(xxx_temp_xxx, big.mark = ",", scientific = FALSE, nsmall = numcharcolsdp) else format(xxx_temp_xxx, big.mark = ",", scientific = FALSE)) %>%
       dplyr::mutate(xxx_temp_xxx3 = dplyr::case_when(.[[numcharcols]] %in% c("[b]", "[c]", "[e]", "[er]", "[f]",
                                                                              "[low]", "[p]", "[r]", "[u]", "[w]",
                                                                              "[x]", "[z]", "") ~ as.character(.[[numcharcols]]),
