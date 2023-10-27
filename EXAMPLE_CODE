@@ -1,0 +1,134 @@
+#####################################################################################################################
+#####################################################################################################################
+
+# Prepare the readily available mtcars dataframe for an example of how to use accessibletablesR
+# Assuming a Windows user (type in the install.packages function will need to be set to something else if not Windows user)
+
+list.of.packages <- c("tidyverse", "devtools")
+new.packages <- list.of.packages[!(list.of.packages %in% utils::installed.packages()[,"Package"])]
+if(length(new.packages)) utils::install.packages(new.packages, dependencies = TRUE, type = "win.binary")
+
+library("tidyverse")
+library("devtools")
+
+dummydf <- mtcars %>% 
+  tibble::rownames_to_column("Car") %>%
+  dplyr::rename("Miles per US gallon" = mpg, "Number of cylinders" = cyl, "Displacement\n(cubic inch)" = disp,
+                "Gross horsepower" = hp, "Rear axle ratio" = drat, "Weight\n(1000 lbs)" = wt,
+                "Quarter mile time" = qsec, "Engine" = vs, "Transmission" = am,
+                "Number of forward gears" = gear, "Number of carburettors" = carb) %>%
+  dplyr::mutate(Engine = dplyr::case_when(Engine == 0 ~ "V-shaped",
+                                          Engine == 1 ~ "Straight")) %>%
+  dplyr::mutate(Transmission = dplyr::case_when(Transmission == 0 ~ "Automatic",
+                                                Transmission == 1 ~ "Manual")) %>%
+  dplyr::mutate("Price\n(£)" = dplyr::case_when(Transmission == "Automatic" ~ "[c]",
+                                                Transmission == "Manual" ~ "15767.8752"))
+
+# Install accessibletablesR from GitHub
+
+devtools::install_github("minifiemj/accessibletablesR")
+library("accessibletablesR")
+
+# If a firewall prevents install_github from working (a time out message may appear) then install package manually
+# On the GitHub repo, go to the green Code icon and choose "Download ZIP". Copy the ZIP folder to a network drive.
+# Use devtools::install_local(link to the zipped folder) to install the package
+
+#####################################################################################################################
+#####################################################################################################################
+
+# Example of how to use accessibletablesR
+
+# Run workbook function first
+# Unused optional arguments in this example are subject and category
+# fontnm, fontcol, fontsz, fontszst and fontszt can be amended from default settings if desired
+
+accessibletablesR::workbook(covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes",
+                            autonotes = "Yes", title = "Fuel consumption and aspects of car design and performance for various cars",
+                            creator = "An organisation")
+
+# After workbook function, run the creatingtables function as many times as needed
+# Unused optional arguments in this example are extraline4, extraline5 and extraline6
+# gridlines can be amended from default setting if desired (default setting is to have gridlines)
+
+accessibletablesR::creatingtables(title = "Fuel consumption and aspects of car design and performance for various cars A",
+                                  subtitle = "Cars",
+                                  extraline1 = "Link to contents",
+                                  extraline2 = "Link to notes",
+                                  extraline3 = "Link to definitions",
+                                  sheetname = "Table_1", table_data = dummydf, headrowsize = 40,
+                                  numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,3,2,0,0,1),
+                                  othdatacols = c(9,10))
+
+accessibletablesR::creatingtables(title = "Fuel consumption and aspects of car design and performance for various cars B",
+                                  subtitle = "Cars",
+                                  extraline1 = "Link to contents",
+                                  extraline2 = "Link to notes",
+                                  extraline3 = "Link to definitions",
+                                  sheetname = "Table_2", table_data = dummydf, headrowsize = 40,
+                                  numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,1,0,1,0,0,0),
+                                  othdatacols = c(9,10), columnwidths = "characters", width_adj = 1)
+
+accessibletablesR::creatingtables(title = "Fuel consumption and aspects of car design and performance for various cars C",
+                                  subtitle = "Cars",
+                                  extraline1 = "Link to contents",
+                                  extraline2 = "Link to notes",
+                                  extraline3 = "Link to definitions",
+                                  sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
+                                  numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
+                                  othdatacols = c(9,10), columnwidths = "specified",
+                                  colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
+
+# To create a contents page, run the contentstable function after running creatingtables as many times as needed
+# gridlines can be amended from default setting if desired (default setting is to have gridlines)
+
+accessibletablesR::contentstable()
+
+# To create a note that will be applied to the tables, run the addnote function
+
+accessibletablesR::addnote(notenumber = "note1", notetext = "Whatever you want note1 to be.", applictabtext = c("Table_1", "Table_2"), linktext1 = "No additional link", linktext2 = NULL) 
+accessibletablesR::addnote(notenumber = "note2", notetext = "Whatever you want note2 to be", applictabtext = "Table_1", linktext1 = "No additional link", linktext2 = NULL) 
+accessibletablesR::addnote(notenumber = "note3", notetext = "Whatever you want note3 to be", applictabtext = "Table_2", linktext1 = "No additional link", linktext2 = NULL) 
+accessibletablesR::addnote(notenumber = "note4", notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google", linktext2 = "https://www.ons.google.co.uk") 
+
+# To create a notes page, run the notestab function
+# It is recommended to run the notestab function after running creatingtables as many times as needed
+# gridlines can be amended from default setting if desired (default setting is to have gridlines)
+# contentslink can be amended from default setting is desired. The default is to have a link to the contents page, so change contentslink to "No" if no such link is wanted.
+
+accessibletablesR::notestab()
+
+# To create a definition that is applicable to the tables, run the adddefinition function
+
+accessibletablesR::adddefinition(term = "Usual resident", definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and had stayed or intended to stay in the UK for a period of 12 months or more, or had a permanent UK address and was outside the UK and intended to be outside the UK for less than 12 months.")
+
+# To create a definitions page, run the definitionstab function
+# gridlines can be amended from default setting if desired (default setting is to have gridlines)
+# contentslink can be amended from default setting is desired. The default is to have a link to the contents page, so change contentslink to "No" if no such link is wanted.
+
+accessibletablesR::definitionstab()
+
+# To create a cover page, run the coverpage function
+# The only compulsory argument to populate is title
+# reuse is designed for UK government departments, so if user is not a UK government department do not set reuse to "Yes"
+# govdept is set to "ONS" as default, so if user is a UK government department other than ONS amend govdept if a section on reuse is wanted
+# gridlines can be amended from default setting if desired (default setting is to have gridlines)
+
+accessibletablesR::coverpage(title = "Fuel consumption and aspects of car design and performance for various cars",
+                             intro = "Some made up data about cars",
+                             about = "The output of an example of how to use accessibletablesR",
+                             source = "R mtcars",
+                             relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+                             relatedtext = "mtcars: Motor trend car road tests",
+                             dop = "26 October 2023",
+                             blank = "There should be no blank cells",
+                             names = "Your name",
+                             email = "yourname@emailprovider.com",
+                             phone = "01111 1111111111111",
+                             reuse = "Yes", govdept = NULL)
+
+# To save the Excel workbook, run the savingtables function
+# The only argument to populate is the filepath of where to save the workbook, including the name to be given to the workbook
+# The workbook needs to be saved as a xlsx file (code is based on the R package openxlsx)
+# Consider manually saving the workbook as an ODS file (for accessibility reasons)
+
+accessibletablesR::savingtables("D:/mtcarsexample.xlsx")
