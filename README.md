@@ -11,7 +11,11 @@ To install accessibletablesR:
 
         if (!("devtools" %in% utils::installed.packages())) {utils::install.packages("devtools", dependencies = TRUE)}
         library("devtools")
-        devtools::install_github("minifiemj/accessibletablesR", dependencies = TRUE)
+        devtools::install_github("minifiemj/accessibletablesR")
+
+If a firewall prevents install_github from working (a time out message may appear) then install the package manually. 
+On the GitHub repo, go to the green Code icon and choose "Download ZIP". Copy the ZIP folder to a network drive.
+Use devtools::install_local(link to the zipped folder) to install the package.
 
 accessibletablesR allows for a workbook to have a cover page, a table of contents, a notes page, a definitions page and as many other tabs that the user requires (subject to the maximum number
 allowed by Excel). Only one table of data can be present on each tab. accessibletablesR cannot work with multiple tables on a tab.
