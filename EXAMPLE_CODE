@@ -2,11 +2,10 @@
 #####################################################################################################################
 
 # Prepare the readily available mtcars dataframe for an example of how to use accessibletablesR
-# Assuming a Windows user (type in the install.packages function will need to be set to something else if not Windows user)
 
 list.of.packages <- c("tidyverse", "devtools")
 new.packages <- list.of.packages[!(list.of.packages %in% utils::installed.packages()[,"Package"])]
-if(length(new.packages)) utils::install.packages(new.packages, dependencies = TRUE, type = "win.binary")
+if(length(new.packages)) utils::install.packages(new.packages, dependencies = TRUE, type = "binary")
 
 library("tidyverse")
 library("devtools")

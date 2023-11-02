@@ -9,7 +9,7 @@ are currently installed.
 
 To install accessibletablesR:
 
-        if (!("devtools" %in% utils::installed.packages())) {utils::install.packages("devtools", dependencies = TRUE)}
+        if (!("devtools" %in% utils::installed.packages())) {utils::install.packages("devtools", dependencies = TRUE, type = "binary")}
         library("devtools")
         devtools::install_github("minifiemj/accessibletablesR")
 
