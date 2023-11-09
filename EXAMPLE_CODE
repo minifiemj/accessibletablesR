@@ -92,7 +92,7 @@ accessibletablesR::addnote(notenumber = "note4", notetext = "Google is an intern
 # To create a notes page, run the notestab function
 # It is recommended to run the notestab function after running creatingtables as many times as needed
 # gridlines can be amended from default setting if desired (default setting is to have gridlines)
-# contentslink can be amended from default setting is desired. The default is to have a link to the contents page, so change contentslink to "No" if no such link is wanted.
+# contentslink can be amended from default setting if desired. The default is to have a link to the contents page, so change contentslink to "No" if no such link is wanted.
 
 accessibletablesR::notestab()
 
@@ -102,7 +102,7 @@ accessibletablesR::adddefinition(term = "Usual resident", definition = "A usual 
 
 # To create a definitions page, run the definitionstab function
 # gridlines can be amended from default setting if desired (default setting is to have gridlines)
-# contentslink can be amended from default setting is desired. The default is to have a link to the contents page, so change contentslink to "No" if no such link is wanted.
+# contentslink can be amended from default setting if desired. The default is to have a link to the contents page, so change contentslink to "No" if no such link is wanted.
 
 accessibletablesR::definitionstab()
 
