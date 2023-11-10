@@ -2384,8 +2384,17 @@ notestab <- function(contentslink = NULL, gridlines = "Yes") {
         notes6 <- paste0(notes)
           
       }
+      
+      if (notes == "[]") {
         
-      notes7 <- paste0("This worksheet contains one table. For notes, see ", notes6, " on the notes worksheet.")
+        notes7 <- "This worksheet contains one table."
+        warning(paste0(tablelist[i], " has no notes associated with it. Check that this is intentional."))
+        
+      } else {
+        
+        notes7 <- paste0("This worksheet contains one table. For notes, see ", notes6, " on the notes worksheet.")
+        
+      }
         
       tempstartrow <- get(paste0(tablelist[i], "_startrow"), envir = .GlobalEnv)
         
