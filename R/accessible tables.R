@@ -632,7 +632,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   for (i in seq_along(numdatacols)) {
     
-    if (!is.null(numdatacols) & class(table_data[[numdatacols[i]]]) != "character" & class(table_data[[numdatacols[i]]]) != "numeric") {
+    if (!is.null(numdatacols) & class(table_data[[numdatacols[i]]]) != "character" & class(table_data[[numdatacols[i]]]) != "numeric" & class(table_data[[numdatacols[i]]]) != "integer") {
       
       warning("A column identified as a number column is not of class character or numeric. Check that is intentional.")
       othdatacols <- append(othdatacols, numdatacols[i])
@@ -642,7 +642,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       numcharcols <- append(numcharcols, numdatacols[i])
       numcharcolsdp <- append(numcharcolsdp, numdatacolsdp[i])
       
-    } else if (class(table_data[[numdatacols[i]]]) == "numeric") {
+    } else if (class(table_data[[numdatacols[i]]]) == "numeric" | class(table_data[[numdatacols[i]]]) == "integer") {
       
       numericcols <- append(numericcols, numdatacols[i])
       numericcolsdp <- append(numericcolsdp, numdatacolsdp[i])
