@@ -61,7 +61,8 @@ sheetname is the name of the tab wanted for the Excel workbook. table_data is th
 
 As well as a title, it is possible to include a subtitle and six additional lines above the table in the final Excel workbook tab. Populate the arguments subtitle, extraline1, extraline2,
 extraline3, extraline4, extraline5 and extraline6 if a subtitle and/or extra lines are wanted. If a link to the contents page or notes page or definitions page is desired, then set one
-of the extraline arguments to "Link to contents" or "Link to notes" or "Link to definitions".
+of the extraline arguments to "Link to contents" or "Link to notes" or "Link to definitions". The extraline arguments can be supplied as vectors and so there is no maximum limit to the
+number of rows that can come before the main data other than the limit of rows in an Excel spreadsheet.
 
 headrowsize adjusts the height of the row containing the table column names.
 
