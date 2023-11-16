@@ -19,7 +19,7 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   
   list.of.packages <- c("tidyverse", "openxlsx")
   new.packages <- list.of.packages[!(list.of.packages %in% utils::installed.packages()[,"Package"])]
-  if(length(new.packages)) utils::install.packages(new.packages, dependencies = TRUE, type = "binary")
+  if (length(new.packages) > 0) {utils::install.packages(new.packages, dependencies = TRUE, type = "binary")}
   
   if (utils::packageVersion("tidyverse") < "2.0.0") {utils::install.packages("tidyverse", dependencies = TRUE, type = "binary")}
   if (utils::packageVersion("openxlsx") < "4.2.5.2") {utils::install.packages("openxlsx", dependencies = TRUE, type = "binary")}
@@ -461,11 +461,17 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
   }
   
-  if (length(title) > 1 | length(subtitle) > 1 | length(extraline1) > 1 | length(extraline2) > 1 |
-      length(extraline3) > 1 | length(extraline4) > 1 | length(extraline5) > 1 | length(extraline6) > 1 |
-      length(sheetname) > 1 | length(headrowsize) > 1 | length(tablename) > 1 | length(gridlines) > 1) {
+  if (length(title) > 1 | length(subtitle) > 1 | length(sheetname) > 1 | length(headrowsize) > 1 | 
+      length(tablename) > 1 | length(gridlines) > 1) {
     
-    stop("One or more of title, subtitle, extraline1, extraline2, extraline3, extraline4, extraline5, extraline6, sheetname, headrowsize, tablename and gridlines are not populated properly. They must be a single entity and not a vector.")
+    stop("One or more of title, subtitle, sheetname, headrowsize, tablename and gridlines are not populated properly. They must be a single entity and not a vector.")
+    
+  }
+  
+  if (length(extraline1) > 1 | length(extraline2) > 1 | length(extraline3) > 1 | length(extraline4) > 1 |
+      length(extraline5) > 1 | length(extraline6) > 1) {
+    
+    warning("One or more of extraline1, extraline2, extraline3, extraline4, extraline5 and extraline6 is a vector. Check that this is intentional.")
     
   }
   
@@ -774,17 +780,12 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
   }
   
-  # In addition to the title and subtitle, six other rows are permitted above the main data
-  # Below is a check to make sure that the user has not already used six rows and requested a line with information on notes
+  # In addition to the title and subtitle, six other fields are permitted above the main data - these extra fields can be provided as vectors and so there is really no limit to the number of rows that can come before the main data
   # If a line with information on notes is wanted, this is initially created and existing rows with information are shifted down one row position
   
   extralines1 <- c(extraline1, extraline2, extraline3, extraline4, extraline5, extraline6)
   
-  if ("Notes" %in% names(wb) & autonotes2 == "Yes" & length(extralines1) == 6) {
-    
-    stop("All the extralines have been filled but there needs to be one left for information about notes")
-    
-  } else if ("Notes" %in% names(wb) & autonotes2 == "Yes" & length(extralines1) < 6) {
+  if ("Notes" %in% names(wb) & autonotes2 == "Yes") {
     
     for (i in seq_along(extralines1)) {
       
@@ -796,13 +797,27 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       
     }
     
+    extraline6 <- NULL
+    
     for (i in 2:(length(extralines1) + 1)) {
+      
+      if (i < 6) {
         
-      x <- extralines1[i-1]
+        x <- extralines1[i-1]
+          
+        assign(paste0("extraline", i), x)
+          
+        rm(x)
         
-      assign(paste0("extraline", i), x)
+      } else if (i >= 6) {
         
-      rm(x)
+        x <- extralines1[i-1]
+        
+        extraline6 <- append(extraline6, x)
+        
+        rm(x)
+        
+      }
         
     }
       
@@ -2385,7 +2400,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes") {
           
       }
       
-      if (notes == "[]") {
+      if (nrow(notesdf7) == 0) {
         
         notes7 <- "This worksheet contains one table."
         warning(paste0(tablelist[i], " has no notes associated with it. Check that this is intentional."))
@@ -2816,7 +2831,7 @@ savingtables <- function(filename) {
   
   if (length(unique(tablestarts)) > 1) {
     
-    warning("The row number of the data table headings is not the same on all worksheets. This might be frustrating for anyone reading the tables into a programming language. Consider whether it would be possible making the tables start on the same row of each worksheet.")
+    warning("The row number of the data table headings is not the same on all worksheets. This might be frustrating for anyone reading the tables into a programming language. Consider whether it would be possible to make the tables start on the same row of each worksheet.")
     
   }
   
