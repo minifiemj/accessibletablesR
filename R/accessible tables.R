@@ -17,12 +17,21 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   
   # Install the required packages if they are not already installed, then load the packages
   
-  list.of.packages <- c("tidyverse", "openxlsx")
+  list.of.packages <- c("tidyverse", "openxlsx", "conflicted")
   new.packages <- list.of.packages[!(list.of.packages %in% utils::installed.packages()[,"Package"])]
-  if (length(new.packages) > 0) {utils::install.packages(new.packages, dependencies = TRUE, type = "binary")}
+  if (base::length(new.packages) > 0) {utils::install.packages(new.packages, dependencies = TRUE, type = "binary")}
   
   if (utils::packageVersion("tidyverse") < "2.0.0") {utils::install.packages("tidyverse", dependencies = TRUE, type = "binary")}
   if (utils::packageVersion("openxlsx") < "4.2.5.2") {utils::install.packages("openxlsx", dependencies = TRUE, type = "binary")}
+  if (utils::packageVersion("conflicted") < "1.2.0") {utils::install.packages("conflicted", dependencies = TRUE, type = "binary")}
+  
+  base::library("conflicted")
+  
+  # When functions are used in this script, the package from which the function comes from is specified e.g., dplyr::filter
+  # The exception to this is if the functions come from the R base package
+  # To ensure there is no unintentional masking of base functions, conflict_prefer_all will set it so base is the package used unless otherwise specified
+  
+  conflicted::conflict_prefer_all("base", quiet = TRUE)
   
   library("tidyverse")
   library("openxlsx")
