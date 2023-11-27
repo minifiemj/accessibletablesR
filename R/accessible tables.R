@@ -42,12 +42,11 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     
     covertab <- "No"
     
-  } else if (covertab == "no" | covertab == "N" | covertab == "n" | covertab == "NO" | covertab == "nO") {
+  } else if (tolower(covertab) == "no" | tolower(covertab) == "n") {
     
     covertab <- "No"
     
-  } else if (covertab == "yes" | covertab == "Y" | covertab == "y" | covertab == "YES" | covertab == "YEs" | 
-             covertab == "yES" | covertab == "YeS" | covertab == "yeS" | covertab == "yEs") {
+  } else if (tolower(covertab) == "yes" | tolower(covertab) == "y") {
     
     covertab <- "Yes"
     
@@ -57,12 +56,11 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     
     contentstab <- "No"
     
-  } else if (contentstab == "no" | contentstab == "N" | contentstab == "n" | contentstab == "NO" | contentstab == "nO") {
+  } else if (tolower(contentstab) == "no" | tolower(contentstab) == "n") {
     
     contentstab <- "No"
     
-  } else if (contentstab == "yes" | contentstab == "Y" | contentstab == "y" | contentstab == "YES" | contentstab == "YEs" | 
-             contentstab == "yES" | contentstab == "YeS" | contentstab == "yeS" | contentstab == "yEs") {
+  } else if (tolower(contentstab) == "yes" | tolower(contentstab) == "y") {
     
     contentstab <- "Yes"
     
@@ -72,12 +70,11 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     
     notestab <- "No"
     
-  } else if (notestab == "no" | notestab == "N" | notestab == "n" | notestab == "NO" | notestab == "nO") {
+  } else if (tolower(notestab) == "no" | tolower(notestab) == "n") {
     
     notestab <- "No"
     
-  } else if (notestab == "yes" | notestab == "Y" | notestab == "y" | notestab == "YES" | notestab == "YEs" | 
-             notestab == "yES" | notestab == "YeS" | notestab == "yeS" | notestab == "yEs") {
+  } else if (tolower(notestab) == "yes" | tolower(notestab) == "y") {
     
     notestab <- "Yes"
     
@@ -87,12 +84,11 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     
     definitionstab <- "No"
     
-  } else if (definitionstab == "no" | definitionstab == "N" | definitionstab == "n" | definitionstab == "NO" | definitionstab == "nO") {
+  } else if (tolower(definitionstab) == "no" | tolower(definitionstab) == "n") {
     
     definitionstab <- "No"
     
-  } else if (definitionstab == "yes" | definitionstab == "Y" | definitionstab == "y" | definitionstab == "YES" | definitionstab == "YEs" | 
-             definitionstab == "yES" | definitionstab == "YeS" | definitionstab == "yeS" | definitionstab == "yEs") {
+  } else if (tolower(definitionstab) == "yes" | tolower(definitionstab) == "y") {
     
     definitionstab <- "Yes"
     
@@ -102,12 +98,11 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     
     autonotes <- "No"
     
-  } else if (autonotes == "no" | autonotes == "N" | autonotes == "n" | autonotes == "NO" | autonotes == "nO") {
+  } else if (tolower(autonotes) == "no" | tolower(autonotes) == "n") {
     
     autonotes <- "No"
     
-  } else if (autonotes == "yes" | autonotes == "Y" | autonotes == "y" | autonotes == "YES" | autonotes == "YEs" | 
-             autonotes == "yES" | autonotes == "YeS" | autonotes == "yeS" | autonotes == "yEs") {
+  } else if (tolower(autonotes) == "yes" | tolower(autonotes) == "y") {
     
     autonotes <- "Yes"
     
@@ -501,25 +496,25 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
   }
   
-  if ("Cover" %in% names(wb) & (sheetname == "Cover" | sheetname == "COVER" | sheetname == "cover")) {
+  if ("Cover" %in% names(wb) & (tolower(sheetname) == "cover")) {
     
     stop("sheetname cannot be set to \"Cover\" if a cover page is desired")
     
   }
   
-  if ("Contents" %in% names(wb) & (sheetname == "Contents" | sheetname == "CONTENTS" | sheetname == "contents")) {
+  if ("Contents" %in% names(wb) & (tolower(sheetname) == "contents")) {
     
     stop("sheetname cannot be set to \"Contents\" if a contents page is desired")
     
   }
   
-  if ("Notes" %in% names(wb) & (sheetname == "Notes" | sheetname == "NOTES" | sheetname == "notes")) {
+  if ("Notes" %in% names(wb) & (tolower(sheetname) == "notes")) {
     
     stop("sheetname cannot be set to \"Notes\" if a notes page is desired")
     
   }
   
-  if ("Definitions" %in% names(wb) & (sheetname == "Definitions" | sheetname == "DEFINITIONS" | sheetname == "definitions")) {
+  if ("Definitions" %in% names(wb) & (tolower(sheetname) == "definitions")) {
     
     stop("sheetname cannot be set to \"Definitions\" if a definitions page is desired")
     
@@ -694,12 +689,11 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
     gridlines <- "Yes"
     
-  } else if (gridlines == "NO" | gridlines == "no" | gridlines == "N" | gridlines == "n" | gridlines == "nO") {
+  } else if (tolower(gridlines) == "no" | tolower(gridlines) == "n") {
     
     gridlines <- "No"
     
-  } else if (gridlines == "yes" | gridlines == "Y" | gridlines == "y" | gridlines == "YES" | gridlines == "YEs" | 
-             gridlines == "yES" | gridlines == "YeS" | gridlines == "yeS" | gridlines == "yEs") {
+  } else if (tolower(gridlines) == "yes" | tolower(gridlines) == "y") {
     
     gridlines <- "Yes"
     
@@ -982,8 +976,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   for (i in seq_along(extralines2)) {
     
-    if (extralines2[i] == "link to notes" | extralines2[i] == "LINK TO NOTES" | extralines2[i] == "Link to Notes" |
-        extralines2[i] == "Link To Notes" | extralines2[i] == "NOTES" | extralines2[i] == "notes" | extralines2[i] == "Notes") {
+    if (tolower(extralines2[i]) == "link to notes" | tolower(extralines2[i]) == "notes") {
       
       extralines2[i] <- "Link to notes"
       
@@ -995,8 +988,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       
     }
     
-    if (extralines2[i] == "link to contents" | extralines2[i] == "LINK TO CONTENTS" | extralines2[i] == "Link to Contents" |
-        extralines2[i] == "Link To Contents" | extralines2[i] == "CONTENTS" | extralines2[i] == "contents" | extralines2[i] == "Contents") {
+    if (tolower(extralines2[i]) == "link to contents" | tolower(extralines2[i]) == "contents") {
       
       extralines2[i] <- "Link to contents"
       
@@ -1008,8 +1000,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       
     }
     
-    if (extralines2[i] == "link to definitions" | extralines2[i] == "LINK TO DEFINITIONS" | extralines2[i] == "Link to Definitions" |
-        extralines2[i] == "Link To Definitions" | extralines2[i] == "DEFINITIONS" | extralines2[i] == "definitions" | extralines2[i] == "Definitions") {
+    if (tolower(extralines2[i]) == "link to definitions" | tolower(extralines2[i]) == "definitions") {
       
       extralines2[i] <- "Link to definitions"
       
@@ -1255,12 +1246,11 @@ contentstable <- function(gridlines = "Yes") {
     
     gridlines <- "Yes"
     
-  } else if (gridlines == "NO" | gridlines == "no" | gridlines == "N" | gridlines == "n" | gridlines == "nO") {
+  } else if (tolower(gridlines) == "no" | tolower(gridlines) == "n") {
     
     gridlines <- "No"
     
-  } else if (gridlines == "yes" | gridlines == "Y" | gridlines == "y" | gridlines == "YES" | gridlines == "YEs" | 
-             gridlines == "yES" | gridlines == "YeS" | gridlines == "yeS" | gridlines == "yEs") {
+  } else if (tolower(gridlines) == "yes" | tolower(gridlines) == "y") {
     
     gridlines <- "Yes"
     
@@ -1484,12 +1474,11 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     gridlines <- "Yes"
     
-  } else if (gridlines == "NO" | gridlines == "no" | gridlines == "N" | gridlines == "n" | gridlines == "nO") {
+  } else if (tolower(gridlines) == "no" | tolower(gridlines) == "n") {
     
     gridlines <- "No"
     
-  } else if (gridlines == "yes" | gridlines == "Y" | gridlines == "y" | gridlines == "YES" | gridlines == "YEs" | 
-             gridlines == "yES" | gridlines == "YeS" | gridlines == "yeS" | gridlines == "yEs") {
+  } else if (tolower(gridlines) == "yes" | tolower(gridlines) == "y") {
     
     gridlines <- "Yes"
     
@@ -1511,12 +1500,11 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     reuse <- "No"
     
-  } else if (reuse == "yes" | reuse == "Y" | reuse == "y" | reuse == "YES" | reuse == "YEs" | 
-             reuse == "yES" | reuse == "YeS" | reuse == "yeS" | reuse == "yEs") {
+  } else if (tolower(reuse) == "yes" | tolower(reuse) == "y") {
     
     reuse <- "Yes"
     
-  } else if (reuse == "no" | reuse == "NO" | reuse == "N" | reuse == "n" | reuse == "nO") {
+  } else if (tolower(reuse) == "no" | tolower(reuse) == "n") {
     
     reuse <- "No"
     
@@ -1839,7 +1827,7 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
   notetemp1 <- substr(notenumber, 1, 4)
   notetemp2 <- substring(notenumber, 5)
   
-  if (notetemp1 == "NOTE" | notetemp1 == "Note") {
+  if (tolower(notetemp1) == "note") {
     
     notenumber <- paste0("note", notetemp2)
     notetemp1 <- "note"
@@ -1860,7 +1848,7 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
   
     for (i in seq_along(applictabtext)) {
       
-      if (applictabtext[i] == "ALL" | applictabtext[i] == "all") {applictabtext[i] <- "All"}
+      if (tolower(applictabtext[i]) == "all") {applictabtext[i] <- "All"}
       
       if (length(applictabtext) > 1 & applictabtext[i] == "All") {
         
@@ -1874,7 +1862,7 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
         
       }
       
-      if (applictabtext[i] == "None" | applictabtext[i] == "NONE" | applictabtext[i] == "none") {
+      if (tolower(applictabtext[i]) == "none") {
         
         stop("A note should be applicable to at least one of the tables. applictabtext should not be set to \"None\".")
         
@@ -1911,13 +1899,17 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
     
     linktext1 <- "No additional link"
     
+  } else if (tolower(linktext1) == "no additional link") {
+    
+    linktext1 <- "No additional link"
+    
   }
   
   if (is.null(linktext2)) {
     
     linktext2 <- ""
     
-  } else if (linktext2 == "No additional link") {
+  } else if (tolower(linktext2) == "no additional link") {
     
     linktext2 <- ""
     
@@ -2027,12 +2019,11 @@ notestab <- function(contentslink = NULL, gridlines = "Yes") {
     
     gridlines <- "Yes"
     
-  } else if (gridlines == "NO" | gridlines == "no" | gridlines == "N" | gridlines == "n" | gridlines == "nO") {
+  } else if (tolower(gridlines) == "no" | tolower(gridlines) == "n") {
     
     gridlines <- "No"
     
-  } else if (gridlines == "yes" | gridlines == "Y" | gridlines == "y" | gridlines == "YES" | gridlines == "YEs" | 
-             gridlines == "yES" | gridlines == "YeS" | gridlines == "yeS" | gridlines == "yEs") {
+  } else if (tolower(gridlines) == "yes" | tolower(gridlines) == "y") {
     
     gridlines <- "Yes"
     
@@ -2134,7 +2125,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes") {
     
     contentslink <- "Yes"
     
-  } else if (contentslink == "NO" | contentslink == "no" | contentslink == "N" | contentslink == "n" | contentslink == "nO") {
+  } else if (tolower(contentslink) == "no" | tolower(contentslink) == "n") {
     
     contentslink <- "No"
     
@@ -2218,7 +2209,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes") {
   
   if (links != "No" & links != "Yes") {
     
-    stop("links not set to \"Yes\" or \"No\"")
+    stop("links not set to \"Yes\" or \"No\". There must be an issue with link information provided with the notes.")
     
   }
   
@@ -2345,21 +2336,23 @@ notestab <- function(contentslink = NULL, gridlines = "Yes") {
   
   # Determining column widths
   
+  numchars <- max(nchar(notesdf$"Note text")) + 10
+  
   if (links == "Yes" & applictabs == "No") {
     
-    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3), widths = c(15, 100, 50))
+    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3), widths = c(15, min(numchars, 100), 50))
     
   } else if (links == "Yes" & applictabs == "Yes") {
     
-    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3,4), widths = c(15, 100, 20, 50))
+    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3,4), widths = c(15, min(numchars, 100), 20, 50))
     
   } else if (links == "No" & applictabs == "Yes") {
     
-    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3), widths = c(15, 100, 20))
+    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3), widths = c(15, min(numchars, 100), 20))
     
   } else if (links == "No" & applictabs == "No") {
     
-    openxlsx::setColWidths(wb, "Notes", cols = c(1,2), widths = c(15, 100))
+    openxlsx::setColWidths(wb, "Notes", cols = c(1,2), widths = c(15, min(numchars, 100)))
     
   }
   
@@ -2594,12 +2587,11 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes") {
     
     gridlines <- "Yes"
     
-  } else if (gridlines == "NO" | gridlines == "no" | gridlines == "N" | gridlines == "n" | gridlines == "nO") {
+  } else if (tolower(gridlines) == "no" | tolower(gridlines) == "n") {
     
     gridlines <- "No"
     
-  } else if (gridlines == "yes" | gridlines == "Y" | gridlines == "y" | gridlines == "YES" | gridlines == "YEs" | 
-             gridlines == "yES" | gridlines == "YeS" | gridlines == "yeS" | gridlines == "yEs") {
+  } else if (tolower(gridlines) == "yes" | tolower(gridlines) == "y") {
     
     gridlines <- "Yes"
     
@@ -2659,7 +2651,7 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes") {
     
     contentslink <- "Yes"
     
-  } else if (contentslink == "NO" | contentslink == "no" | contentslink == "N" | contentslink == "n" | contentslink == "nO") {
+  } else if (tolower(contentslink) == "no" | tolower(contentslink) == "n") {
     
     contentslink <- "No"
     
