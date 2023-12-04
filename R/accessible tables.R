@@ -21,9 +21,26 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   new.packages <- list.of.packages[!(list.of.packages %in% utils::installed.packages()[,"Package"])]
   if (base::length(new.packages) > 0) {utils::install.packages(new.packages, dependencies = TRUE, type = "binary")}
   
-  if (utils::packageVersion("tidyverse") < "2.0.0") {utils::install.packages("tidyverse", dependencies = TRUE, type = "binary")}
-  if (utils::packageVersion("openxlsx") < "4.2.5.2") {utils::install.packages("openxlsx", dependencies = TRUE, type = "binary")}
-  if (utils::packageVersion("conflicted") < "1.2.0") {utils::install.packages("conflicted", dependencies = TRUE, type = "binary")}
+  if (utils::packageVersion("tidyverse") < "2.0.0") {
+  
+    base::unloadNamespace("tidyverse")  
+    utils::install.packages("tidyverse", dependencies = TRUE, type = "binary")
+    
+  }
+  
+  if (utils::packageVersion("openxlsx") < "4.2.5.2") {
+    
+    base::unloadNamespace("openxlsx")
+    utils::install.packages("openxlsx", dependencies = TRUE, type = "binary")
+    
+  }
+  
+  if (utils::packageVersion("conflicted") < "1.2.0") {
+    
+    base::unloadNamespace("conflicted")
+    utils::install.packages("conflicted", dependencies = TRUE, type = "binary")
+    
+  }
   
   base::library("conflicted")
   
@@ -1227,10 +1244,11 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
 
 # contentstable function creates a table of contents for the workbook
 # If no contents page wanted, then do not run the contentstable function
-# gridlines is the only parameter and this is by default set to "Yes", change to "No" if gridlines are not wanted
+# gridlines is by default set to "Yes", change to "No" if gridlines are not wanted
+# Column widths are automatically set unless user defines specific values in colwid_spec
 
 
-contentstable <- function(gridlines = "Yes") {
+contentstable <- function(gridlines = "Yes", colwid_spec = NULL) {
   
   # Check to see that a contents page is wanted, based on whether a worksheet was created in the initial workbook
   
@@ -1380,7 +1398,20 @@ contentstable <- function(gridlines = "Yes") {
   
   numchars <- max(nchar(tabcontents$"Sheet name"))
   
-  openxlsx::setColWidths(wb, "Contents", cols = c(1,2), widths = c(max(15, numchars + 3), 100))
+  if (is.null(colwid_spec)) {
+    
+    openxlsx::setColWidths(wb, "Contents", cols = c(1,2), widths = c(max(15, numchars + 3), 100))
+    
+  } else if (!is.numeric(colwid_spec) | length(colwid_spec) > 2) {
+    
+    warning("colwid_spec has either been provided as non-numeric or a vector of length greater than 2. The default column widths have been used instead.")
+    openxlsx::setColWidths(wb, "Contents", cols = c(1,2), widths = c(max(15, numchars + 3), 100))
+    
+  } else if (!is.null(colwid_spec) & is.numeric(colwid_spec) & length(colwid_spec) == 2) {
+    
+    openxlsx::setColWidths(wb, "Contents", cols = c(1,2), widths = colwid_spec)
+    
+  }
   
   openxlsx::setRowHeights(wb, "Contents", 2, fontsz * (25/12))
   
@@ -1419,12 +1450,20 @@ contentstable <- function(gridlines = "Yes") {
 # names: Contact name / email: Contact email / phone: Contact telephone
 # reuse: Set to "Yes" if you want the information displayed about the reuse of the data (will automatically be populated)
 # govdept: Default is "ONS" but if want reuse information without reference to ONS change govdept
+# extrafields: Any additional fields that the user wants present on the cover page
+# extrafieldsb: The text to go in any additional fields. Only one row per field. extrafields and extrafields must be vectors of the same length.
+# additlinks: Any additional hyperlinks the user wants
+# addittext: The text to appear over any additional hyperlinks. additlinks and addittext must be vectors of the same length.
+# order: If the user wants the cover page to be ordered in a specific way, list the fields in a vector with each field name in speech marks
+# e.g., order = c("intro", "about", relatedlink", "names", "phone", "email", "extrafields")
 # Change gridlines to "No" if gridlines are not wanted
+# Column width automatically set unless user specifies a value in colwid_spec
 
 
-coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedlink = NULL, relatedtext = NULL, 
-                      dop = NULL, blank = NULL, names = NULL, email = NULL, phone = NULL, reuse = NULL, 
-                      gridlines = "Yes", govdept = "ONS") {
+coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedlink = NULL, relatedtext = NULL,
+                      dop = NULL, blank = NULL, names = NULL, email = NULL, phone = NULL, reuse = NULL,
+                      gridlines = "Yes", govdept = "ONS", extrafields = NULL, extrafieldsb = NULL,
+                      additlinks = NULL, addittext = NULL, colwid_spec = NULL, order = NULL) {
   
   # Check to see that a coverpage is wanted, based on whether a worksheet was created in the initial workbook
   
@@ -1456,17 +1495,49 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   
   if (!is.null(relatedlink) & is.null(relatedtext)) {
     
-    stop("relatedlink is not null but relatedtext is")
+    stop("relatedlink and relatedtext either have to be both set to NULL or both set to something")
     
   } else if (is.null(relatedlink) & !is.null(relatedtext)) {
     
-    stop("relatedlink is null but relatedtext is not")
+    stop("relatedlink and relatedtext either have to be both set to NULL or both set to something")
+    
+  } else if (length(relatedlink) != length(relatedtext)) {
+    
+    stop("relatedlink and relatedtext must be of the same length and contain the same number of elements")
     
   }
   
-  if (length(relatedlink) != length(relatedtext)) {
+  if (is.null(extrafields) & !is.null(extrafieldsb)) {
     
-    stop("relatedlink and relatedtext must be of the same length and contain the same number of elements")
+    stop("extrafields and extrafieldsb either have to be both set to NULL or both set to something")
+    
+  } else if (!is.null(extrafields) & is.null(extrafieldsb)) {
+    
+    stop("extrafields and extrafieldsb either have to be both set to NULL or both set to something")
+    
+  } else if (length(extrafields) != length(extrafieldsb)) {
+    
+    stop("extrafields and extrafieldsb must be of the same length and contain the same number of elements")
+    
+  }
+  
+  if (is.null(additlinks) & !is.null(addittext)) {
+    
+    stop("additlinks and addittext either have to be both set to NULL or both set to something")
+    
+  } else if (!is.null(additlinks) & is.null(addittext)) {
+    
+    stop("additlinks and addittext either have to be both set to NULL or both set to something")
+    
+  } else if (length(additlinks) != length(addittext)) {
+    
+    stop("additlinks and addittext must be of the same length and contain the same number of elements")
+    
+  }
+  
+  if (any(duplicated(order)) == TRUE) {
+    
+    stop("There is at least one element entered multiple times in \"order\"")
     
   }
   
@@ -1538,17 +1609,344 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   if (!is.null(relatedlink)) {related2 <- 1} else if (is.null(relatedlink)) {related2 <- 0}
   if (!is.null(dop)) {dop2 <- 1} else if (is.null(dop)) {dop2 <- 0}
   if (!is.null(blank)) {blank2 <- 1} else if (is.null(blank)) {blank2 <- 0}
+  if (!is.null(additlinks)) {additlinks2 <- 1} else if (is.null(additlinks)) {additlinks2 <- 0}
   if (!is.null(names)) {names2 <- 1} else if (is.null(names)) {names2 <- 0}
   
-  covernumrow <<- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + length(names) + names2 + length(email) + length(phone) + length(reuse) + 4
+  covernumrow <<- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + length(extrafields) + length(extrafieldsb) + additlinks2 + length(additlinks) + length(names) + names2 + length(email) + length(phone) + length(reuse) + 4
   
   # Populating the cover page with the required text
   
   openxlsx::writeData(wb, "Cover", title, startCol = 1, startRow = 1)
   
+  # Beginning of a long process to order the cover page as specified by the order argument
+  
+  introstartpos <- NULL
+  aboutstartpos <- NULL
+  sourcestartpos <- NULL
+  relatedstartpos <- NULL
+  dopstartpos <- NULL
+  blankstartpos <- NULL
+  namesstartpos <- NULL
+  emailstartpos <- NULL
+  phonestartpos <- NULL
+  reusestartpos <- NULL
+  extrastartpos <- NULL
+  additstartpos <- NULL
+  
+  if (!is.null(order)) {
+    
+    fields <- c(title, intro, about, source, relatedlink, dop, blank, names, email, phone, reuse, extrafields, additlinks)
+    
+    for (i in seq_along(order)) {
+      
+      if (tolower(order[i]) %in% c("intro", "introduction", "introductory information")) {order[i] <- intro}
+      else if (tolower(order[i]) %in% c("about", "about these data")) {order[i] <- about}
+      else if (tolower(order[i]) %in% c("source", "source of data", "data source", "sources", "sources of data", "data sources")) {order[i] <- source}
+      else if (tolower(order[i]) %in% c("related publications", "related publication", "related", "relatedlink", "relatedlinks", "relatedtext")) {order[i] <- "relatedlink"}
+      else if (tolower(order[i]) %in% c("dop", "date of publication", "publication date")) {order[i] <- dop}
+      else if (tolower(order[i]) %in% c("blank", "blank cells")) {order[i] <- blank}
+      else if (tolower(order[i]) %in% c("names", "name", "contact", "contact details")) {order[i] <- names}
+      else if (tolower(order[i]) %in% c("email", "email address", "e-mail", "e-mail address")) {order[i] <- email}
+      else if (tolower(order[i]) %in% c("phone", "telephone", "phone number", "telephone number", "tel", "tel:")) {order[i] <- phone}
+      else if (tolower(order[i]) %in% c("reuse", "reusing this publication", "reuse this publication")) {order[i] <- reuse}
+      else if (tolower(order[i]) %in% c("extrafields", "extrafield", "extrafieldsb", "extrafieldb")) {order[i] <- "extrafields"}
+      else if (tolower(order[i]) %in% c("additlinks", "additlink", "addittext", "additional links", "additional link")) {order[i] <- "additlinks"}
+      
+    }
+    
+    phone2 <- which(order == phone)
+    email2 <- which(order == email)
+    names2 <- which(order == names)
+    
+    if (names %in% order & phone %in% order & email %in% order) {
+      
+      if ((phone2 < names2) | (email2 < names2) | (phone2 > (names2 + 2)) | (email2 > (names2 + 2))) {
+        
+        stop("The relative positions of names, phone and email are not consistent with the expected stucture (i.e., names, phone or email, email or phone)")
+        
+      }
+      
+    } else if (names %in% order & phone %in% order) {
+      
+      if ((phone2 < names2) | (phone2 > (names2 + 1))) {
+        
+        stop("The relative positions of names and phone are not consistent with the expected structure (i.e., names, phone)")
+        
+      }
+      
+    } else if (names %in% order & email %in% order) {
+      
+      if ((email2 < names2) | (email2 > (names2 + 1))) {
+        
+        stop("The relative positions of names and email are not consistent with the expected structure (i.e., names, email)")
+        
+      }
+      
+    } else if (((email %in% order) | (phone %in% order)) & !(names %in% order)) {
+      
+      warning("email and/or phone have been populated but a contact name has not been provided. Check that this is intentional.")
+      
+    }
+    
+    if ("extrafields" %in% order) {
+      
+      x <- which(order == "extrafields")
+      
+      orderb <- order[1:(x-1)]
+      
+      if ((x + 1) <= length(order)) {
+        
+        orderc <- order[(x+1):length(order)]
+        
+      } else {orderc <- NULL}
+      
+      if (!is.null(orderc)) {
+        
+        orderd <- c(orderb, extrafields, orderc)
+        
+      } else if (is.null(orderc)) {
+        
+        orderd <- c(orderb, extrafields)
+        
+      }
+      
+      rm(x, orderb, orderc)
+      
+    } else if (!("extrafields" %in% order)) {
+      
+      orderd <- order
+      
+    }
+    
+    if ("relatedlink" %in% order) {
+      
+      x <- which(orderd == "relatedlink")
+      
+      ordere <- orderd[1:(x-1)]
+      
+      if ((x + 1) <= length(orderd)) {
+        
+        orderf <- orderd[(x+1):length(orderd)]
+        
+      } else {orderf <- NULL}
+      
+      if (!is.null(orderf)) {
+        
+        orderg <- c(ordere, relatedlink, orderf)
+        
+      } else if (is.null(orderf)) {
+        
+        orderg <- c(ordere, relatedlink)
+        
+      }
+      
+      rm(x, ordere, orderf)
+      
+    } else if (!("relatedlink" %in% order)) {
+      
+      orderg <- orderd
+      
+    }
+    
+    if ("additlinks" %in% order) {
+      
+      x <- which(orderg == "additlinks")
+      
+      orderh <- orderg[1:(x-1)]
+      
+      if ((x + 1) <= length(orderg)) {
+        
+        orderi <- orderg[(x+1):length(orderg)]
+        
+      } else {orderi <- NULL}
+      
+      if (!is.null(orderi)) {
+        
+        orderj <- c(orderh, additlinks, orderi)
+        
+      } else if (is.null(orderi)) {
+        
+        orderj <- c(orderh, additlinks)
+        
+      }
+      
+      rm(x, orderh, orderi)
+      
+    } else if (!("additlinks" %in% order)) {
+      
+      orderj <- orderg
+      
+    }
+    
+    order <- orderj
+    
+    rm(orderd, orderg, orderj)
+    
+    if (length(setdiff(order, fields)) > 0) {
+      
+      x <- paste(setdiff(order, fields), collapse = "  ")
+      
+      stop(paste0(x, "  -  these are not recognisable field names"))
+      
+      rm(x)
+      
+    }
+    
+    if (length(order) > length(fields)) {
+      
+      stop("There are more elements specified in \"order\" than are permissible")
+      
+    }
+    
+    if (any(duplicated(order)) == TRUE) {
+      
+      stop("There is at least one element entered multiple times in \"order\"")
+      
+    }
+    
+    order <- order[order != title]
+    
+    orderk <- c(1:length(order))
+    orderl <- NULL
+    
+    for (i in seq_along(orderk)) {
+      
+      if (i == 1) {
+        
+        orderl[i] <- orderk[i]
+        
+      } else {
+        
+        orderl[i] <- orderk[i] + orderk[i-1]
+        
+      }
+      
+    }
+    
+    if (!is.null(reuse) & reuse %in% order) {
+      
+      reusepos <- which(order == reuse)
+      
+      if ((reusepos + 1) <= length(order)) {
+        
+        for (i in (reusepos + 1):length(order)) {
+          
+          orderl[i] <- orderl[i] + 3
+          
+        }
+        
+      }
+      
+    }
+    
+    if (!is.null(relatedlink) & any(is.element(relatedlink, order)) == TRUE) {
+      
+      relatedpos <- which(order %in% relatedlink)
+      
+      if ((tail(relatedpos, 1) + 1) <= length(order)) {
+        
+        for (i in (tail(relatedpos, 1) + 1):length(order)) {
+          
+          orderl[i] <- orderl[i] - length(relatedlink) + 1
+          
+        }
+        
+      }
+      
+    }
+    
+    if (!is.null(additlinks) & any(is.element(additlinks, order)) == TRUE) {
+      
+      additpos <- which(order %in% additlinks)
+      
+      if ((tail(additpos, 1) + 1) <= length(order)) {
+        
+        for (i in (tail(additpos, 1) + 1):length(order)) {
+          
+          orderl[i] <- orderl[i] - length(additlinks) + 1
+          
+        }
+        
+      }
+      
+    }
+    
+    if (!is.null(email)) {
+      
+      emailpos <- which(order == email)
+      
+      if ((emailpos + 1) <= length(order)) {
+        
+        for (i in (emailpos + 1):length(order)) {
+          
+          orderl[i] <- orderl[i] - 1
+          
+        }
+        
+      }
+      
+    }
+    
+    if (!is.null(phone)) {
+      
+      phonepos <- which(order == phone)
+      
+      if ((phonepos + 1) <= length(order)) {
+        
+        for (i in (phonepos + 1):length(order)) {
+          
+          orderl[i] <- orderl[i] - 1
+          
+        }
+        
+      }
+      
+    }
+    
+    for (i in seq_along(order)) {
+      
+      if (order[i] == intro) {introstartpos <- orderl[i] + length(title)}
+      else if (order[i] == about) {aboutstartpos <- orderl[i] + length(title)}
+      else if (order[i] == source) {sourcestartpos <- orderl[i] + length(title)}
+      else if (order[i] == relatedlink[1]) {relatedstartpos <- orderl[i] + length(title)}
+      else if (order[i] == dop) {dopstartpos <- orderl[i] + length(title)}
+      else if (order[i] == blank) {blankstartpos <- orderl[i] + length(title)}
+      else if (order[i] == names) {namesstartpos <- orderl[i] + length(title)}
+      else if (order[i] == email) {emailstartpos <- orderl[i] + length(title)}
+      else if (order[i] == phone) {phonestartpos <- orderl[i] + length(title)}
+      else if (order[i] == reuse) {reusestartpos <- orderl[i] + length(title)}
+      else if (order[i] %in% extrafields) {extrastartpos <- append(extrastartpos, orderl[i] + length(title))}
+      else if (order[i] == additlinks[1]) {additstartpos <- orderl[i] + length(title)}
+      
+    }
+    
+    if (is.null(introstartpos) & is.null(aboutstartpos) & is.null(sourcestartpos) & is.null(relatedstartpos) &
+        is.null(dopstartpos) & is.null(blankstartpos) & is.null(namesstartpos) & is.null(emailstartpos) &
+        is.null(phonestartpos) & is.null(reusestartpos) & is.null(extrastartpos) & is.null(additstartpos)) {
+      
+      stop("No starting positions have been generated")
+      
+    }
+    
+    if (length(extrastartpos) != length(extrafields)) {
+      
+      stop("The lengths of the vectors for extrafields and their row starting positions are not equal. Investigate why.")
+      
+    }
+    
+  }
+  
   if (!is.null(intro)) {
     
-    introstart <- length(title) + 1
+    if (is.null(introstartpos)) {
+      
+      introstart <- length(title) + 1
+      
+    } else if (!is.null(introstartpos)) {
+      
+      introstart <- introstartpos
+      
+    }
     
     openxlsx::writeData(wb, "Cover", "Introductory information", startCol = 1, startRow = introstart)
     openxlsx::writeData(wb, "Cover", intro, startCol = 1, startRow = introstart + 1)
@@ -1557,7 +1955,15 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   
   if (!is.null(about)) {
     
-    aboutstart <- length(title) + length(intro) + intro2 + 1
+    if (is.null(aboutstartpos)) {
+      
+      aboutstart <- length(title) + length(intro) + intro2 + 1
+      
+    } else if (!is.null(aboutstartpos)) {
+      
+      aboutstart <- aboutstartpos
+      
+    }
     
     openxlsx::writeData(wb, "Cover", "About these data", startCol = 1, startRow = aboutstart)
     openxlsx::writeData(wb, "Cover", about, startCol = 1, startRow = aboutstart + 1)
@@ -1566,7 +1972,15 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   
   if (!is.null(source)) {
     
-    sourcestart <- length(title) + length(intro) + intro2 + length(about) + about2 + 1
+    if (is.null(sourcestartpos)) {
+      
+      sourcestart <- length(title) + length(intro) + intro2 + length(about) + about2 + 1
+      
+    } else if (!is.null(sourcestartpos)) {
+      
+      sourcestart <- sourcestartpos
+      
+    }
     
     openxlsx::writeData(wb, "Cover", "Source", startCol = 1, startRow = sourcestart)
     openxlsx::writeData(wb, "Cover", source, startCol = 1, startRow = sourcestart + 1)
@@ -1575,7 +1989,15 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   
   if (!is.null(relatedlink)) {
     
-    relatedstart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + 1
+    if (is.null(relatedstartpos)) {
+      
+      relatedstart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + 1
+      
+    } else if (!is.null(relatedstartpos)) {
+      
+      relatedstart <- relatedstartpos
+      
+    }
     
     relpub <- relatedlink
     names(relpub) <- relatedtext
@@ -1588,7 +2010,15 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   
   if (!is.null(dop)) {
     
-    dopstart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + 1
+    if (is.null(dopstartpos)) {
+      
+      dopstart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + 1
+      
+    } else if (!is.null(dopstartpos)) {
+      
+      dopstart <- dopstartpos
+      
+    }  
     
     openxlsx::writeData(wb, "Cover", "Date of publication", startCol = 1, startRow = dopstart)
     openxlsx::writeData(wb, "Cover", dop, startCol = 1, startRow = dopstart + 1)
@@ -1598,7 +2028,15 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   
   if (!is.null(blank)) {
     
-    blankstart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + 1
+    if (is.null(blankstartpos)) {
+      
+      blankstart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + 1
+      
+    } else if (!is.null(blankstartpos)) {
+      
+      blankstart <- blankstartpos
+      
+    }  
     
     openxlsx::writeData(wb, "Cover", "Blank cells", startCol = 1, startRow = blankstart)
     openxlsx::writeData(wb, "Cover", blank, startCol = 1, startRow = blankstart + 1)
@@ -1606,9 +2044,59 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
   }
   
+  if (!is.null(extrafields)) {
+    
+    for (i in seq_along(extrafields)) {
+      
+      if (is.null(extrastartpos)) {
+        
+        extrastart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + 1 + (2 * i) - 2
+        
+      } else if (!is.null(extrastartpos)) {
+        
+        extrastart <- extrastartpos[i]
+        
+      }
+      
+      openxlsx::writeData(wb, "Cover", extrafields[i], startCol = 1, startRow = extrastart)
+      openxlsx::writeData(wb, "Cover", extrafieldsb[i], startCol = 1, startRow = extrastart + 1)
+      
+    }
+    
+  }
+  
+  if (!is.null(additlinks)) {
+    
+    if (is.null(additstartpos)) {
+      
+      additlinkstart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + length(extrafields) + length(extrafieldsb) + 1
+      
+    } else if (!is.null(additstartpos)) {
+      
+      additlinkstart <- additstartpos
+      
+    }  
+    
+    additional <- additlinks
+    names(additional) <- addittext
+    class(additional) <- "hyperlink"
+    
+    openxlsx::writeData(wb, "Cover", "Additional links", startCol = 1, startRow = additlinkstart)
+    openxlsx::writeData(wb, "Cover", additional, startCol = 1, startRow = additlinkstart + 1)
+    
+  }
+  
   if (!is.null(names)) {
     
-    namesstart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + 1
+    if (is.null(namesstartpos)) {
+      
+      namesstart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + length(extrafields) + length(extrafieldsb) + additlinks2 + length(additlinks) + 1
+      
+    } else if (!is.null(namesstartpos)) {
+      
+      namesstart <- namesstartpos
+      
+    }
     
     openxlsx::writeData(wb, "Cover", "Contact", startCol = 1, startRow = namesstart)
     openxlsx::writeData(wb, "Cover", names, startCol = 1, startRow = namesstart + 1)
@@ -1620,7 +2108,25 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   titleformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontszt, fontColour = fontcol, valign = "bottom", wrapText = TRUE, textDecoration = "bold")
   linkformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = "blue", valign = "top", wrapText = TRUE, textDecoration = "underline")
   
-  openxlsx::setColWidths(wb, "Cover", cols = 1, widths = 100)
+  if (is.null(colwid_spec) | !is.numeric(colwid_spec) | length(colwid_spec) > 1) {
+    
+    openxlsx::setColWidths(wb, "Cover", cols = 1, widths = 100)
+    
+    if (!is.null(colwid_spec) & !is.numeric(colwid_spec)) {
+      
+      warning("colwid_spec has not been provided as a numeric value and so the default width of 100 has been used")
+      
+    } else if (!is.null(colwid_spec) & length(colwid_spec) > 1) {
+      
+      warning("colwid_spec has been provided as a vector with more than one element and so the default width of 100 has been used")
+      
+    }
+    
+  } else if (is.numeric(colwid_spec)) {
+    
+    openxlsx::setColWidths(wb, "Cover", cols = 1, widths = colwid_spec)
+    
+  }
   
   openxlsx::addStyle(wb, "Cover", normalformat, rows = c(1:covernumrow), cols = 1)
   
@@ -1649,7 +2155,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     openxlsx::setRowHeights(wb, "Cover", relatedstart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = relatedstart, cols = 1)
-    openxlsx::addStyle(wb, "Cover", linkformat, rows = (relatedstart + 1):(dopstart - 1), cols = 1)
+    openxlsx::addStyle(wb, "Cover", linkformat, rows = (relatedstart + 1):(relatedstart + length(relatedlink)), cols = 1)
     
   }
   
@@ -1664,6 +2170,35 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     openxlsx::setRowHeights(wb, "Cover", blankstart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = blankstart, cols = 1)
+    
+  }
+  
+  if (!is.null(extrafields)) {
+    
+    for (i in seq_along(extrafields)) {
+      
+      if (is.null(extrastartpos)) {
+        
+        extrastart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + 1 + (2 * i) - 2
+        
+      } else if (!is.null(extrastartpos)) {
+        
+        extrastart <- extrastartpos[i]
+        
+      }
+      
+      openxlsx::setRowHeights(wb, "Cover", extrastart, fontszst * (25/14))
+      openxlsx::addStyle(wb, "Cover", subtitleformat, rows = extrastart, cols = 1)
+      
+    }
+    
+  }
+  
+  if (!is.null(additlinks)) {
+    
+    openxlsx::setRowHeights(wb, "Cover", additlinkstart, fontszst * (25/14))
+    openxlsx::addStyle(wb, "Cover", subtitleformat, rows = additlinkstart, cols = 1)
+    openxlsx::addStyle(wb, "Cover", linkformat, rows = (additlinkstart + 1):(additlinkstart + length(additlinks)), cols = 1)
     
   }
   
@@ -1686,7 +2221,15 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     names(x) <- email
     class(x) <- "hyperlink"
     
-    emailstart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + length(names) + names2 + 1
+    if (is.null(emailstartpos)) {
+      
+      emailstart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + length(extrafields) + length(extrafieldsb) + additlinks2 + length(additlinks) + length(names) + names2 + 1
+      
+    } else if (!is.null(emailstartpos)) {
+      
+      emailstart <- emailstartpos
+      
+    }
     
     openxlsx::writeData(wb, "Cover", x, startCol = 1, startRow = emailstart)
     
@@ -1700,7 +2243,15 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   
   if (!is.null(phone)) {
     
-    phonestart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + length(names) + names2 + length(email) + 1
+    if (is.null(phonestartpos)) {
+      
+      phonestart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + length(extrafields) + length(extrafieldsb) + additlinks2 + length(additlinks) + length(names) + names2 + length(email) + 1
+      
+    } else if (!is.null(phonestartpos)) {
+      
+      phonestart <- phonestartpos
+      
+    }
     
     openxlsx::writeData(wb, "Cover", paste0("Telephone: ", phone), startCol = 1, startRow = phonestart)
     
@@ -1716,11 +2267,11 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
       orgwording <- "our organisation"
       
-    } else if (govdept != "ONS" & govdept != "ons") {
+    } else if (tolower(govdept) != "ons") {
       
-      orgwording <- "our organisation"
+      orgwording <- paste0(govdept, " - Source: ", govdept)
       
-    } else if (!is.null(govdept) & (govdept == "ONS" | govdept == "ons")) {
+    } else if (!is.null(govdept) & tolower(govdept) == "ons") {
       
       orgwording <- "the Office for National Statistics - Source: Office for National Statistics"
       
@@ -1732,7 +2283,15 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     licencelink <- "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
     licencetext <- "View the Open Government Licence"
     
-    reusestart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + length(names) + names2 + length(email) + length(phone) + 1
+    if (is.null(reusestartpos)) {
+      
+      reusestart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + length(extrafields) + length(extrafieldsb) + additlinks2 + length(additlinks) + length(names) + names2 + length(email) + length(phone) + 1
+      
+    } else if (!is.null(reusestartpos)) {
+      
+      reusestart <- reusestartpos
+      
+    }  
     
     openxlsx::writeData(wb, "Cover", "Reusing this publication", startRow = reusestart, startCol = 1)
     openxlsx::writeData(wb, "Cover", reuse1, startRow = reusestart + 1, startCol = 1)
@@ -2000,10 +2559,11 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
 
 # notestab function will create a notes worksheet in the workbook and includes notes added using the addnote function
 # If notes not wanted, then do not run the notestab function
-# There are two parameters and they are optional and preset. Change contentslink to "No" if you want a contents tab but do not want a link to it in the notes tab. Change gridlines to "No" if gridlines are not wanted.
+# There are three parameters and they are optional and preset. Change contentslink to "No" if you want a contents tab but do not want a link to it in the notes tab. Change gridlines to "No" if gridlines are not wanted.
+# Column widths are automatically set but the user can specify the required widths in colwid_spec
 
 
-notestab <- function(contentslink = NULL, gridlines = "Yes") {
+notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL) {
   
   # Check that a notes page is wanted, based on whether a worksheet was created in the initial workbook
   
@@ -2336,23 +2896,34 @@ notestab <- function(contentslink = NULL, gridlines = "Yes") {
   
   # Determining column widths
   
+  if ((!is.null(colwid_spec) & !is.numeric(colwid_spec)) | (!is.null(colwid_spec) & length(colwid_spec) != ncol(notesdf))) {
+    
+    warning("colwid_spec is either a non-numeric value or a vector not of the same length as the number of columns desired in the notes tab. The widths will be determined automatically.")
+    colwid_spec <- NULL
+    
+  }
+  
   numchars <- max(nchar(notesdf$"Note text")) + 10
   
-  if (links == "Yes" & applictabs == "No") {
+  if (links == "Yes" & applictabs == "No" & is.null(colwid_spec)) {
     
     openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3), widths = c(15, min(numchars, 100), 50))
     
-  } else if (links == "Yes" & applictabs == "Yes") {
+  } else if (links == "Yes" & applictabs == "Yes" & is.null(colwid_spec)) {
     
     openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3,4), widths = c(15, min(numchars, 100), 20, 50))
     
-  } else if (links == "No" & applictabs == "Yes") {
+  } else if (links == "No" & applictabs == "Yes" & is.null(colwid_spec)) {
     
     openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3), widths = c(15, min(numchars, 100), 20))
     
-  } else if (links == "No" & applictabs == "No") {
+  } else if (links == "No" & applictabs == "No" & is.null(colwid_spec)) {
     
     openxlsx::setColWidths(wb, "Notes", cols = c(1,2), widths = c(15, min(numchars, 100)))
+    
+  } else if (!is.null(colwid_spec) & is.numeric(colwid_spec) & length(colwid_spec) == ncol(notesdf)) {
+    
+    openxlsx::setColWidths(wb, "Notes", cols = c(1:ncol(notesdf)), widths = colwid_spec)
     
   }
   
@@ -2568,10 +3139,11 @@ adddefinition <- function(term, definition) {
 
 # definitionstab creates the worksheet with information on definitions
 # If definitions not wanted, then do not run the definitionstab function
-# There are two parameters and they are optional and preset. Change contentslink to "No" if you want a contents tab but do not want a link to it in the definitions tab. Change gridlines to "No" if gridlines are not wanted.
+# There are three parameters and they are optional and preset. Change contentslink to "No" if you want a contents tab but do not want a link to it in the definitions tab. Change gridlines to "No" if gridlines are not wanted.
+# Column widths are automatically set but the user can specify the required widths in colwid_spec
 
 
-definitionstab <- function(contentslink = NULL, gridlines = "Yes") {
+definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL) {
   
   # Checking that a definitions page is wanted, based on whether a worksheet was created in the initial workbook
   
@@ -2716,7 +3288,20 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes") {
   
   openxlsx::addStyle(wb, "Definitions", extraformat2, rows = (startingrow + 1):(nrow(definitionsdf) + startingrow + 1), cols = 1:2, stack = TRUE, gridExpand = TRUE)
   
-  openxlsx::setColWidths(wb, "Definitions", cols = c(1,2), widths = c(30, 75))
+  if (is.null(colwid_spec)) {
+    
+    openxlsx::setColWidths(wb, "Definitions", cols = c(1,2), widths = c(30, 75))
+    
+  } else if (!is.numeric(colwid_spec) | length(colwid_spec) > 2) {
+    
+    openxlsx::setColWidths(wb, "Definitions", cols = c(1,2), widths = c(30, 75))
+    warning("colwid_spec is either non-numerical or a vector of length greater than 2. Default column widths have been used instead.")
+    
+  } else if (!is.null(colwid_spec) & is.numeric(colwid_spec) & length(colwid_spec) == 2) {
+    
+    openxlsx::setColWidths(wb, "Definitions", cols = c(1,2), widths = colwid_spec)
+    
+  }
   
   openxlsx::setRowHeights(wb, "Definitions", startingrow - 1, fontsz * (25/12))
   

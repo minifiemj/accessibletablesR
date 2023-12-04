@@ -3,9 +3,9 @@
 accessibletablesR is designed to produce Excel workbooks that align as closely as possible to the UK Government Analysis Function recommendations for publishing statistics in spreadsheets. 
 Releasing statistics in spreadsheets - https://analysisfunction.civilservice.gov.uk/policy-store/releasing-statistics-in-spreadsheets/
 
-accessibletablesR was developed using R 4.1.3, tidyverse version 2.0.0 and openxlsx version 4.2.5.2. It is unknown if the package will work earlier versions of R, tidyverse and openxlsx. 
-accessibletablesR will install the latest versions of tidyverse and openxlsx if these packages are not currently installed or if earlier versions of tidyverse (<2.0.0) and openxlsx (<4.2.5.2)
-are currently installed.
+accessibletablesR was developed using R 4.1.3, tidyverse version 2.0.0, openxlsx version 4.2.5.2 and conflicted version 1.2.0. It is unknown if the package will work earlier versions of R,
+tidyverse, openxlsx and conflicted. accessibletablesR will install the latest versions of tidyverse, openxlsx and conflicted if these packages are not currently installed or if earlier 
+versions of tidyverse (<2.0.0), openxlsx (<4.2.5.2) and conflicted (1.2.0) are currently installed.
 
 To install accessibletablesR:
 
@@ -84,27 +84,33 @@ in a numerical vector. If default column widths are wanted then set columnwidths
 
 contentstable:
 
-contentstable <- function(gridlines = "Yes")
+contentstable <- function(gridlines = "Yes", colwid_spec = NULL)
 
 If a contents page is wanted then run contentstable(). Run the function after all the data tables have been processed using the creatingtables function.
 
-The only argument is optional. If no gridlines are wanted in the contents page in the final workbook set gridlines = "No".
+The arguments are optional. If no gridlines are wanted in the contents page in the final workbook set gridlines = "No". Column widths are determined automatically but the user can
+specify the widths by populating colwid_spec.
 
 coverpage:
 
 coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedlink = NULL, relatedtext = NULL, 
                       dop = NULL, blank = NULL, names = NULL, email = NULL, phone = NULL, reuse = NULL, 
-                      gridlines = "Yes", govdept = "ONS")
+                      gridlines = "Yes", govdept = "ONS", extrafields = NULL, extrafieldsb = NULL,
+                      additlinks = NULL, addittext = NULL, colwid_spec = NULL, order = NULL)
 
 Run the function after all the data tables have been processed using the creatingtables function.
 
 title is the only compulsory argument. It is the title to be displayed on the cover sheet. Other optional sections of a cover page that can be populated are "Introductory information"
 (info), "About these data" (about), "Source" (source), "Related publications" (relatedlink, relatedtext), "Date of publication" (dop), "Blank cells" (blank), "Contact" (names, email,
-phone) and "Reusing this publication" (reuse, govdept). If no gridlines are wanted on the cover page in the final workbook set gridlines = "No".
+phone), "Additional links" (additlinks) and "Reusing this publication" (reuse, govdept). Extra fields can be added using extrafields. One row is allowed for each extra field. The text
+to populate the extra fields can be provided in extrafieldsb. If no gridlines are wanted on the cover page in the final workbook set gridlines = "No". The column width is automatically
+set but can be altered by using colwid_spec.
+
+The ordering of the fields can be amended by populating order. order can be set to a vector where the field names are provided in speech marks.
 
 The "Reusing this publication" section has been designed for UK government departments and will not apply for other organisations. If a user is from the Office for National Statistics
 (ONS) and wants a "Reusing this publication" section then set reuse = "Yes". If a user is from a UK government department but not the Office for National Statistics (ONS) set reuse = "Yes" 
-and govdept = NULL.
+and govdept = "<name of organisation>".
 
 addnote:
 
@@ -124,13 +130,14 @@ linktext2 = "https://www.ons.gov.uk/census/census2021dictionary/variablesbytopic
 
 notestab:
 
-notestab <- function(contentslink = NULL, gridlines = "Yes")
+notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL)
 
 Run this function if a notes page is wanted.
 
 Run the function after all the data tables have been processed using the creatingtables function and after all the notes have been added using the addnote function.
 
-The two arguments are optional. If a link to the contents page is not wanted on the notes page set contentslink = "No". If no gridlines are wanted on the notes page then set gridlines = "No".
+The arguments are optional. If a link to the contents page is not wanted on the notes page set contentslink = "No". If no gridlines are wanted on the notes page then set gridlines = "No".
+Column widths are determined automatically but can be altered to specific widths by the user in colwid_spec.
 
 adddefinition:
 
@@ -142,15 +149,16 @@ term is the item that needs defining and definition is the definition of the ite
 
 definitionstab:
 
-definitionstab <- function(contentslink = NULL, gridlines = "Yes")
+definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL)
 
 Run this function if a definitions page is wanted.
 
 Run the function after all the definitions have been added using the adddefinition function.
 
-The two arguments are optional. If a link to the contents page is not wanted on the definitions page set contentslink = "No". If no gridlines are wanted on the definitions page then set gridlines = "No".
+The arguments are optional. If a link to the contents page is not wanted on the definitions page set contentslink = "No". If no gridlines are wanted on the definitions page then set 
+gridlines = "No". Column widths are set automatically but can be altered using colwid_spec.
 
-savingtables::
+savingtables:
 
 savingtables <- function(filename)
 
