@@ -126,6 +126,7 @@ accessibletablesR::coverpage(title = "Fuel consumption and aspects of car design
                              reuse = "Yes", govdept = NULL)
 
 # Below is an example of how to include extra fields, additional links and reordering the fields
+# The extrafields can be split out in the order argument if required
 
 #accessibletablesR::coverpage(title = "Fuel consumption and aspects of car design and performance for various cars",
 #                             intro = "Some made up data about cars",
