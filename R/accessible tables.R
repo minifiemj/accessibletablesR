@@ -2263,15 +2263,25 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   
   if (reuse == "Yes") {
     
+    if (!is.null(govdept)) {
+      
+      if (stringr::str_starts(tolower(govdept), "the ")) {
+        
+        govdept <- substring(govdept, 5)
+        
+      }
+      
+    }
+    
     if (is.null(govdept)) {
       
       orgwording <- "our organisation"
       
-    } else if (tolower(govdept) != "ons") {
+    } else if (tolower(govdept) != "ons" & tolower(govdept) != "office for national statistics") {
       
-      orgwording <- paste0(govdept, " - Source: ", govdept)
+      orgwording <- paste0("the ", govdept, " - Source: ", govdept)
       
-    } else if (!is.null(govdept) & tolower(govdept) == "ons") {
+    } else if (!is.null(govdept) & (tolower(govdept) == "ons" | tolower(govdept) == "office for national statistics")) {
       
       orgwording <- "the Office for National Statistics - Source: Office for National Statistics"
       

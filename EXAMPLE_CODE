@@ -125,6 +125,28 @@ accessibletablesR::coverpage(title = "Fuel consumption and aspects of car design
                              phone = "01111 1111111111111",
                              reuse = "Yes", govdept = NULL)
 
+# Below is an example of how to include extra fields, additional links and reordering the fields
+
+#accessibletablesR::coverpage(title = "Fuel consumption and aspects of car design and performance for various cars",
+#                             intro = "Some made up data about cars",
+#                             about = "The output of an example of how to use accessibletablesR",
+#                             source = "R mtcars",
+#                             relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+#                             relatedtext = "mtcars: Motor trend car road tests",
+#                             dop = "26 October 2023",
+#                             blank = "There should be no blank cells",
+#                             names = "Your name",
+#                             email = "yourname@emailprovider.com",
+#                             phone = "01111 1111111111111",
+#                             reuse = "Yes", govdept = NULL,
+#                             extrafields = c("Extra heading 1", "Extra heading2", "Extra heading3"),
+#                             extrafieldsb = c("Another line", "Another line", "Another line"),
+#                             additlinks = c("https://www.bbc.co.uk", "https://google.co.uk"),
+#                             addittext = c("BBC", "Google"),
+#                             colwid_spec = 85,
+#                             order = c("intro", "about", "source", "relatedlink", "names", "email", "phone",
+#                                       "blank", "extrafields", "additlinks", "reuse"))
+
 # To save the Excel workbook, run the savingtables function
 # The only argument to populate is the filepath of where to save the workbook, including the name to be given to the workbook
 # The workbook needs to be saved as a xlsx file (code is based on the R package openxlsx)
