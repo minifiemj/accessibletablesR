@@ -2373,6 +2373,12 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
     
   }
   
+  if (length(linktext1) > 1 | length(linktext2) > 1) {
+    
+    stop("linktext1 and linktext2 can only be single entities and not vectors of length greater than one")
+    
+  }
+  
   if (is.numeric(notenumber)) {
     
     notenumber <- paste0("note", as.character(notenumber))
