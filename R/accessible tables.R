@@ -17,28 +17,21 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   
   # Install the required packages if they are not already installed, then load the packages
   
-  list.of.packages <- c("tidyverse", "openxlsx", "conflicted")
-  new.packages <- list.of.packages[!(list.of.packages %in% utils::installed.packages()[,"Package"])]
-  if (base::length(new.packages) > 0) {utils::install.packages(new.packages, dependencies = TRUE, type = "binary")}
+  listofpackages <- base::c("openxlsx", "conflicted", "tidyverse")
+  packageversions <- base::c("4.2.5.2", "1.2.0", "2.0.0")
   
-  if (utils::packageVersion("tidyverse") < "2.0.0") {
-  
-    base::unloadNamespace("tidyverse")  
-    utils::install.packages("tidyverse", dependencies = TRUE, type = "binary")
+  for (i in base::seq_along(listofpackages)) {
     
-  }
-  
-  if (utils::packageVersion("openxlsx") < "4.2.5.2") {
-    
-    base::unloadNamespace("openxlsx")
-    utils::install.packages("openxlsx", dependencies = TRUE, type = "binary")
-    
-  }
-  
-  if (utils::packageVersion("conflicted") < "1.2.0") {
-    
-    base::unloadNamespace("conflicted")
-    utils::install.packages("conflicted", dependencies = TRUE, type = "binary")
+    if (!(listofpackages[i] %in% utils::installed.packages())) {
+      
+      utils::install.packages(listofpackages[i], dependencies = TRUE, type = "binary")
+     
+    } else if (listofpackages[i] %in% utils::installed.packages() & utils::packageVersion(listofpackages[i]) < packageversions[i]) {
+      
+      base::unloadNamespace(listofpackages[i])
+      utils::install.packages(listofpackages[i], dependencies = TRUE, type = "binary")
+      
+    } 
     
   }
   
