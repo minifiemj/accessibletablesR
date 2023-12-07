@@ -1836,9 +1836,9 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
       relatedpos <- which(order %in% relatedlink)
       
-      if ((tail(relatedpos, 1) + 1) <= length(order)) {
+      if ((utils::tail(relatedpos, 1) + 1) <= length(order)) {
         
-        for (i in (tail(relatedpos, 1) + 1):length(order)) {
+        for (i in (utils::tail(relatedpos, 1) + 1):length(order)) {
           
           orderl[i] <- orderl[i] - length(relatedlink) + 1
           
@@ -1852,9 +1852,9 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
       additpos <- which(order %in% additlinks)
       
-      if ((tail(additpos, 1) + 1) <= length(order)) {
+      if ((utils::tail(additpos, 1) + 1) <= length(order)) {
         
-        for (i in (tail(additpos, 1) + 1):length(order)) {
+        for (i in (utils::tail(additpos, 1) + 1):length(order)) {
           
           orderl[i] <- orderl[i] - length(additlinks) + 1
           
