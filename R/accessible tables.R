@@ -42,6 +42,7 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   # To ensure there is no unintentional masking of base functions, conflict_prefer_all will set it so base is the package used unless otherwise specified
   
   conflicted::conflict_prefer_all("base", quiet = TRUE)
+  conflicted::conflict_prefer("%>%", "dplyr", quiet = TRUE)
   
   library("tidyverse")
   library("openxlsx")
