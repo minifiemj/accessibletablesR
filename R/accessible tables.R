@@ -1336,7 +1336,22 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL) {
     
   }
   
-  tabcontents <<- dplyr::bind_rows(notesdf2a, notesdf2b, tabcontents)
+  if (exists("extracols_contents", envir = .GlobalEnv)) {
+    
+    if ((nrow(tabcontents) + nrow(notesdf2a) + nrow(notesdf2b)) != nrow(extracols_contents)) {
+      
+      stop("The number of rows in the table of contents is not the same as in the dataframe of extra columns")
+      
+    }
+    
+    tabcontents <<- dplyr::bind_rows(notesdf2a, notesdf2b, tabcontents) %>%
+      dplyr::bind_cols(extracols_contents)
+    
+  } else if (!(exists("extracols_contents", envir = .GlobalEnv))) {
+    
+    tabcontents <<- dplyr::bind_rows(notesdf2a, notesdf2b, tabcontents)
+    
+  }
   
   tabcontents2 <- tabcontents %>%
     dplyr::rename(sheet_name = "Sheet name") %>%
@@ -1369,7 +1384,7 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL) {
   rm(tabcontents2, tabcontents3)
   
   # Define some formatting to be used later
-
+  
   titleformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontszt, fontColour = fontcol, textDecoration = "bold")
   extralineformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, wrapText = FALSE, valign = "top")
   normalformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, wrapText = TRUE, valign = "top")
@@ -1396,14 +1411,14 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL) {
     
     openxlsx::setColWidths(wb, "Contents", cols = c(1,2), widths = c(max(15, numchars + 3), 100))
     
-  } else if (!is.numeric(colwid_spec) | length(colwid_spec) > 2) {
+  } else if (!is.numeric(colwid_spec) | length(colwid_spec) != ncol(tabcontents)) {
     
-    warning("colwid_spec has either been provided as non-numeric or a vector of length greater than 2. The default column widths have been used instead.")
+    warning("colwid_spec has either been provided as non-numeric or a vector of length not equal to the number of columns in tabcontents. The default column widths have been used instead.") ######################################
     openxlsx::setColWidths(wb, "Contents", cols = c(1,2), widths = c(max(15, numchars + 3), 100))
     
-  } else if (!is.null(colwid_spec) & is.numeric(colwid_spec) & length(colwid_spec) == 2) {
+  } else if (!is.null(colwid_spec) & is.numeric(colwid_spec) & length(colwid_spec) == ncol(tabcontents)) {  
     
-    openxlsx::setColWidths(wb, "Contents", cols = c(1,2), widths = colwid_spec)
+    openxlsx::setColWidths(wb, "Contents", cols = 1:ncol(tabcontents), widths = colwid_spec)            
     
   }
   
@@ -1415,8 +1430,8 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL) {
   
   for (i in c(4:(3 + contentrows))) {
     
-   openxlsx::writeFormula(wb, "Contents", startRow = i, x = openxlsx::makeHyperlinkString(paste0(tabcontents[i-3, 1]), row = 1, col = 1, text = paste0(tabcontents[i-3, 1])))
-   openxlsx::addStyle(wb, "Contents", linkformat, rows = i, cols = 1)
+    openxlsx::writeFormula(wb, "Contents", startRow = i, x = openxlsx::makeHyperlinkString(paste0(tabcontents[i-3, 1]), row = 1, col = 1, text = paste0(tabcontents[i-3, 1])))
+    openxlsx::addStyle(wb, "Contents", linkformat, rows = i, cols = 1)
     
   }
   
@@ -1427,8 +1442,8 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL) {
     openxlsx::showGridLines(wb, "Contents", showGridLines = FALSE)
     
   }
-
-}
+  
+}  
 
 ###################################################################################################################
 ###################################################################################################################
@@ -1463,7 +1478,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   
   if (!("Cover" %in% names(wb))) {
     
-    stop("covertab cannot have been set to \"Yes\" in the workbook function call")
+    stop("covertab has not been set to \"Yes\" in the workbook function call")
     
   }
   
@@ -2343,7 +2358,7 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
   
   if (!("Notes" %in% names(wb))) {
     
-    stop("notestab cannot have been set to \"Yes\" in the workbook function call")
+    stop("notestab has not been set to \"Yes\" in the workbook function call")
     
   }
   
@@ -2579,7 +2594,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL)
   
   if (!("Notes" %in% names(wb))) {
     
-    stop("notestab cannot have been set to \"Yes\" in the workbook function call")
+    stop("notestab has not been set to \"Yes\" in the workbook function call")
     
   }
   
@@ -3082,7 +3097,7 @@ adddefinition <- function(term, definition) {
   
   if (!("Definitions" %in% names(wb))) {
     
-    stop("definitionstab cannot have been set to \"Yes\" in the workbook function call")
+    stop("definitionstab has not been set to \"Yes\" in the workbook function call")
     
   }
   
@@ -3159,7 +3174,7 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   if (!("Definitions" %in% names(wb))) {
     
-    stop("definitionstab cannot have been set to \"Yes\" in the workbook function call")
+    stop("definitionstab has not been set to \"Yes\" in the workbook function call")
     
   }
   
