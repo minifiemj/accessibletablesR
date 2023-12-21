@@ -1336,6 +1336,8 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL) {
     
   }
   
+  # To insert additional columns which are not default columns allowed by the function, a dataframe called "extracols_contents" needs to be created with the extra columns
+  
   if (exists("extracols_contents", envir = .GlobalEnv)) {
     
     if ((nrow(tabcontents) + nrow(notesdf2a) + nrow(notesdf2b)) != nrow(extracols_contents)) {
@@ -1344,10 +1346,16 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL) {
       
     }
     
+    if ("Sheet name" %in% colnames(extracols_contents) | "Table description" %in% c(extracols_contents)) {
+      
+      warning("There is at least one duplicate column name in the contents table and the extracols_contents dataframe")
+      
+    }
+    
     tabcontents <<- dplyr::bind_rows(notesdf2a, notesdf2b, tabcontents) %>%
       dplyr::bind_cols(extracols_contents)
     
-    } else if (!(exists("extracols_contents", envir = .GlobalEnv))) {
+  } else if (!(exists("extracols_contents", envir = .GlobalEnv))) {
     
     tabcontents <<- dplyr::bind_rows(notesdf2a, notesdf2b, tabcontents)
     
