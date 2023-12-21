@@ -1347,9 +1347,13 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL) {
     tabcontents <<- dplyr::bind_rows(notesdf2a, notesdf2b, tabcontents) %>%
       dplyr::bind_cols(extracols_contents)
     
+    testa <<- 1
+    
   } else if (!(exists("extracols_contents", envir = .GlobalEnv))) {
     
     tabcontents <<- dplyr::bind_rows(notesdf2a, notesdf2b, tabcontents)
+    
+    testa <<- 2
     
   }
   
