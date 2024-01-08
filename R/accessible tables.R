@@ -1240,9 +1240,10 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
 # If no contents page wanted, then do not run the contentstable function
 # gridlines is by default set to "Yes", change to "No" if gridlines are not wanted
 # Column widths are automatically set unless user defines specific values in colwid_spec
+# Extra columns can be added, need to set extracols to "Yes" and create a dataframe extracols_contents with the desired extra columns 
 
 
-contentstable <- function(gridlines = "Yes", colwid_spec = NULL) {
+contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
   
   # Check to see that a contents page is wanted, based on whether a worksheet was created in the initial workbook
   
@@ -1277,6 +1278,32 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL) {
   if (length(gridlines) > 1) {
     
     stop("gridlines has not been populated properly. It must be a single word, either \"Yes\" or \"No\".")
+    
+  }
+  
+  if (is.null(extracols)) {
+    
+    extracols <- "No"
+    
+  } else if (tolower(extracols) == "no" | tolower(extracols) == "n") {
+    
+    extracols <- "No"
+    
+  } else if (tolower(extracols) == "yes" | tolower(extracols) == "y") {
+    
+    extracols <- "Yes"
+    
+  }
+  
+  if (extracols != "Yes" & extracols != "No") {
+    
+    stop("extracols has not been set to either \"Yes\" or \"No\"")
+    
+  }
+  
+  if (length(extracols) > 1) {
+    
+    stop("extracols has not been populated properly. It must be a single word, either \"Yes\" or \"No\".")
     
   }
   
@@ -1338,7 +1365,7 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL) {
   
   # To insert additional columns which are not default columns allowed by the function, a dataframe called "extracols_contents" needs to be created with the extra columns
   
-  if (exists("extracols_contents", envir = .GlobalEnv)) {
+  if (extracols == "Yes" & exists("extracols_contents", envir = .GlobalEnv)) {
     
     if ((nrow(tabcontents) + nrow(notesdf2a) + nrow(notesdf2b)) != nrow(extracols_contents)) {
       
@@ -1358,6 +1385,16 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL) {
   } else if (!(exists("extracols_contents", envir = .GlobalEnv))) {
     
     tabcontents <<- dplyr::bind_rows(notesdf2a, notesdf2b, tabcontents)
+    
+    if (extracols == "Yes") {
+      
+      warning("extracols has been set to \"Yes\" but the dataframe extracols_contents does not exist. No extra columns will be added.")
+      
+    }
+    
+  } else if (extracols == "No" & exists("extracols_contents", envir = .GlobalEnv)) {
+    
+    warning("extracols has been set to \"No\" but a dataframe extracols_contents exist. Check if extra columns are wanted. No extra columns have been added.")
     
   }
   
@@ -1415,14 +1452,18 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL) {
   
   numchars <- max(nchar(tabcontents$"Sheet name"))
   
-  if (is.null(colwid_spec)) {
+  if (is.null(colwid_spec) & ncol(tabcontents) == 2) {
     
     openxlsx::setColWidths(wb, "Contents", cols = c(1,2), widths = c(max(15, numchars + 3), 100))
+    
+  } else if (is.null(colwid_spec) & ncol(tabcontents) > 2) {
+    
+    openxlsx::setColWidths(wb, "Contents", cols = c(1,2,3:ncol(tabcontents)), widths = c(max(15, numchars + 3), 100, "auto"))
     
   } else if (!is.numeric(colwid_spec) | length(colwid_spec) != ncol(tabcontents)) {
     
     warning("colwid_spec has either been provided as non-numeric or a vector of length not equal to the number of columns in tabcontents. The default column widths have been used instead.") ######################################
-    openxlsx::setColWidths(wb, "Contents", cols = c(1,2), widths = c(max(15, numchars + 3), 100))
+    openxlsx::setColWidths(wb, "Contents", cols = c(1,2,3:max(ncol(tabcontents),3)), widths = c(max(15, numchars + 3), 100, "auto"))
     
   } else if (!is.null(colwid_spec) & is.numeric(colwid_spec) & length(colwid_spec) == ncol(tabcontents)) {  
     
@@ -2594,9 +2635,10 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
 # If notes not wanted, then do not run the notestab function
 # There are three parameters and they are optional and preset. Change contentslink to "No" if you want a contents tab but do not want a link to it in the notes tab. Change gridlines to "No" if gridlines are not wanted.
 # Column widths are automatically set but the user can specify the required widths in colwid_spec
+# Extra columns can be added by setting extracols to "Yes" and creating a dataframe extracols_notes with the desired extra columns
 
 
-notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL) {
+notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
   
   # Check that a notes page is wanted, based on whether a worksheet was created in the initial workbook
   
@@ -2631,6 +2673,32 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL)
   if (length(gridlines) > 1) {
     
     stop("gridlines has not been populated properly. It must be a single word, either \"Yes\" or \"No\".")
+    
+  }
+  
+  if (is.null(extracols)) {
+    
+    extracols <- "No"
+    
+  } else if (tolower(extracols) == "no" | tolower(extracols) == "n") {
+    
+    extracols <- "No"
+    
+  } else if (tolower(extracols) == "yes" | tolower(extracols) == "y") {
+    
+    extracols <- "Yes"
+    
+  }
+  
+  if (extracols != "Yes" & extracols != "No") {
+    
+    stop("extracols has not been set to either \"Yes\" or \"No\"")
+    
+  }
+  
+  if (length(extracols) > 1) {
+    
+    stop("extracols has not been populated properly. It must be a single word, either \"Yes\" or \"No\".")
     
   }
   
@@ -2820,31 +2888,75 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL)
   
   # Creating a notes table with the required columns
   
+  if (extracols == "Yes" & exists("extracols_notes", envir = .GlobalEnv)) {
+    
+    if (nrow(extracols_notes) != nrow(notesdf)) {
+      
+      stop("The number of rows in the notes table is not the same as in the dataframe of extra columns")
+      
+    }
+    
+  } else if (extracols == "Yes" & !(exists("extracols_notes", envir = .GlobalEnv))) {
+    
+    warning("extracols has been set to \"Yes\" but the extracols_notes dataframe does not exist. No extra columns will be added.")
+    
+  } else if (extracols == "No" & exists("extracols_notes", envir = .GlobalEnv)) {
+    
+    warning("extracols has been set to \"No\" but a dataframe extracols_notes exists. No extra columns have been added.")
+    
+  }
+  
   if (links == "Yes" & applictabs == "Yes") {
   
     notesdf <<- notesdf %>%
-      dplyr::select("Note number", "Note text", "Applicable tables", "Link")
+      dplyr::select("Note number", "Note text", "Applicable tables", "Link") %>%
+      {if (exists("extracols_notes", envir = .GlobalEnv)) dplyr::bind_cols(., extracols_notes) else .}
     
     class(notesdf$Link) <- "formula"
     
   } else if (links == "Yes") {
     
     notesdf <<- notesdf %>%
-      dplyr::select("Note number", "Note text", "Link")
+      dplyr::select("Note number", "Note text", "Link") %>%
+      {if (exists("extracols_notes", envir = .GlobalEnv)) dplyr::bind_cols(., extracols_notes) else .}
     
     class(notesdf$Link) <- "formula"
     
   } else if (links == "No" & applictabs == "Yes") {
     
     notesdf <<- notesdf %>%
-      dplyr::select("Note number", "Note text", "Applicable tables")
+      dplyr::select("Note number", "Note text", "Applicable tables") %>%
+      {if (exists("extracols_notes", envir = .GlobalEnv)) dplyr::bind_cols(., extracols_notes) else .}
     
   } else if (links == "No") {
     
     notesdf <<- notesdf %>%
-      dplyr::select("Note number", "Note text")
+      dplyr::select("Note number", "Note text") %>%
+      {if (exists("extracols_notes", envir = .GlobalEnv)) dplyr::bind_cols(., extracols_notes) else .}
     
   }
+  
+  if ("Link" %in% colnames(notesdf)) {
+    
+    notesdfcols <- colnames(notesdf)
+    
+    for (i in seq_along(notesdfcols)) {
+      
+      if (notesdfcols[i] == "Link") {linkcolpos <- i}
+      
+    }
+    
+  }
+  
+  if (extracols == "Yes" & exists("extracols_notes", envir = .GlobalEnv)) {
+    
+    if (any(duplicated(colnames(notesdf))) == TRUE) {
+      
+      warning("There is at least one duplicate column name in the notes table and the extracols_notes dataframe")
+      
+    }
+    
+  } 
   
   # Define formatting to be used later on
   
@@ -2887,7 +2999,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL)
     
   } else if (links == "Yes" & !is.null(linkrange)) {
     
-    openxlsx::addStyle(wb, "Notes", linkformat, rows = linkrange + startingrow, cols = ncol(notesdf), gridExpand = TRUE)
+    openxlsx::addStyle(wb, "Notes", linkformat, rows = linkrange + startingrow, cols = linkcolpos, gridExpand = TRUE)
     
   }
   
@@ -2896,14 +3008,6 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL)
   # The if statement below is required so that "No additional link" appears as text only in the final spreadsheet, rather than as a hyperlink
   
   if ("Link" %in% colnames(notesdf)) {
-    
-    notesdfcols <- colnames(notesdf)
-    
-    for (i in seq_along(notesdfcols)) {
-      
-      if (notesdfcols[i] == "Link") {linkcolpos <- i}
-      
-    }
     
     noaddlinks <- notesdf[["Link"]]
     
@@ -2940,19 +3044,19 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL)
   
   if (links == "Yes" & applictabs == "No" & is.null(colwid_spec)) {
     
-    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3), widths = c(15, min(numchars, 100), 50))
+    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3,4:max(ncol(notesdf),4)), widths = c(15, min(numchars, 100), 50, "auto"))
     
   } else if (links == "Yes" & applictabs == "Yes" & is.null(colwid_spec)) {
     
-    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3,4), widths = c(15, min(numchars, 100), 20, 50))
+    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3,4,5:max(ncol(notesdf),5)), widths = c(15, min(numchars, 100), 20, 50, "auto"))
     
   } else if (links == "No" & applictabs == "Yes" & is.null(colwid_spec)) {
     
-    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3), widths = c(15, min(numchars, 100), 20))
+    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3,4:max(ncol(notesdf),4)), widths = c(15, min(numchars, 100), 20, "auto"))
     
   } else if (links == "No" & applictabs == "No" & is.null(colwid_spec)) {
     
-    openxlsx::setColWidths(wb, "Notes", cols = c(1,2), widths = c(15, min(numchars, 100)))
+    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3:max(ncol(notesdf),3)), widths = c(15, min(numchars, 100), "auto"))
     
   } else if (!is.null(colwid_spec) & is.numeric(colwid_spec) & length(colwid_spec) == ncol(notesdf)) {
     
@@ -3174,9 +3278,10 @@ adddefinition <- function(term, definition) {
 # If definitions not wanted, then do not run the definitionstab function
 # There are three parameters and they are optional and preset. Change contentslink to "No" if you want a contents tab but do not want a link to it in the definitions tab. Change gridlines to "No" if gridlines are not wanted.
 # Column widths are automatically set but the user can specify the required widths in colwid_spec
+# Extra columns can be added by setting extracols to "Yes" and creating a dataframe extracols_definitions with the desired extra columns
 
 
-definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL) {
+definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
   
   # Checking that a definitions page is wanted, based on whether a worksheet was created in the initial workbook
   
@@ -3211,6 +3316,32 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   if (length(gridlines) > 1) {
     
     stop("gridlines has not been populated properly. It must be a single word, either \"Yes\" or \"No\".")
+    
+  }
+  
+  if (is.null(extracols)) {
+    
+    extracols <- "No"
+    
+  } else if (tolower(extracols) == "no" | tolower(extracols) == "n") {
+    
+    extracols <- "No"
+    
+  } else if (tolower(extracols) == "yes" | tolower(extracols) == "y") {
+    
+    extracols <- "Yes"
+    
+  }
+  
+  if (extracols != "Yes" & extracols != "No") {
+    
+    stop("extracols has not been set to either \"Yes\" or \"No\"")
+    
+  }
+  
+  if (length(extracols) > 1) {
+    
+    stop("extracols has not been populated properly. It must be a single word, either \"Yes\" or \"No\".")
     
   }
   
@@ -3276,6 +3407,33 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
     
   }
   
+  if (extracols == "Yes" & exists("extracols_definitions", envir = .GlobalEnv)) {
+    
+    if (nrow(extracols_definitions) != nrow(definitionsdf)) {
+      
+      stop("The number of rows in the definitions table and the extracols_definitions dataframe is not the same")
+      
+    }
+    
+    if ("Term" %in% colnames(extracols_definitions) | "Definition" %in% colnames(extracols_definitions)) {
+      
+      warning("There is at least one duplicate column name in the definitions table and the extracols_definitions dataframe")
+      
+    }
+    
+    definitionsdf <<- definitionsdf %>%
+      dplyr::bind_cols(extracols_definitions)
+    
+  } else if (extracols == "No" & exists("extracols_definitions", envir = .GlobalEnv)) {
+    
+    warning("extracols has been set to \"No\" but a dataframe extracols_definitions exists. No extra columns have been added.")
+    
+  } else if (extracols == "Yes" & !(exists("extracols_definitions", envir = .GlobalEnv))) {
+    
+    warning("extracols has been set to \"Yes\" but a extracols_definitions dataframe does not exist. No extra columns will be added.")
+    
+  }
+  
   # Define some formatting for use later on
   
   normalformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, valign = "top")
@@ -3321,18 +3479,22 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   openxlsx::addStyle(wb, "Definitions", extraformat2, rows = (startingrow + 1):(nrow(definitionsdf) + startingrow + 1), cols = 1:2, stack = TRUE, gridExpand = TRUE)
   
-  if (is.null(colwid_spec)) {
+  if (is.null(colwid_spec) & ncol(definitionsdf) == 2) {
     
     openxlsx::setColWidths(wb, "Definitions", cols = c(1,2), widths = c(30, 75))
     
-  } else if (!is.numeric(colwid_spec) | length(colwid_spec) > 2) {
+  } else if (is.null(colwid_spec) & ncol(definitionsdf) > 2) {
     
-    openxlsx::setColWidths(wb, "Definitions", cols = c(1,2), widths = c(30, 75))
-    warning("colwid_spec is either non-numerical or a vector of length greater than 2. Default column widths have been used instead.")
+    openxlsx::setColWidths(wb, "Definitions", cols = c(1,2,3:ncol(definitionsdf)), widths = c(30, 75, "auto"))
     
-  } else if (!is.null(colwid_spec) & is.numeric(colwid_spec) & length(colwid_spec) == 2) {
+  } else if (!is.numeric(colwid_spec) | length(colwid_spec) != ncol(definitionsdf)) {
     
-    openxlsx::setColWidths(wb, "Definitions", cols = c(1,2), widths = colwid_spec)
+    openxlsx::setColWidths(wb, "Definitions", cols = c(1,2,3:max(ncol(definitionsdf),3)), widths = c(30, 75, "auto"))
+    warning("colwid_spec is either non-numerical or a vector of length different than the number of columns in the definitions table. Default column widths have been used instead.")
+    
+  } else if (!is.null(colwid_spec) & is.numeric(colwid_spec) & length(colwid_spec) == ncol(definitionsdf)) {
+    
+    openxlsx::setColWidths(wb, "Definitions", cols = c(1:ncol(definitionsdf)), widths = colwid_spec)
     
   }
   

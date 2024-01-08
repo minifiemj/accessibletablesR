@@ -96,6 +96,19 @@ accessibletablesR::addnote(notenumber = "note4", notetext = "Google is an intern
 
 accessibletablesR::notestab()
 
+# Below is an example of how to create an extra column on the notes tab
+# Multiple extra columns can be added
+
+#extracols_notes <- data.frame() %>%
+#  dplyr::mutate(col1 = "") %>%
+#  dplyr::add_row(col1 = "Whatever you want1") %>%
+#  dplyr::add_row(col1 = "Whatever you want2") %>%
+#  dplyr::add_row(col1 = "Whatever you want3") %>%
+#  dplyr::add_row(col1 = "Whatever you want4") %>%
+#  dplyr::rename("Extra column name" = col1)
+
+#accessibletablesR::notestab(extracols = "Yes")
+
 # To create a definition that is applicable to the tables, run the adddefinition function
 
 accessibletablesR::adddefinition(term = "Usual resident", definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and had stayed or intended to stay in the UK for a period of 12 months or more, or had a permanent UK address and was outside the UK and intended to be outside the UK for less than 12 months.")
@@ -154,3 +167,4 @@ accessibletablesR::coverpage(title = "Fuel consumption and aspects of car design
 # Consider manually saving the workbook as an ODS file (for accessibility reasons)
 
 accessibletablesR::savingtables("D:/mtcarsexample.xlsx")
+

@@ -84,12 +84,13 @@ in a numerical vector. If default column widths are wanted then set columnwidths
 
 contentstable:
 
-contentstable <- function(gridlines = "Yes", colwid_spec = NULL)
+contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NULL)
 
 If a contents page is wanted then run contentstable(). Run the function after all the data tables have been processed using the creatingtables function.
 
 The arguments are optional. If no gridlines are wanted in the contents page in the final workbook set gridlines = "No". Column widths are determined automatically but the user can
-specify the widths by populating colwid_spec.
+specify the widths by populating colwid_spec. Extra columns can be provided. To do so, set extracols = "Yes" and create a dataframe called extracols_contents in the global 
+environment before running the contentstable function. The extracols_contents dataframe must contain the desired extra columns and have the same number of rows as the contents table.
 
 coverpage:
 
@@ -130,14 +131,16 @@ linktext2 = "https://www.ons.gov.uk/census/census2021dictionary/variablesbytopic
 
 notestab:
 
-notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL)
+notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, extracols = NULL)
 
 Run this function if a notes page is wanted.
 
 Run the function after all the data tables have been processed using the creatingtables function and after all the notes have been added using the addnote function.
 
 The arguments are optional. If a link to the contents page is not wanted on the notes page set contentslink = "No". If no gridlines are wanted on the notes page then set gridlines = "No".
-Column widths are determined automatically but can be altered to specific widths by the user in colwid_spec.
+Column widths are determined automatically but can be altered to specific widths by the user in colwid_spec. Extra columns can be provided. To do so, set extracols = "Yes" and create a 
+dataframe called extracols_notes in the global environment before running the notestab function. The extracols_notes dataframe must contain the desired extra columns and have the same 
+number of rows as the notes table.
 
 adddefinition:
 
@@ -149,14 +152,16 @@ term is the item that needs defining and definition is the definition of the ite
 
 definitionstab:
 
-definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL)
+definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, extracols = NULL)
 
 Run this function if a definitions page is wanted.
 
 Run the function after all the definitions have been added using the adddefinition function.
 
 The arguments are optional. If a link to the contents page is not wanted on the definitions page set contentslink = "No". If no gridlines are wanted on the definitions page then set 
-gridlines = "No". Column widths are set automatically but can be altered using colwid_spec.
+gridlines = "No". Column widths are set automatically but can be altered using colwid_spec. Extra columns can be provided. To do so, set extracols = "Yes" and create a 
+dataframe called extracols_definitions in the global environment before running the definitionstab function. The extracols_definitions dataframe must contain the desired extra columns 
+and have the same number of rows as the definitions table.
 
 savingtables:
 
