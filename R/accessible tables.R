@@ -314,7 +314,7 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     openxlsx::addWorksheet(wb, "Definitions")
     
     definitionsdf <<- data.frame() %>%
-      dplyr::mutate("Term" = "", "Definition" = "")
+      dplyr::mutate("Term" = "", "Definition" = "", "Link1" = "", "Link2" = "")
     
   }
   
@@ -3201,9 +3201,12 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
 # adddefinition function will add a definition and its description to the workbook, specifically in the definitions worksheet
 # Add definitions if wanted, if not then do run the adddefinition function
 # term and definition are compulsory parameters
+# A link can be added with each definition
+# linktext1 and linktext2: linktext1 should be the text you want to appear and linktext2 should be the underlying link to a website, file etc
 
 
-adddefinition <- function(term, definition) {
+
+adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) {
   
   # Checking that a definitions page is wanted, based on whether a worksheet was created in the initial workbook
   
@@ -3237,10 +3240,56 @@ adddefinition <- function(term, definition) {
     
   }
   
+  if (length(linktext1) > 1 | length(linktext2) > 1) {
+    
+    stop("linktext1 and linktext2 can only be single entities and not vectors of length greater than one")
+    
+  }
+  
+  if (is.null(linktext1)) {
+    
+    linktext1 <- "No additional link"
+    
+  } else if (linktext1 == "") {
+    
+    linktext1 <- "No additional link"
+    
+  } else if (tolower(linktext1) == "no additional link") {
+    
+    linktext1 <- "No additional link"
+    
+  }
+  
+  if (is.null(linktext2)) {
+    
+    linktext2 <- ""
+    
+  } else if (tolower(linktext2) == "no additional link") {
+    
+    linktext2 <- ""
+    
+  }
+  
+  if (linktext1 != "" & linktext1 != "No additional link" & linktext2 == "") {
+    
+    stop("Invalid combination of linktext1 and linktext2")
+    
+  }
+  
+  if (linktext2 != "" & (linktext1 == "" | linktext1 == "No additional link")) {
+    
+    stop("Invalid combination of linktext1 and linktext2")
+    
+  }
+  
   # Check for any duplication of definitions
   
   definitionsdfx <- definitionsdf %>%
-    dplyr::add_row("Term" = term, "Definition" = definition)
+    dplyr::add_row("Term" = term, "Definition" = definition, "Link1" = linktext1, "Link2" = linktext2) %>%
+    dplyr::mutate(Link2 = dplyr::case_when(Link1 == "No additional link" ~ "No additional link",
+                                           TRUE ~ Link2)) %>%
+    dplyr::mutate(Link = dplyr::case_when(Link1 == "No additional link" ~ "No additional link",
+                                          TRUE ~ paste0("HYPERLINK(\"", Link2, "\", \"", Link1, "\")")))
   
   definitionsdf2 <- definitionsdfx %>%
     dplyr::group_by(Term) %>%
@@ -3254,6 +3303,22 @@ adddefinition <- function(term, definition) {
     dplyr::ungroup() %>%
     dplyr::summarise(check = sum(count) / n())
   
+  definitionsdf4 <- definitionsdfx %>%
+    dplyr::group_by(Link1) %>%
+    dplyr::summarise(count = n()) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(count = dplyr::case_when(is.na(Link1) | Link1 == "" | Link1 == "No additional link" ~ 1,
+                                           TRUE ~ count)) %>%
+    dplyr::summarise(check = sum(as.numeric(count)) / n()) 
+  
+  definitionsdf5 <- definitionsdfx %>%
+    dplyr::group_by(Link2) %>%
+    dplyr::summarise(count = n()) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(count = dplyr::case_when(is.na(Link2) | Link2 == "" | Link2 == "No additional link" ~ 1,
+                                           TRUE ~ count)) %>%
+    dplyr::summarise(check = sum(as.numeric(count)) / n()) 
+  
   if (definitionsdf2$check > 1) {
     
     stop("Duplicated term(s)")
@@ -3266,11 +3331,23 @@ adddefinition <- function(term, definition) {
     
   }
   
+  if (definitionsdf4$check > 1) {
+    
+    warning("Duplicated link text(s) (Link1). Explore to see if this is an issue.")
+    
+  }
+  
+  if (definitionsdf5$check > 1) {
+    
+    warning("Duplicated link text(s) (Link2). Explore to see if this is an issue.")
+    
+  }
+  
   # Create definitions data frame in the global environment
   
   definitionsdf <<- definitionsdfx
   
-  rm(definitionsdf2, definitionsdf3, definitionsdfx)
+  rm(definitionsdf2, definitionsdf3, definitionsdf4, definitionsdf5, definitionsdfx)
   
 }
 
@@ -3345,6 +3422,46 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
     
   }
   
+  # Automatically detecting if links have been provided or not
+  
+  definitionsdfx <- definitionsdf %>%
+    dplyr::filter(!is.na(Link1) & Link1 != "No additional link")
+  
+  if (nrow(definitionsdfx) > 0) {
+    
+    links <- "Yes"
+    
+  } else if (nrow(definitionsdf) > 0 & nrow(definitionsdfx) == 0) {
+    
+    links <- "No"
+    
+  } else if (nrow(definitionsdf) == 0) {
+    
+    stop("The definitionsdf dataframe contains no observations")
+    
+  }
+  
+  rm(definitionsdfx)
+  
+  # Identifying the row number of definitions which have a link associated to them
+  
+  definitionsdfy <- definitionsdf %>%
+    dplyr::mutate(linkno = dplyr::case_when(is.na(Link1) | Link1 == "No additional link" ~ NA_real_,
+                                            TRUE ~ dplyr::row_number())) %>%
+    dplyr::filter(!is.na(linkno))
+  
+  if (nrow(definitionsdfy) > 0) {
+    
+    linkrange <- definitionsdfy$linkno
+    
+  } else {
+    
+    linkrange <- NULL
+    
+  }
+  
+  rm(definitionsdfy)
+  
   # Checking for any duplication of definitions
   
   if (nrow(definitionsdf) == 0) {stop("No rows in the definitions table")}
@@ -3361,6 +3478,22 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
     dplyr::ungroup() %>%
     dplyr::summarise(check = sum(count) / n())
   
+  definitionsdf4 <- definitionsdf %>%
+    dplyr::group_by(Link1) %>%
+    dplyr::summarise(count = n()) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(count = dplyr::case_when(is.na(Link1) | Link1 == "No additional link" ~ 1,
+                                           TRUE ~ count)) %>%
+    dplyr::summarise(check = sum(as.numeric(count)) / n()) 
+  
+  definitionsdf5 <- definitionsdf %>%
+    dplyr::group_by(Link2) %>%
+    dplyr::summarise(count = n()) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(count = dplyr::case_when(is.na(Link2) | Link2 == "No additional link" ~ 1,
+                                           TRUE ~ count)) %>%
+    dplyr::summarise(check = sum(as.numeric(count)) / n()) 
+  
   if (definitionsdf2$check > 1) {
     
     stop("Duplicated term(s)")
@@ -3373,7 +3506,25 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
     
   }
   
-  rm(definitionsdf2, definitionsdf3)
+  if (definitionsdf4$check > 1) {
+    
+    warning("Duplicated link text(s) (Link1). Explore to see if this is an issue.")
+    
+  }
+  
+  if (definitionsdf5$check > 1) {
+    
+    warning("Duplicated link text(s) (Link2). Explore to see if this is an issue.")
+    
+  }
+  
+  rm(definitionsdf2, definitionsdf3, definitionsdf4, definitionsdf5)
+  
+  if (links != "No" & links != "Yes") {
+    
+    stop("links not set to \"Yes\" or \"No\". There must be an issue with link information provided with the definitions.")
+    
+  }
   
   # Determining if a link to the contents page is wanted on the definitions worksheet
   
@@ -3415,15 +3566,6 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
       
     }
     
-    if ("Term" %in% colnames(extracols_definitions) | "Definition" %in% colnames(extracols_definitions)) {
-      
-      warning("There is at least one duplicate column name in the definitions table and the extracols_definitions dataframe")
-      
-    }
-    
-    definitionsdf <<- definitionsdf %>%
-      dplyr::bind_cols(extracols_definitions)
-    
   } else if (extracols == "No" & exists("extracols_definitions", envir = .GlobalEnv)) {
     
     warning("extracols has been set to \"No\" but a dataframe extracols_definitions exists. No extra columns have been added.")
@@ -3431,6 +3573,44 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   } else if (extracols == "Yes" & !(exists("extracols_definitions", envir = .GlobalEnv))) {
     
     warning("extracols has been set to \"Yes\" but a extracols_definitions dataframe does not exist. No extra columns will be added.")
+    
+  }
+  
+  if (links == "Yes") {
+    
+    definitionsdf <<- definitionsdf %>%
+      dplyr::select("Term", "Definition", "Link") %>%
+      {if (exists("extracols_definitions", envir = .GlobalEnv)) dplyr::bind_cols(., extracols_definitions) else .}
+    
+    class(definitionsdf$Link) <- "formula"
+    
+  } else if (links == "No") {
+    
+    definitionsdf <<- definitionsdf %>%
+      dplyr::select("Term", "Definition") %>%
+      {if (exists("extracols_definitions", envir = .GlobalEnv)) dplyr::bind_cols(., extracols_definitions) else .}
+    
+  }
+  
+  if ("Link" %in% colnames(definitionsdf)) {
+    
+    definitionsdfcols <- colnames(definitionsdf)
+    
+    for (i in seq_along(definitionsdfcols)) {
+      
+      if (definitionsdfcols[i] == "Link") {linkcolpos <- i}
+      
+    }
+    
+  }
+  
+  if (extracols == "Yes" & exists("extracols_definitions", envir = .GlobalEnv)) {
+    
+    if (any(duplicated(colnames(definitionsdf))) == TRUE) {
+      
+      warning("There is at least one duplicate column name in the definitions table and the extracols_definitions dataframe")
+      
+    }
     
   }
   
@@ -3469,7 +3649,33 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
     
   }
   
+  if (links == "Yes" & is.null(linkrange)) {
+    
+    stop("Links are required in the definitions tab but the row numbers where links should be have not been generated (i.e., linkrange not populated)")
+    
+  } else if (links == "Yes" & !is.null(linkrange)) {
+    
+    openxlsx::addStyle(wb, "Definitions", linkformat, rows = linkrange + startingrow, cols = linkcolpos, gridExpand = TRUE)
+    
+  }
+  
   openxlsx::writeDataTable(wb, "Definitions", definitionsdf, tableName = "definitions", startRow = startingrow, startCol = 1, withFilter = FALSE, tableStyle = "none")
+  
+  if ("Link" %in% colnames(definitionsdf)) {
+    
+    noaddlinks <- definitionsdf[["Link"]]
+    
+    for (i in seq_along(noaddlinks)) {
+      
+      if (noaddlinks[i] == "No additional link") {
+        
+        openxlsx::writeData(wb, "Definitions", "No additional link", startCol = linkcolpos, startRow = startingrow + i)
+        
+      } 
+      
+    }
+    
+  }
   
   headingsformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, textDecoration = "bold", wrapText = TRUE, border = NULL, valign = "top")
   
@@ -3479,18 +3685,23 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   openxlsx::addStyle(wb, "Definitions", extraformat2, rows = (startingrow + 1):(nrow(definitionsdf) + startingrow + 1), cols = 1:2, stack = TRUE, gridExpand = TRUE)
   
-  if (is.null(colwid_spec) & ncol(definitionsdf) == 2) {
+  if ((!is.null(colwid_spec) & !is.numeric(colwid_spec)) | (!is.null(colwid_spec) & length(colwid_spec) != ncol(definitionsdf))) {
     
-    openxlsx::setColWidths(wb, "Definitions", cols = c(1,2), widths = c(30, 75))
+    warning("colwid_spec is either a non-numeric value or a vector not of the same length as the number of columns desired in the definitions tab. The widths will be determined automatically.")
+    colwid_spec <- NULL
     
-  } else if (is.null(colwid_spec) & ncol(definitionsdf) > 2) {
+  }
+  
+  numchars1 <- max(nchar(definitionsdf$"Term")) + 10
+  numchars2 <- max(nchar(definitionsdf$"Definition")) + 10
+  
+  if (links == "Yes" & is.null(colwid_spec)) {
     
-    openxlsx::setColWidths(wb, "Definitions", cols = c(1,2,3:ncol(definitionsdf)), widths = c(30, 75, "auto"))
+    openxlsx::setColWidths(wb, "Definitions", cols = c(1,2,3,4:max(ncol(definitionsdf),4)), widths = c(min(numchars1, 30), min(numchars2, 75), "auto", "auto"))
     
-  } else if (!is.numeric(colwid_spec) | length(colwid_spec) != ncol(definitionsdf)) {
+  } else if (links == "No" & is.null(colwid_spec)) {
     
-    openxlsx::setColWidths(wb, "Definitions", cols = c(1,2,3:max(ncol(definitionsdf),3)), widths = c(30, 75, "auto"))
-    warning("colwid_spec is either non-numerical or a vector of length different than the number of columns in the definitions table. Default column widths have been used instead.")
+    openxlsx::setColWidths(wb, "Definitions", cols = c(1,2,3:max(ncol(definitionsdf),3)), widths = c(min(numchars1, 30), min(numchars2, 75), "auto"))
     
   } else if (!is.null(colwid_spec) & is.numeric(colwid_spec) & length(colwid_spec) == ncol(definitionsdf)) {
     

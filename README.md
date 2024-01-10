@@ -144,11 +144,14 @@ number of rows as the notes table.
 
 adddefinition:
 
-adddefinition <- function(term, definition)
+adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL)
 
 Run this function for as many definitions as are needed.
 
 term is the item that needs defining and definition is the definition of the item.
+
+An optional column can be included that provides a link to a piece of information. To do so, populate linktext1 and linktext2. For example, set linktext1 = "General health information" and
+linktext2 = "https://www.ons.gov.uk/census/census2021dictionary/variablesbytopic/healthdisabilityandunpaidcarevariablescensus2021/generalhealth". 
 
 definitionstab:
 
