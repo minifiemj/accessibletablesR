@@ -405,6 +405,7 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
 # If a link to the contents page is required, set one of the extralines to "Link to contents"
 # If a link to the notes page is required, set one of the extralines to "Link to notes"
 # If a link to the definitions page is required, set one of the extralines to "Link to definitions"
+# extralines1-6 can be set to hyperlinks - e.g., extraline5 = "[BBC](https://www.bbc.co.uk)"
 
 
 creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2 = NULL, extraline3 = NULL,
@@ -844,12 +845,19 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   } else if ("Notes" %in% names(wb) & autonotes2 == "No") {
     
     onetablenote <- 0
+    notescolumn <- 0
     
     for (i in seq_along(extralines1)) {
       
       if (stringr::str_detect(extralines1[i], "This worksheet contains one table|this worksheet contains one table")) {
         
         onetablenote <- 1
+        
+      }
+      
+      if ("Notes" %in% colnames(table_data) | "Note" %in% colnames(table_data) | stringr::str_detect(extralines1[i], "\\[note")) {
+        
+        notescolumn <- 1
         
       }
       
@@ -861,7 +869,13 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       
     }
     
-    rm(onetablenote)
+    if (notescolumn == 0) {
+      
+      warning("There is no recognisable notes column or reference to notes. Check whether this is OK.")
+      
+    }
+    
+    rm(onetablenote, notescolumn)
     
   }
   
@@ -968,6 +982,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   numericformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, halign = "right", valign = "top")
   numcharformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, halign = "right", valign = "top")
   othdataformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, halign = "right", valign = "top")
+  linkformat2 <- openxlsx::createStyle(fontColour = "blue", textDecoration = "underline")
   
   openxlsx::addStyle(wb, sheetname, normalformat, rows = 1:(nrow(xxx_table_data2_xxx) + tablestart), cols = 1:ncol(xxx_table_data2_xxx), gridExpand = TRUE)
   openxlsx::addStyle(wb, sheetname, topformat, rows = 1:(length(title) + length(subtitle) + length(extralines2)), cols = 1, gridExpand = TRUE)
@@ -1040,7 +1055,72 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       
     } else if (!is.null(extralines2[i])) {
       
-      openxlsx::writeData(wb, sheetname, extralines2[i], startCol = 1, startRow = length(title) + length(subtitle) + i)
+      hyper_rx <- "\\[(([[:graph:]]|[[:space:]])+)\\]\\([[:graph:]]+\\)"
+      
+      if (grepl(hyper_rx, extralines2[i]) == TRUE) {
+        
+        if (substr(extralines2[i], 1, 1) != "[" | substr(extralines2[i], nchar(extralines2[i]), nchar(extralines2[i])) != ")") {
+          
+          warning(paste0(extralines2[i], " - if this is meant to be a hyperlink, it needs to be in the format \"[xxx](xxxxxx)\""))
+          
+        }
+        
+        if ("Link to contents" %in% extralines2 & stringr::str_detect(tolower(extralines2[i]), "\\[link to contents|\\[contents")) {
+          
+          warning(paste0(extralines2[i], " - this appears to be duplicating a link to the contents page in another extraline parameter"))
+          
+        } else if ("Link to notes" %in% extralines2 & stringr::str_detect(tolower(extralines2[i]), "\\[link to notes|\\[notes")) {
+          
+          warning(paste0(extralines2[i], " - this appears to be duplicating a link to the notes page in another extraline parameter"))
+          
+        } else if ("Link to definitions" %in% extralines2 & stringr::str_detect(tolower(extralines2[i]), "\\[link to definitions|\\[definitions")) {
+          
+          warning(paste0(extralines2[i], " - this appears to be duplicating a link to the definitions page in another extraline parameter"))
+          
+        }
+        
+        if (stringr::str_detect(tolower(extralines2[i]), "\\[link to contents|\\[link to notes|\\[link to definitions|\\[contents|\\[notes|\\[definitions")) {
+          
+          warning("If you want an internal link to the contents, notes or definitions page, then set one of extraline1-6 to \"Link to contents\" or \"Link to notes\" or \"Link to definitions\"")
+          
+        }
+        
+        x <- extralines2[i]
+        
+        md_rx <- "\\[(([[:graph:]]|[[:space:]])+?)\\]\\([[:graph:]]+?\\)"
+        md_match <- regexpr(md_rx, x, perl = TRUE)
+        md_extract <- regmatches(x, md_match)[[1]]
+        
+        url_rx <- "(?<=\\]\\()([[:graph:]]|[[:space:]])+(?=\\))"
+        url_match <- regexpr(url_rx, md_extract, perl = TRUE)
+        url_extract <- regmatches(md_extract, url_match)[[1]]
+        
+        string_rx <- "(?<=\\[)([[:graph:]]|[[:space:]])+(?=\\])"
+        string_match <- regexpr(string_rx, md_extract, perl = TRUE)
+        string_extract <- regmatches(md_extract, string_match)[[1]]
+        
+        string_extract <- gsub(md_rx, string_extract, x)
+        
+        y <- stats::setNames(url_extract, string_extract)
+        class(y) <- "hyperlink"
+        
+        rm(x, md_rx, md_match, md_extract, url_rx, url_match, url_extract, string_rx, string_match, string_extract)
+        
+      } else {
+        
+        y <- extralines2[i]
+        
+      }
+      
+      openxlsx::writeData(wb, sheetname, y, startCol = 1, startRow = length(title) + length(subtitle) + i)
+      
+      if (grepl(hyper_rx, extralines2[i]) == TRUE) {
+        
+        openxlsx::addStyle(wb, sheetname, linkformat2, rows = length(title) + length(subtitle) + i, cols = 1, stack = TRUE)
+        
+      }
+      
+      rm(y)
      
     }
     
@@ -1516,6 +1596,7 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
 # e.g., order = c("intro", "about", relatedlink", "names", "phone", "email", "extrafields")
 # Change gridlines to "No" if gridlines are not wanted
 # Column width automatically set unless user specifies a value in colwid_spec
+# intro, about, source, dop, blank, names can be set to hyperlinks - e.g., source = "[ONS](https://www.ons.gov.uk)"
 
 
 coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedlink = NULL, relatedtext = NULL,
@@ -1994,6 +2075,96 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
   }
   
+  intro_hyper <- 0
+  about_hyper <- 0
+  source_hyper <- 0
+  dop_hyper <- 0
+  blank_hyper <- 0
+  names_hyper <- 0
+  
+  fields2 <- c(intro, about, source, dop, blank, names)
+  
+  fields3 <- c("intro", "about", "source", "dop", "blank", "names")
+  
+  fields4 <- NULL
+  
+  for (i in seq_along(fields3)) {
+    
+    if (!is.null(get(fields3[i]))) {fields4 <- append(fields4, i)}
+    
+  }
+  
+  fields5 <- fields3[fields4]
+  
+  rm(fields3, fields4)
+  
+  hyper_rx <- "\\[(([[:graph:]]|[[:space:]])+)\\]\\([[:graph:]]+\\)"
+  
+  for (i in seq_along(fields2)) {
+    
+    if (grepl(hyper_rx, fields2[i]) == TRUE) {
+      
+      if (substr(fields2[i], 1, 1) != "[" | substr(fields2[i], nchar(fields2[i]), nchar(fields2[i])) != ")") {
+        
+        warning(paste0(fields2[i], " - if this is meant to be a hyperlink, it needs to be in the format \"[xxx](xxxxxx)\""))
+        
+      }
+      
+      md_rx <- "\\[(([[:graph:]]|[[:space:]])+?)\\]\\([[:graph:]]+?\\)"
+      md_match <- regexpr(md_rx, fields2[i], perl = TRUE)
+      md_extract <- regmatches(fields2[i], md_match)[[1]]
+      
+      url_rx <- "(?<=\\]\\()([[:graph:]]|[[:space:]])+(?=\\))"
+      url_match <- regexpr(url_rx, md_extract, perl = TRUE)
+      url_extract <- regmatches(md_extract, url_match)[[1]]
+      
+      string_rx <- "(?<=\\[)([[:graph:]]|[[:space:]])+(?=\\])"
+      string_match <- regexpr(string_rx, md_extract, perl = TRUE)
+      string_extract <- regmatches(md_extract, string_match)[[1]]
+      
+      string_extract <- gsub(md_rx, string_extract, fields2[i])
+      
+      x <- stats::setNames(url_extract, string_extract)
+      class(x) <- "hyperlink"
+      
+      if ("intro" %in% fields5[i]) {
+        
+        intro <- x
+        intro_hyper <- 1
+        
+      } else if ("about" %in% fields5[i]) {
+        
+        about <- x
+        about_hyper <- 1
+        
+      } else if ("source" %in% fields5[i]) {
+        
+        source <- x
+        source_hyper <- 1
+        
+      } else if ("dop" %in% fields5[i]) {
+        
+        dop <- x
+        dop_hyper <- 1
+        
+      } else if ("blank" %in% fields5[i]) {
+        
+        blank <- x
+        blank_hyper <- 1
+        
+      } else if ("names" %in% fields5[i]) {
+        
+        names <- x
+        names_hyper <- 1
+        
+      } 
+      
+      rm(x, md_rx, md_match, md_extract, url_rx, url_match, url_extract, string_rx, string_match, string_extract)
+      
+    }
+    
+  }
+  
   if (!is.null(intro)) {
     
     if (is.null(introstartpos)) {
@@ -2116,8 +2287,45 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
         
       }
       
+      if (grepl(hyper_rx, extrafieldsb[i]) == TRUE) {
+        
+        if (substr(extrafieldsb[i], 1, 1) != "[" | substr(extrafieldsb[i], nchar(extrafieldsb[i]), nchar(extrafieldsb[i])) != ")") {
+          
+          warning(paste0(extrafieldsb[i], " - if this is meant to be a hyperlink, it needs to be in the format \"[xxx](xxxxxx)\""))
+          
+        }
+        
+        x <- extrafieldsb[i]
+        
+        md_rx <- "\\[(([[:graph:]]|[[:space:]])+?)\\]\\([[:graph:]]+?\\)"
+        md_match <- regexpr(md_rx, x, perl = TRUE)
+        md_extract <- regmatches(x, md_match)[[1]]
+        
+        url_rx <- "(?<=\\]\\()([[:graph:]]|[[:space:]])+(?=\\))"
+        url_match <- regexpr(url_rx, md_extract, perl = TRUE)
+        url_extract <- regmatches(md_extract, url_match)[[1]]
+        
+        string_rx <- "(?<=\\[)([[:graph:]]|[[:space:]])+(?=\\])"
+        string_match <- regexpr(string_rx, md_extract, perl = TRUE)
+        string_extract <- regmatches(md_extract, string_match)[[1]]
+        
+        string_extract <- gsub(md_rx, string_extract, x)
+        
+        y <- stats::setNames(url_extract, string_extract)
+        class(y) <- "hyperlink"
+        
+        rm(x, md_rx, md_match, md_extract, url_rx, url_match, url_extract, string_rx, string_match, string_extract)
+        
+      } else {
+        
+        y <- extrafieldsb[i]
+        
+      }
+      
       openxlsx::writeData(wb, "Cover", extrafields[i], startCol = 1, startRow = extrastart)
-      openxlsx::writeData(wb, "Cover", extrafieldsb[i], startCol = 1, startRow = extrastart + 1)
+      openxlsx::writeData(wb, "Cover", y, startCol = 1, startRow = extrastart + 1)
+      
+      rm(y)
       
     }
     
@@ -2165,6 +2373,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   subtitleformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontszst, fontColour = fontcol, valign = "bottom", wrapText = TRUE, textDecoration = "bold")
   titleformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontszt, fontColour = fontcol, valign = "bottom", wrapText = TRUE, textDecoration = "bold")
   linkformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = "blue", valign = "top", wrapText = TRUE, textDecoration = "underline")
+  linkformat2 <- openxlsx::createStyle(fontColour = "blue", textDecoration = "underline")
   
   if (is.null(colwid_spec) | !is.numeric(colwid_spec) | length(colwid_spec) > 1) {
     
@@ -2193,6 +2402,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     openxlsx::setRowHeights(wb, "Cover", introstart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = introstart, cols = 1)
     
+    if (intro_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat2, rows = introstart + 1, cols = 1, stack = TRUE)}
+    
   }
   
   if (!is.null(about)) {
@@ -2200,12 +2411,16 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     openxlsx::setRowHeights(wb, "Cover", aboutstart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = aboutstart, cols = 1)
     
+    if (about_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat2, rows = aboutstart + 1, cols = 1, stack = TRUE)}
+    
   }
   
   if (!is.null(source)) {
     
     openxlsx::setRowHeights(wb, "Cover", sourcestart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = sourcestart, cols = 1)
+    
+    if (source_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat2, rows = sourcestart + 1, cols = 1, stack = TRUE)}
     
   }
   
@@ -2222,12 +2437,16 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     openxlsx::setRowHeights(wb, "Cover", dopstart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = dopstart, cols = 1)
     
+    if (dop_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat2, rows = dopstart + 1, cols = 1, stack = TRUE)}
+    
   }
   
   if (!is.null(blank)) {
     
     openxlsx::setRowHeights(wb, "Cover", blankstart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = blankstart, cols = 1)
+    
+    if (blank_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat2, rows = blankstart + 1, cols = 1, stack = TRUE)}
     
   }
   
@@ -2248,6 +2467,12 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       openxlsx::setRowHeights(wb, "Cover", extrastart, fontszst * (25/14))
       openxlsx::addStyle(wb, "Cover", subtitleformat, rows = extrastart, cols = 1)
       
+      if (grepl(hyper_rx, extrafieldsb[i]) == TRUE) {
+        
+        openxlsx::addStyle(wb, "Cover", linkformat2, rows = extrastart + 1, cols = 1, stack = TRUE)
+        
+      }
+      
     }
     
   }
@@ -2264,6 +2489,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     openxlsx::setRowHeights(wb, "Cover", namesstart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = namesstart, cols = 1)
+    
+    if (names_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat2, rows = namesstart + 1, cols = 1, stack = TRUE)}
     
   }
   
@@ -3203,7 +3430,6 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
 # term and definition are compulsory parameters
 # A link can be added with each definition
 # linktext1 and linktext2: linktext1 should be the text you want to appear and linktext2 should be the underlying link to a website, file etc
-
 
 
 adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) {

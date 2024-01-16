@@ -82,6 +82,9 @@ instead use the maximum number of characters in a column by setting columnwidths
 by the number of characters. If the user knows the desired widths of all columns then they should set columnwidths = "specified" and populate colwid_spec with the width of each column 
 in a numerical vector. If default column widths are wanted then set columnwidths = NULL.
 
+extralines1-6 can be set to hyperlinks if desired. An example of how to do this is: extraline5 = "[BBC](https://www.bbc.co.uk)". It is recommended not to set the link to the contents,
+notes or definitions page in this way.
+
 contentstable:
 
 contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NULL)
@@ -112,6 +115,8 @@ The ordering of the fields can be amended by populating order. order can be set 
 The "Reusing this publication" section has been designed for UK government departments and will not apply for other organisations. If a user is from the Office for National Statistics
 (ONS) and wants a "Reusing this publication" section then set reuse = "Yes". If a user is from a UK government department but not the Office for National Statistics (ONS) set reuse = "Yes" 
 and govdept = "<name of organisation>".
+
+intro, about, source, dop, blank and names can be set to hyperlinks if desired. An example of how to do so is: source = "[ONS](https://www.ons.gov.uk)".
 
 addnote:
 
