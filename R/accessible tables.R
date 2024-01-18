@@ -1596,7 +1596,7 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
 # e.g., order = c("intro", "about", relatedlink", "names", "phone", "email", "extrafields")
 # Change gridlines to "No" if gridlines are not wanted
 # Column width automatically set unless user specifies a value in colwid_spec
-# intro, about, source, dop, blank, names can be set to hyperlinks - e.g., source = "[ONS](https://www.ons.gov.uk)"
+# intro, about, source, dop, blank, names, phone can be set to hyperlinks - e.g., source = "[ONS](https://www.ons.gov.uk)"
 
 
 coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedlink = NULL, relatedtext = NULL,
@@ -2081,10 +2081,11 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   dop_hyper <- 0
   blank_hyper <- 0
   names_hyper <- 0
+  phone_hyper <- 0
   
-  fields2 <- c(intro, about, source, dop, blank, names)
+  fields2 <- c(intro, about, source, dop, blank, names, phone)
   
-  fields3 <- c("intro", "about", "source", "dop", "blank", "names")
+  fields3 <- c("intro", "about", "source", "dop", "blank", "names", "phone")
   
   fields4 <- NULL
   
@@ -2107,6 +2108,12 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       if (substr(fields2[i], 1, 1) != "[" | substr(fields2[i], nchar(fields2[i]), nchar(fields2[i])) != ")") {
         
         warning(paste0(fields2[i], " - if this is meant to be a hyperlink, it needs to be in the format \"[xxx](xxxxxx)\""))
+        
+      }
+      
+      if ("phone" %in% fields5[i]) {
+        
+        phone <- paste0("[Telephone: ", substr(phone, 2, nchar(phone)))
         
       }
       
@@ -2157,9 +2164,18 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
         names <- x
         names_hyper <- 1
         
-      } 
+      } else if ("phone" %in% fields5[i]) {
+        
+        phone <- x
+        phone_hyper <- 1
+        
+      }
       
       rm(x, md_rx, md_match, md_extract, url_rx, url_match, url_extract, string_rx, string_match, string_extract)
+      
+    } else if (grepl(hyper_rx, fields2[i]) == TRUE & "phone" %in% fields5[i]) {
+      
+      phone <- paste0("Telephone: ", phone)
       
     }
     
@@ -2538,11 +2554,13 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
     }
     
-    openxlsx::writeData(wb, "Cover", paste0("Telephone: ", phone), startCol = 1, startRow = phonestart)
+    openxlsx::writeData(wb, "Cover", phone, startCol = 1, startRow = phonestart)
     
     phoneformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, valign = "bottom", wrapText = TRUE)
     
     if (phonestart == 2) {openxlsx::addStyle(wb, "Cover", phoneformat, rows = 2, cols = 1)}
+    
+    if (phone_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat2, rows = phonestart, cols = 1, stack = TRUE)}
     
   }
   
@@ -2552,7 +2570,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
       if (stringr::str_starts(tolower(govdept), "the ")) {
         
-        govdept <- substring(govdept, 5)
+        govdept <- substr(govdept, 5, nchar(govdept))
         
       }
       
@@ -2685,7 +2703,7 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
   }
   
   notetemp1 <- substr(notenumber, 1, 4)
-  notetemp2 <- substring(notenumber, 5)
+  notetemp2 <- substr(notenumber, 5, nchar(notenumber))
   
   if (tolower(notetemp1) == "note") {
     
@@ -3992,7 +4010,7 @@ savingtables <- function(filename) {
   filename2 <- stringr::str_split(reversedstr, c("/"))
   filename3 <- unlist(filename2)
   filename4 <- filename3[[1]]
-  filename5 <- substring(filename4, 6)
+  filename5 <- substr(filename4, 6, nchar(filename4))
   
   if (grepl("[A-Z]", filename5, perl = TRUE) == TRUE) {
     

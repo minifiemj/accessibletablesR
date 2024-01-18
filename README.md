@@ -116,7 +116,7 @@ The "Reusing this publication" section has been designed for UK government depar
 (ONS) and wants a "Reusing this publication" section then set reuse = "Yes". If a user is from a UK government department but not the Office for National Statistics (ONS) set reuse = "Yes" 
 and govdept = "<name of organisation>".
 
-intro, about, source, dop, blank and names can be set to hyperlinks if desired. An example of how to do so is: source = "[ONS](https://www.ons.gov.uk)".
+intro, about, source, dop, blank, names and phone can be set to hyperlinks if desired. An example of how to do so is: source = "[ONS](https://www.ons.gov.uk)".
 
 addnote:
 
