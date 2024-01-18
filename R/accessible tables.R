@@ -1726,6 +1726,18 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
   }
   
+  if (stringr::str_remove_all(phone, "[\" \"\\[\\]\\(\\)+[:digit:]]") != "") {
+    
+    warning("The phone number provided appears to contain characters which are unusual for a phone number. Check if there are any errors.")
+    
+  }
+  
+  if (grepl("\\.", email) == FALSE | grepl("@", email) == FALSE) {
+    
+    warning("The email address provided does not appear to contain @ and/or a dot (.). Check if there are any errors.")
+    
+  }
+  
   # In case the function is run multiple times, removing previous row heights to ensure there will be no strange looking rows
   
   if (exists("covernumrow", envir = .GlobalEnv)) {
@@ -2173,7 +2185,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
       rm(x, md_rx, md_match, md_extract, url_rx, url_match, url_extract, string_rx, string_match, string_extract)
       
-    } else if (grepl(hyper_rx, fields2[i]) == TRUE & "phone" %in% fields5[i]) {
+    } else if (grepl(hyper_rx, fields2[i]) == FALSE & "phone" %in% fields5[i]) {
       
       phone <- paste0("Telephone: ", phone)
       
