@@ -330,21 +330,7 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     
   }
   
-  # Create variables for font name, colour and sizes in the global environment for later use
-  
-  if (exists("fontnm", envir = .GlobalEnv)) {
-    
-    rm(fontnm, envir = .GlobalEnv)
-    warning("fontnm has been removed from the global environment. If fontnm is a remnant from a previous run of the table code then it is not a problem. However, if fontnm is a data frame or variable that you have created then you will need to shut R down and start again but rename whatever you had called fontnm to something else.")
-    
-  }
-  
-  if (exists("fontcol", envir = .GlobalEnv)) {
-    
-    rm(fontcol, envir = .GlobalEnv)
-    warning("fontcol has been removed from the global environment. If fontcol is a remnant from a previous run of the table code then it is not a problem. However, if fontcol is a data frame or variable that you have created then you will need to shut R down and start again but rename whatever you had called fontcol to something else.")
-    
-  }
+  # Create variables for font sizes in the global environment for later use
   
   if (exists("fontsz", envir = .GlobalEnv)) {
     
@@ -352,7 +338,7 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     warning("fontsz has been removed from the global environment. If fontsz is a remnant from a previous run of the table code then it is not a problem. However, if fontsz is a data frame or variable that you have created then you will need to shut R down and start again but rename whatever you had called fontsz to something else.")
     
   }
-  
+ 
   if (exists("fontszst", envir = .GlobalEnv)) {
     
     rm(fontszst, envir = .GlobalEnv)
@@ -367,8 +353,6 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     
   }
   
-  fontnm <<- fontnm
-  fontcol <<- fontcol
   fontsz <<- fontsz
   fontszst <<- fontszst
   fontszt <<- fontszt
@@ -806,7 +790,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       
       if (stringr::str_detect(extralines1[i], "This worksheet contains one table|this worksheet contains one table|\\[note")) {
         
-        stop("If autonotes2 is set to \"Yes\" then the information about the worksheet containing one table or the notes tab will automatically be inserted and so there is no need to have one of the extralines already stating this")
+        warning("If autonotes2 is set to \"Yes\" then the information about the worksheet containing one table or the notes tab will automatically be inserted and so there is no need to have one of the extralines already stating this")
         
       }
       
@@ -972,17 +956,14 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   tablestart <- (length(title) + length(subtitle) + length(extralines2) + 1)
   assign(paste0(sheetname, "_tablestart"), tablestart, envir = .GlobalEnv)
   
-  titleformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontszt, fontColour = fontcol, textDecoration = "bold")
-  subtitleformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontszst, fontColour = fontcol)
-  normalformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, valign = "top")
-  linkformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = "blue", valign = "bottom", textDecoration = "underline")
-  topformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, valign = "bottom")
-  headingsformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, textDecoration = "bold", wrapText = TRUE, border = NULL, valign = "top")
-  headingsformat2 <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, textDecoration = "bold", wrapText = TRUE, border = NULL, valign = "top", halign = "right")
-  numericformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, halign = "right", valign = "top")
-  numcharformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, halign = "right", valign = "top")
-  othdataformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, halign = "right", valign = "top")
-  linkformat2 <- openxlsx::createStyle(fontColour = "blue", textDecoration = "underline")
+  titleformat <- openxlsx::createStyle(fontSize = fontszt, textDecoration = "bold")
+  subtitleformat <- openxlsx::createStyle(fontSize = fontszst)
+  normalformat <- openxlsx::createStyle(valign = "top")
+  linkformat <- openxlsx::createStyle(fontColour = "blue", textDecoration = "underline")
+  topformat <- openxlsx::createStyle(valign = "bottom")
+  headingsformat <- openxlsx::createStyle(textDecoration = "bold", wrapText = TRUE, border = NULL, valign = "top")
+  headingsformat2 <- openxlsx::createStyle(textDecoration = "bold", wrapText = TRUE, border = NULL, valign = "top", halign = "right")
+  dataformat <- openxlsx::createStyle(halign = "right", valign = "top")
   
   openxlsx::addStyle(wb, sheetname, normalformat, rows = 1:(nrow(xxx_table_data2_xxx) + tablestart), cols = 1:ncol(xxx_table_data2_xxx), gridExpand = TRUE)
   openxlsx::addStyle(wb, sheetname, topformat, rows = 1:(length(title) + length(subtitle) + length(extralines2)), cols = 1, gridExpand = TRUE)
@@ -1041,17 +1022,17 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     if (extralines2[i] == "Link to notes") {
       
       openxlsx::writeFormula(wb, sheetname, startRow = length(title) + length(subtitle) + i, x = openxlsx::makeHyperlinkString("Notes", row = 1, col = 1, text = "Link to notes"))
-      openxlsx::addStyle(wb, sheetname, linkformat, rows = length(title) + length(subtitle) + i, cols = 1)
+      openxlsx::addStyle(wb, sheetname, linkformat, rows = length(title) + length(subtitle) + i, cols = 1, stack = TRUE)
       
     } else if (extralines2[i] == "Link to contents") {
       
       openxlsx::writeFormula(wb, sheetname, startRow = length(title) + length(subtitle) + i, x = openxlsx::makeHyperlinkString("Contents", row = 1, col = 1, text = "Link to contents"))
-      openxlsx::addStyle(wb, sheetname, linkformat, rows = length(title) + length(subtitle) + i, cols = 1)
+      openxlsx::addStyle(wb, sheetname, linkformat, rows = length(title) + length(subtitle) + i, cols = 1, stack = TRUE)
       
     } else if (extralines2[i] == "Link to definitions") {
       
       openxlsx::writeFormula(wb, sheetname, startRow = length(title) + length(subtitle) + i, x = openxlsx::makeHyperlinkString("Definitions", row = 1, col = 1, text = "Link to definitions"))
-      openxlsx::addStyle(wb, sheetname, linkformat, rows = length(title) + length(subtitle) + i, cols = 1)
+      openxlsx::addStyle(wb, sheetname, linkformat, rows = length(title) + length(subtitle) + i, cols = 1, stack = TRUE)
       
     } else if (!is.null(extralines2[i])) {
       
@@ -1116,7 +1097,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       
       if (grepl(hyper_rx, extralines2[i]) == TRUE) {
         
-        openxlsx::addStyle(wb, sheetname, linkformat2, rows = length(title) + length(subtitle) + i, cols = 1, stack = TRUE)
+        openxlsx::addStyle(wb, sheetname, linkformat, rows = length(title) + length(subtitle) + i, cols = 1, stack = TRUE)
         
       }
       
@@ -1126,9 +1107,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
   }
   
-  extraformat <- openxlsx::createStyle(valign = "top")
-  
-  openxlsx::addStyle(wb, sheetname, extraformat, rows = tablestart - 1, cols = 1, stack = TRUE)
+  openxlsx::addStyle(wb, sheetname, normalformat, rows = tablestart - 1, cols = 1, stack = TRUE)
   
   openxlsx::addStyle(wb, sheetname, headingsformat, rows = tablestart, cols = 1:ncol(xxx_table_data2_xxx))
   
@@ -1137,21 +1116,21 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   if (!is.null(numericcols)) {
     
     openxlsx::addStyle(wb, sheetname, headingsformat2, rows = tablestart, cols = numericcols)
-    openxlsx::addStyle(wb, sheetname, numericformat, rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), cols = numericcols, stack = TRUE, gridExpand = TRUE)
+    openxlsx::addStyle(wb, sheetname, dataformat, rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), cols = numericcols, stack = TRUE, gridExpand = TRUE)
     
   }
   
   if (!is.null(numcharcols)) {
     
     openxlsx::addStyle(wb, sheetname, headingsformat2, rows = tablestart, cols = numcharcols)
-    openxlsx::addStyle(wb, sheetname, numcharformat, rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), cols = numcharcols, stack = TRUE, gridExpand = TRUE)
+    openxlsx::addStyle(wb, sheetname, dataformat, rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), cols = numcharcols, stack = TRUE, gridExpand = TRUE)
     
   }
   
   if (!is.null(othdatacols)) {
     
     openxlsx::addStyle(wb, sheetname, headingsformat2, rows = tablestart, cols = othdatacols)
-    openxlsx::addStyle(wb, sheetname, othdataformat, rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), cols = othdatacols, stack = TRUE, gridExpand = TRUE)
+    openxlsx::addStyle(wb, sheetname, dataformat, rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), cols = othdatacols, stack = TRUE, gridExpand = TRUE)
     
   }
   
@@ -1179,6 +1158,12 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     }
     
   } 
+  
+  # Ensure table cell text is wrapped
+  
+  wrapformat <- openxlsx::createStyle(wrapText = TRUE)
+  
+  openxlsx::addStyle(wb, sheetname, wrapformat, rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), cols = 1:ncol(xxx_table_data2_xxx), stack = TRUE, gridExpand = TRUE)
   
   # tablename2 will be the name of the table accessible in Excel
   # If no specific name is given, then the name of the table will be the same as the sheetname
@@ -1510,11 +1495,11 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
   
   # Define some formatting to be used later
   
-  titleformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontszt, fontColour = fontcol, textDecoration = "bold")
-  extralineformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, wrapText = FALSE, valign = "top")
-  normalformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, wrapText = TRUE, valign = "top")
-  linkformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = "blue", wrapText = TRUE, valign = "top", textDecoration = "underline")
-  headingsformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, textDecoration = "bold", wrapText = TRUE, border = NULL, valign = "top")
+  titleformat <- openxlsx::createStyle(fontSize = fontszt, textDecoration = "bold")
+  extralineformat <- openxlsx::createStyle(wrapText = FALSE, valign = "top")
+  normalformat <- openxlsx::createStyle(wrapText = TRUE, valign = "top")
+  linkformat <- openxlsx::createStyle(fontColour = "blue", wrapText = TRUE, valign = "top", textDecoration = "underline")
+  headingsformat <- openxlsx::createStyle(textDecoration = "bold", wrapText = TRUE, border = NULL, valign = "top")
   
   openxlsx::addStyle(wb, "Contents", normalformat, rows = 1:(nrow(tabcontents) + 3), cols = 1:ncol(tabcontents), gridExpand = TRUE)
   
@@ -2397,11 +2382,10 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
   }
   
-  normalformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, valign = "top", wrapText = TRUE)
-  subtitleformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontszst, fontColour = fontcol, valign = "bottom", wrapText = TRUE, textDecoration = "bold")
-  titleformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontszt, fontColour = fontcol, valign = "bottom", wrapText = TRUE, textDecoration = "bold")
-  linkformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = "blue", valign = "top", wrapText = TRUE, textDecoration = "underline")
-  linkformat2 <- openxlsx::createStyle(fontColour = "blue", textDecoration = "underline")
+  normalformat <- openxlsx::createStyle(valign = "top", wrapText = TRUE)
+  subtitleformat <- openxlsx::createStyle(fontSize = fontszst, valign = "bottom", wrapText = TRUE, textDecoration = "bold")
+  titleformat <- openxlsx::createStyle(fontSize = fontszt, valign = "bottom", wrapText = TRUE, textDecoration = "bold")
+  linkformat <- openxlsx::createStyle(fontColour = "blue", valign = "top", wrapText = TRUE, textDecoration = "underline")
   
   if (is.null(colwid_spec) | !is.numeric(colwid_spec) | length(colwid_spec) > 1) {
     
@@ -2430,7 +2414,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     openxlsx::setRowHeights(wb, "Cover", introstart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = introstart, cols = 1)
     
-    if (intro_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat2, rows = introstart + 1, cols = 1, stack = TRUE)}
+    if (intro_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = introstart + 1, cols = 1)}
     
   }
   
@@ -2439,7 +2423,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     openxlsx::setRowHeights(wb, "Cover", aboutstart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = aboutstart, cols = 1)
     
-    if (about_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat2, rows = aboutstart + 1, cols = 1, stack = TRUE)}
+    if (about_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = aboutstart + 1, cols = 1)}
     
   }
   
@@ -2448,7 +2432,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     openxlsx::setRowHeights(wb, "Cover", sourcestart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = sourcestart, cols = 1)
     
-    if (source_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat2, rows = sourcestart + 1, cols = 1, stack = TRUE)}
+    if (source_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = sourcestart + 1, cols = 1)}
     
   }
   
@@ -2465,7 +2449,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     openxlsx::setRowHeights(wb, "Cover", dopstart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = dopstart, cols = 1)
     
-    if (dop_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat2, rows = dopstart + 1, cols = 1, stack = TRUE)}
+    if (dop_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = dopstart + 1, cols = 1)}
     
   }
   
@@ -2474,7 +2458,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     openxlsx::setRowHeights(wb, "Cover", blankstart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = blankstart, cols = 1)
     
-    if (blank_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat2, rows = blankstart + 1, cols = 1, stack = TRUE)}
+    if (blank_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = blankstart + 1, cols = 1)}
     
   }
   
@@ -2497,7 +2481,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
       if (grepl(hyper_rx, extrafieldsb[i]) == TRUE) {
         
-        openxlsx::addStyle(wb, "Cover", linkformat2, rows = extrastart + 1, cols = 1, stack = TRUE)
+        openxlsx::addStyle(wb, "Cover", linkformat, rows = extrastart + 1, cols = 1)
         
       }
       
@@ -2518,7 +2502,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     openxlsx::setRowHeights(wb, "Cover", namesstart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = namesstart, cols = 1)
     
-    if (names_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat2, rows = namesstart + 1, cols = 1, stack = TRUE)}
+    if (names_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = namesstart + 1, cols = 1)}
     
   }
   
@@ -2548,7 +2532,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     openxlsx::addStyle(wb, "Cover", linkformat, rows = emailstart, cols = 1)
     
-    emailformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = "blue", valign = "bottom", textDecoration = "underline", wrapText = TRUE)
+    emailformat <- openxlsx::createStyle(fontColour = "blue", valign = "bottom", textDecoration = "underline", wrapText = TRUE)
     
     if (emailstart == 2) {openxlsx::addStyle(wb, "Cover", emailformat, rows = 2, cols = 1)}
     
@@ -2568,11 +2552,11 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     openxlsx::writeData(wb, "Cover", phone, startCol = 1, startRow = phonestart)
     
-    phoneformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, valign = "bottom", wrapText = TRUE)
+    phoneformat <- openxlsx::createStyle(valign = "bottom")
     
-    if (phonestart == 2) {openxlsx::addStyle(wb, "Cover", phoneformat, rows = 2, cols = 1)}
+    if (phone_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = phonestart, cols = 1, stack = TRUE)}
     
-    if (phone_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat2, rows = phonestart, cols = 1, stack = TRUE)}
+    if (phonestart == 2) {openxlsx::addStyle(wb, "Cover", phoneformat, rows = 2, cols = 1, stack = TRUE)}
     
   }
   
@@ -3217,15 +3201,15 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   # Define formatting to be used later on
   
-  normalformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, valign = "top")
-  topformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, valign = "bottom")
-  linkformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = "blue", valign = "top", textDecoration = "underline")
+  normalformat <- openxlsx::createStyle(valign = "top")
+  topformat <- openxlsx::createStyle(valign = "bottom")
+  linkformat <- openxlsx::createStyle(fontColour = "blue", valign = "top", textDecoration = "underline")
   
   openxlsx::addStyle(wb, "Notes", normalformat, rows = 1:(nrow(notesdf) + 4), cols = 1:ncol(notesdf), gridExpand = TRUE)
   
   openxlsx::writeData(wb, "Notes", "Notes", startCol = 1, startRow = 1)
   
-  titleformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontszt, fontColour = fontcol, textDecoration = "bold")
+  titleformat <- openxlsx::createStyle(fontSize = fontszt, textDecoration = "bold")
   
   openxlsx::addStyle(wb, "Notes", titleformat, rows = 1, cols = 1)
   
@@ -3280,7 +3264,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
   }
   
-  headingsformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, textDecoration = "bold", wrapText = TRUE, border = NULL, valign = "top")
+  headingsformat <- openxlsx::createStyle(textDecoration = "bold", wrapText = TRUE, border = NULL, valign = "top")
   
   openxlsx::addStyle(wb, "Notes", headingsformat, rows = startingrow, cols = 1:ncol(notesdf))
   
@@ -3872,15 +3856,15 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   # Define some formatting for use later on
   
-  normalformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, valign = "top")
-  topformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, valign = "bottom")
-  linkformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = "blue", textDecoration = "underline", valign = "top")
+  normalformat <- openxlsx::createStyle(valign = "top")
+  topformat <- openxlsx::createStyle(valign = "bottom")
+  linkformat <- openxlsx::createStyle(fontColour = "blue", textDecoration = "underline", valign = "top")
   
   openxlsx::addStyle(wb, "Definitions", normalformat, rows = 1:(nrow(definitionsdf) + 4), cols = 1:ncol(definitionsdf), gridExpand = TRUE)
   
   openxlsx::writeData(wb, "Definitions", "Definitions", startCol = 1, startRow = 1)
   
-  titleformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontszt, fontColour = fontcol, textDecoration = "bold")
+  titleformat <- openxlsx::createStyle(fontSize = fontszt, textDecoration = "bold")
   
   openxlsx::addStyle(wb, "Definitions", titleformat, rows = 1, cols = 1)
   
@@ -3933,7 +3917,7 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
     
   }
   
-  headingsformat <- openxlsx::createStyle(fontName = fontnm, fontSize = fontsz, fontColour = fontcol, textDecoration = "bold", wrapText = TRUE, border = NULL, valign = "top")
+  headingsformat <- openxlsx::createStyle(textDecoration = "bold", wrapText = TRUE, border = NULL, valign = "top")
   
   openxlsx::addStyle(wb, "Definitions", headingsformat, rows = startingrow, cols = 1:ncol(definitionsdf))
   
@@ -4120,7 +4104,7 @@ savingtables <- function(filename) {
     
   }
   
-  rm(fontnm, fontcol, fontsz, fontszst, fontszt, envir = .GlobalEnv)
+  rm(fontsz, fontszst, fontszt, envir = .GlobalEnv)
   
   if (exists("covernumrow", envir = .GlobalEnv)) {
     
