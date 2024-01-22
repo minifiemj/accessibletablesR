@@ -1072,7 +1072,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
         md_match <- regexpr(md_rx, x, perl = TRUE)
         md_extract <- regmatches(x, md_match)[[1]]
         
-        url_rx <- "(?<=\\]\\()([[:graph:]]|[[:space:]])+(?=\\))"
+        url_rx <- "(?<=\\]\\()([[:graph:]])+(?=\\))"
         url_match <- regexpr(url_rx, md_extract, perl = TRUE)
         url_extract <- regmatches(md_extract, url_match)[[1]]
         
@@ -2118,7 +2118,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       md_match <- regexpr(md_rx, fields2[i], perl = TRUE)
       md_extract <- regmatches(fields2[i], md_match)[[1]]
       
-      url_rx <- "(?<=\\]\\()([[:graph:]]|[[:space:]])+(?=\\))"
+      url_rx <- "(?<=\\]\\()([[:graph:]])+(?=\\))"
       url_match <- regexpr(url_rx, md_extract, perl = TRUE)
       url_extract <- regmatches(md_extract, url_match)[[1]]
       
@@ -2314,7 +2314,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
         md_match <- regexpr(md_rx, x, perl = TRUE)
         md_extract <- regmatches(x, md_match)[[1]]
         
-        url_rx <- "(?<=\\]\\()([[:graph:]]|[[:space:]])+(?=\\))"
+        url_rx <- "(?<=\\]\\()([[:graph:]])+(?=\\))"
         url_match <- regexpr(url_rx, md_extract, perl = TRUE)
         url_extract <- regmatches(md_extract, url_match)[[1]]
         
