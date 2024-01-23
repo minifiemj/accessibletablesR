@@ -4183,7 +4183,7 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
     
     odsconvertr::convert_to_ods(filename)
     
-  } else if (odsfile = "Yes" & substr(filename, nchar(filename) - 3, nchar(filename)) == ".xls") {
+  } else if (odsfile == "Yes" & substr(filename, nchar(filename) - 3, nchar(filename)) == ".xls") {
     
     warning("In order to produce an ods output, filename needs to be a \".xlsx\" extension")
     
