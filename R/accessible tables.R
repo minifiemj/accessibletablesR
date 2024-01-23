@@ -44,7 +44,7 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     if (!(listofpackages2[i] %in% utils::installed.packages())) {
       
       base::library("devtools")
-      devtools::install_github(paste0(repogroupings[i], "/", listofpackages2[i]))
+      devtools::install_github(base::paste0(repogroupings[i], "/", listofpackages2[i]))
       
     } else if (listofpackages2[i] %in% utils::installed.packages() & utils::packageVersion(listofpackages2[i]) < packageversions2[i]) {
       
