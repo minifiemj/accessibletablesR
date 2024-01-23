@@ -17,19 +17,40 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   
   # Install the required packages if they are not already installed, then load the packages
   
-  listofpackages <- base::c("openxlsx", "conflicted", "tidyverse")
-  packageversions <- base::c("4.2.5.2", "1.2.0", "2.0.0")
+  listofpackages <- base::c("openxlsx", "conflicted", "tidyverse", "devtools")
+  packageversions <- base::c("4.2.5.2", "1.2.0", "2.0.0", "2.4.5")
   
   for (i in base::seq_along(listofpackages)) {
     
     if (!(listofpackages[i] %in% utils::installed.packages())) {
       
       utils::install.packages(listofpackages[i], dependencies = TRUE, type = "binary")
-     
+      
     } else if (listofpackages[i] %in% utils::installed.packages() & utils::packageVersion(listofpackages[i]) < packageversions[i]) {
       
       base::unloadNamespace(listofpackages[i])
       utils::install.packages(listofpackages[i], dependencies = TRUE, type = "binary")
+      
+    } 
+    
+  }
+  
+  listofpackages2 <- base::c("odsconvertr")
+  packageversions2 <- base::c("0.2.2")
+  repogroupings <- base::c("department-for-transport")
+  
+  for (i in base::seq_along(listofpackages2)) {
+    
+    if (!(listofpackages2[i] %in% utils::installed.packages())) {
+      
+      base::library("devtools")
+      devtools::install_github(paste0(repogroupings[i], "/", listofpackages2[i]))
+      
+    } else if (listofpackages2[i] %in% utils::installed.packages() & utils::packageVersion(listofpackages2[i]) < packageversions2[i]) {
+      
+      base::unloadNamespace(listofpackages2[i])
+      base::library("devtools")
+      devtools::install_github(paste0(repogroupings[i], "/", listofpackages2[i]))
       
     } 
     
@@ -46,6 +67,7 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   
   library("tidyverse")
   library("openxlsx")
+  library("odsconvertr")
   
   # Cleaning some of the parameters to be either "Yes" or "No"
   
@@ -338,7 +360,7 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     warning("fontsz has been removed from the global environment. If fontsz is a remnant from a previous run of the table code then it is not a problem. However, if fontsz is a data frame or variable that you have created then you will need to shut R down and start again but rename whatever you had called fontsz to something else.")
     
   }
- 
+  
   if (exists("fontszst", envir = .GlobalEnv)) {
     
     rm(fontszst, envir = .GlobalEnv)
@@ -3968,10 +3990,14 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
 # SAVING THE FINAL SPREADSHEET
 
 # The savingtables function only requires that the location and name of the spreadsheet be specified
-# Cannot save directly to ODS, unfortunately this would need to be done manually
+# An xls file can be saved but it is recommended to use an xlsx file instead
+# Cannot save directly to ods, instead first an xlsx file is saved and then converted
+# Default setting is not to create the ods file from the xlsx file
+# If only xlsx file is wanted keep odsfile = "No" but if both ods and xlsx file wanted set odsfile = "Yes" and deletexlsx = "No"
+# If only the ods file wanted set odsfile = "Yes" and deletexlsx = "Yes"
 
 
-savingtables <- function(filename) {
+savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
   
   if (length(filename) > 1) {
     
@@ -3979,9 +4005,73 @@ savingtables <- function(filename) {
     
   }
   
+  if (substr(filename, nchar(filename) - 4, nchar(filename)) != ".xlsx" & substr(filename, nchar(filename) - 3, nchar(filename)) != ".xls") {
+    
+    stop("filename needs to end with \".xlsx\" or \".xls\"")
+    
+  }
+  
+  if (substr(filename, nchar(filename) - 3, nchar(filename)) == ".xls") {
+    
+    warning("Ideally filename should end with \".xlsx\". Check if file extension can be changed to \".xlsx\".")
+    
+  }
+  
   if (stringr::str_detect(filename, " ")) {
     
     warning("GSS guidance for spreadsheets includes not using spaces in file names, instead consider using dashes")
+    
+  }
+  
+  if (is.null(odsfile)) {
+    
+    odsfile <- "Yes"
+    
+  } else if (tolower(odsfile) == "yes" | tolower(odsfile) == "y") {
+    
+    odsfile <- "Yes"
+    
+  } else if (tolower(odsfile) == "no" | tolower(odsfile) == "n") {
+    
+    odsfile <- "No"
+    
+  }
+  
+  if (odsfile != "Yes" & odsfile != "No") {
+    
+    stop("odsfile not set to \"Yes\" or \"No\"")
+    
+  }
+  
+  if (length(odsfile) > 1) {
+    
+    stop("odsfile is more than a single entity")
+    
+  }
+  
+  if (is.null(deletexlsx)) {
+    
+    deletexlsx <- "Yes"
+    
+  } else if (tolower(deletexlsx) == "yes" | tolower(deletexlsx) == "y") {
+    
+    deletexlsx <- "Yes"
+    
+  } else if (tolower(deletexlsx) == "no" | tolower(deletexlsx) == "n") {
+    
+    deletexlsx <- "No"
+    
+  }
+  
+  if (deletexlsx != "Yes" & deletexlsx != "No") {
+    
+    stop("deletexlsx not set to \"Yes\" or \"No\"")
+    
+  }
+  
+  if (length(deletexlsx) > 1) {
+    
+    stop("deletexlsx is more than a single entity")
     
   }
   
@@ -4071,7 +4161,39 @@ savingtables <- function(filename) {
   
   openxlsx::saveWorkbook(wb, filename, overwrite = TRUE)
   
-  print("***************** It is not currently possible to save the workbook as an ODS file via this code. For accessibility reasons, consider manually converting the workbook to an ODS file. *****************")
+  if (odsfile == "Yes" & deletexlsx == "Yes" & substr(filename, nchar(filename) - 4, nchar(filename)) == ".xlsx") {
+    
+    if (file.exists(paste0(substr(filename, 1, nchar(filename) - 5), ".ods")) == TRUE) {
+      
+      file.remove(paste0(substr(filename, 1, nchar(filename) - 5), ".ods"))
+      
+    }
+    
+    odsconvertr::convert_to_ods(filename)
+    
+    file.remove(filename)
+    
+  } else if (odsfile == "Yes" & deletexlsx == "No" & substr(filename, nchar(filename) - 4, nchar(filename)) == ".xlsx") {
+    
+    if (file.exists(paste0(substr(filename, 1, nchar(filename) - 5), ".ods")) == TRUE) {
+      
+      file.remove(paste0(substr(filename, 1, nchar(filename) - 5), ".ods"))
+      
+    }
+    
+    odsconvertr::convert_to_ods(filename)
+    
+  } else if (odsfile = "Yes" & substr(filename, nchar(filename) - 3, nchar(filename)) == ".xls") {
+    
+    warning("In order to produce an ods output, filename needs to be a \".xlsx\" extension")
+    
+  }
+  
+  if (odsfile == "No") {
+    
+    warning("For accessibility reasons, consider converting the workbook to an ods file")
+    
+  }
   
   # Remove data frames and variables from the global environment in case accessible tables needs to be run again
   

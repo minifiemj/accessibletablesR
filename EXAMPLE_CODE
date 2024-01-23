@@ -162,10 +162,15 @@ accessibletablesR::coverpage(title = "Fuel consumption and aspects of car design
 #                                       "blank", "extrafields", "additlinks", "reuse"))
 
 # To save the Excel workbook, run the savingtables function
-# The only argument to populate is the filepath of where to save the workbook, including the name to be given to the workbook
-# The workbook needs to be saved as a xlsx file (code is based on the R package openxlsx)
-# Consider manually saving the workbook as an ODS file (for accessibility reasons)
+# The only compulsory argument to populate is the filepath of where to save the workbook, including the name to be given to the workbook
+# The workbook needs to be given a save name as a xlsx file (code is based on the R package openxlsx)
+# Consider saving the workbook as an ods file (for accessibility reasons)
+# Default setting is to save the xlsx file but not the ods file
+# To save only xlsx, keep odsfile = "No"
+# To save both ods and xlsx set odsfile = "Yes" and deletexlsx = "No"
+# To save only ods, set odsfile = "Yes" and deletexlsx = "Yes"
 
 accessibletablesR::savingtables("D:/mtcarsexample.xlsx")
-
+#accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes")
+#accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 

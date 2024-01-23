@@ -3,9 +3,10 @@
 accessibletablesR is designed to produce Excel workbooks that align as closely as possible to the UK Government Analysis Function recommendations for publishing statistics in spreadsheets. 
 Releasing statistics in spreadsheets - https://analysisfunction.civilservice.gov.uk/policy-store/releasing-statistics-in-spreadsheets/
 
-accessibletablesR was developed using R 4.1.3, tidyverse version 2.0.0, openxlsx version 4.2.5.2 and conflicted version 1.2.0. It is unknown if the package will work earlier versions of R,
-tidyverse, openxlsx and conflicted. accessibletablesR will install the latest versions of tidyverse, openxlsx and conflicted if these packages are not currently installed or if earlier 
-versions of tidyverse (<2.0.0), openxlsx (<4.2.5.2) and conflicted (1.2.0) are currently installed.
+accessibletablesR was developed using R 4.1.3, tidyverse version 2.0.0, openxlsx version 4.2.5.2, conflicted version 1.2.0, devtools version 2.4.5 and odsconvertr version 0.2.2. It is 
+unknown if the package will work with earlier versions of R, tidyverse, openxlsx, conflicted, devtools and odsconvertr. accessibletablesR will install the latest versions of tidyverse, 
+openxlsx, conflicted, devtools and odsconvertr if these packages are not currently installed or if earlier versions of tidyverse (<2.0.0), openxlsx (<4.2.5.2), conflicted (1.2.0),
+devtools (<2.4.5) and odsconvertr (<0.2.2) are currently installed.
 
 To install accessibletablesR:
 
@@ -17,8 +18,10 @@ If a firewall prevents install_github from working (a time out message may appea
 On the GitHub repo, go to the green Code icon and choose "Download ZIP". Copy the ZIP folder to a network drive.
 Use devtools::install_local(link to the zipped folder) to install the package.
 
-accessibletablesR allows for a workbook to have a cover page, a table of contents, a notes page, a definitions page and as many other tabs that the user requires (subject to the maximum number
-allowed by Excel). Only one table of data can be present on each tab. accessibletablesR cannot work with multiple tables on a tab.
+odsconvertr is also installed from GitHub. If a similar issue prevents the automatic installation of odsconvertr, then install manually from "department-for-transport/odsconvertr".
+
+accessibletablesR allows for a workbook to have a cover page, a table of contents, a notes page, a definitions page and as many other tabs that the user requires (subject to the maximum 
+number allowed by Excel). Only one table of data can be present on each tab. accessibletablesR cannot work with multiple tables on a tab.
 
 The final output is a xlsx file. It is not currently known how to produce an ODS workbook. For accessibility reasons, please consider manually saving an ODS workbook.
 
@@ -32,11 +35,11 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
                      subject = NULL, category = NULL)
 
 This function needs to be run first. It creates the workbook within the R environment. All arguments are optional. The user can specify whether they want a cover page, table of contents, 
-a notes page and a definitions page. The font name, colour and sizes can be modified if desired. Information regarding the final spreadsheet (File > Info > Properies: title, creator, subject and
-category) can also be specified. There is an option for the automatic display of notes on the applicable tabs.
+a notes page and a definitions page. The font name, colour and sizes can be modified if desired. Information regarding the final spreadsheet (File > Info > Properies: title, creator, 
+subject and category) can also be specified. There is an option for the automatic display of notes on the applicable tabs.
 
-The default font (fontnm) is Arial, the default colour (fontcol) is black, the default normal size (fontsz) is 12, the default subtitle size (fontszst) is 14 and the default title size (fontszt)
-is 16.
+The default font (fontnm) is Arial, the default colour (fontcol) is black, the default normal size (fontsz) is 12, the default subtitle size (fontszst) is 14 and the default title size 
+(fontszt) is 16.
 
 If a coverpage is wanted set covertab = "Yes". If a table of contents is wanted set contentstab = "Yes". If a notes page is wanted set notestab = "Yes". If a definitions page is wanted set 
 definitionstab = "Yes". If the automatic display of notes on the applicable tabs is wanted set autonotes = "Yes".
@@ -173,8 +176,10 @@ and have the same number of rows as the definitions table.
 
 savingtables:
 
-savingtables <- function(filename)
+savingtables <- function(filename, odsfile = "No", deletexlsx = NULL)
 
-This function should be run last and will output the final xlsx workbook.
+This function should be run last and will output the final xlsx workbook and/or ods workbook.
 
 filename is the location and name of the final workbook.
+
+The default setting is to keep the xlsx workbook. If an ods file is wanted, set odsfile = "Yes". If both the ods and xlsx files are wanted, set odsfile = "Yes" and deletexlsx = "No".
