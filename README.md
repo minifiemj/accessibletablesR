@@ -5,7 +5,7 @@ Releasing statistics in spreadsheets - https://analysisfunction.civilservice.gov
 
 accessibletablesR was developed using R 4.1.3, tidyverse version 2.0.0, openxlsx version 4.2.5.2, conflicted version 1.2.0, devtools version 2.4.5 and odsconvertr version 0.2.2. It is 
 unknown if the package will work with earlier versions of R, tidyverse, openxlsx, conflicted, devtools and odsconvertr. accessibletablesR will install the latest versions of tidyverse, 
-openxlsx, conflicted, devtools and odsconvertr if these packages are not currently installed or if earlier versions of tidyverse (<2.0.0), openxlsx (<4.2.5.2), conflicted (1.2.0),
+openxlsx, conflicted, devtools and odsconvertr if these packages are not currently installed or if earlier versions of tidyverse (<2.0.0), openxlsx (<4.2.5.2), conflicted (<1.2.0),
 devtools (<2.4.5) and odsconvertr (<0.2.2) are currently installed.
 
 To install accessibletablesR:
