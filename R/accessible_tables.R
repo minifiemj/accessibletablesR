@@ -2,13 +2,36 @@
 ###################################################################################################################
 # CREATE WORKBOOK
 
-# The workbook function creates a new workbook with the required metadata worksheets and defines the workbook's font name, colour and sizes
-# All parameters are optional and preset
-# If a cover page, contents page, notes page or definitions page are required then set the parameter to "Yes" when calling the function
-# autonotes is required if a line is wanted towards the top of the worksheet which lists all the note numbers associated with the worksheet (set to "Yes" if wanted)
-# Default font is Arial with a black colour and size ranging from 12 to 16 - change if want to when calling the function
-# title, creator, subject and category refer to the document information properties displayed in the final Excel workbook
-
+#' @title workbook
+#' 
+#' @description Create the openxlsx workbook where data tables are added.
+#' 
+#' @details 
+#' The workbook function creates a new workbook with the required metadata worksheets and defines the workbook's font name, colour and sizes.
+#' All parameters are optional and preset.
+#' If a cover page, contents page, notes page or definitions page are required then set the parameter to "Yes" when calling the function.
+#' autonotes is required if a line is wanted towards the top of the worksheet which lists all the note numbers associated with the worksheet (set to "Yes" if wanted).
+#' Default font is Arial with a black colour and size ranging from 12 to 16 - change if want to when calling the function.
+#' title, creator, subject and category refer to the document information properties displayed in the final Excel workbook.
+#' 
+#' @param covertab Define whether a cover page is required  (optional)
+#' @param contentstab Define whether a contents page is required (optional)
+#' @param notestab Define whether a notes page is required (optional)
+#' @param autonotes Define whether automated listing of notes associated with a table is required (optional)
+#' @param definitionstab Define whether a definitions page is required (optional)
+#' @param fontnm Define the font name used in the final output (optional)
+#' @param fontcol Define the font colour used in the final output (optional)
+#' @param fontsz Define the general font size used in the final output (optional)
+#' @param fontszst Define the font size for subtitles used in the final output (optional)
+#' @param fontszt Define the font size for titles used in the final output (optional)
+#' @param title Define the title to go into the document information in the final output (optional)
+#' @param creator Define the creator to go into the document information in the final output (optional)
+#' @param subject Define the subject to go into the document information in the final output (optional)
+#' @param category Define the category to go into the document information in the final output (optional)
+#' 
+#' @return A workbook called wb will appear in the global environment. Necessary R packages will be installed.
+#' 
+#' @export
 
 workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, autonotes = NULL,
                      definitionstab = NULL, fontnm = "Arial", fontcol = "black",
@@ -387,32 +410,60 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
 ###################################################################################################################
 # MAIN TABLES
 
-# The creatingtables function will create a worksheet with all the data and annotations
-# title, sheetname and table_data are the only compulsory parameters
-# All other parameters are optional and most are preset to NULL, so only need to be defined if they are wanted
-# sheetname is what you want the sheet to be called in the published workbook
-# table_data is the name of the R dataframe containing the data to be included in the published workbook
-# headrowsize is the height of the row containing the table column names
-# numdatacols is the column position(s) of columns containing number data values (character or numeric class) - it is useful for right aligning data columns and inserting thousand commas
-# numdatacolsdp is the number of desired decimal places for columns with numbers (character or numeric class)
-# othdatacols is the column position(s) of columns containing data values that are not numbers (e.g., text, dates) - it is useful for formatting (although at present it seems dates do not obey the given formatting)
-# Character class data columns will have thousand commas inserted as long as the column position is identified in numdatacols
-# Numeric class data columns will only have thousand commas inserted if numdatacolsdp is populated
-# numdatacolsdp either should be one value which will be applied to all numdatacols columns or a vector the same length as numdatacols
-# For character variables, the figure in Excel will only be the value rounded to the specified number of decimal places. For numeric variables, the figure in Excel will be maintained but the displayed figure will be the value rounded to the specified number of decimal places.
-# Enter 0 in numdatacolsdp if no decimal places wanted. If an element in numdatacols represents a non-character and non-numeric class column, enter 0 in the corresponding position in numdatacolsdp
-# tablename is the name of the table within the worksheet that a screen reader will detect. It is automatically selected to be the same as the sheetname unless tablename is populated.
-# gridlines is preset to "Yes", change to "No" if gridlines are not wanted
-# columnwidths is preset to "R_auto" which allows openxlsx to automatically determine column widths. If automatic width determination is not wanted, set to NULL.
-# columnwidths can alternatively be set to "characters" which will base the column widths on the number of characters in a column cell.
-# If columnwidths = "characters" then width_adj can be modified. width_adj adds an additional few spaces to the number of characters in a column cell.
-# width_adj can either be one value which will be applied to all columns or a vector the same length as the number of columns in the table
-# If you want to specify the exact width of each column, set columnwidths = "specified" and provide the widths in colwid_spec (e.g., colwid_spec = c(3,4,5))
-# If a link to the contents page is required, set one of the extralines to "Link to contents"
-# If a link to the notes page is required, set one of the extralines to "Link to notes"
-# If a link to the definitions page is required, set one of the extralines to "Link to definitions"
-# extralines1-6 can be set to hyperlinks - e.g., extraline5 = "[BBC](https://www.bbc.co.uk)"
-
+#' @title creatingtables
+#' 
+#' @description Create a worksheet, formatted to meet accessibility criteria, containing data table.
+#' 
+#' @details 
+#' The creatingtables function will create a worksheet with all the data and annotations
+#' title, sheetname and table_data are the only compulsory parameters
+#' All other parameters are optional and most are preset to NULL, so only need to be defined if they are wanted
+#' sheetname is what you want the sheet to be called in the published workbook
+#' table_data is the name of the R dataframe containing the data to be included in the published workbook
+#' headrowsize is the height of the row containing the table column names
+#' numdatacols is the column position(s) of columns containing number data values (character or numeric class) - it is useful for right aligning data columns and inserting thousand commas
+#' numdatacolsdp is the number of desired decimal places for columns with numbers (character or numeric class)
+#' othdatacols is the column position(s) of columns containing data values that are not numbers (e.g., text, dates) - it is useful for formatting (although at present it seems dates do not obey the given formatting)
+#' Character class data columns will have thousand commas inserted as long as the column position is identified in numdatacols
+#' Numeric class data columns will only have thousand commas inserted if numdatacolsdp is populated
+#' numdatacolsdp either should be one value which will be applied to all numdatacols columns or a vector the same length as numdatacols
+#' For character variables, the figure in Excel will only be the value rounded to the specified number of decimal places. For numeric variables, the figure in Excel will be maintained but the displayed figure will be the value rounded to the specified number of decimal places.
+#' Enter 0 in numdatacolsdp if no decimal places wanted. If an element in numdatacols represents a non-character and non-numeric class column, enter 0 in the corresponding position in numdatacolsdp
+#' tablename is the name of the table within the worksheet that a screen reader will detect. It is automatically selected to be the same as the sheetname unless tablename is populated.
+#' gridlines is preset to "Yes", change to "No" if gridlines are not wanted
+#' columnwidths is preset to "R_auto" which allows openxlsx to automatically determine column widths. If automatic width determination is not wanted, set to NULL.
+#' columnwidths can alternatively be set to "characters" which will base the column widths on the number of characters in a column cell.
+#' If columnwidths = "characters" then width_adj can be modified. width_adj adds an additional few spaces to the number of characters in a column cell.
+#' width_adj can either be one value which will be applied to all columns or a vector the same length as the number of columns in the table
+#' If you want to specify the exact width of each column, set columnwidths = "specified" and provide the widths in colwid_spec (e.g., colwid_spec = c(3,4,5))
+#' If a link to the contents page is required, set one of the extralines to "Link to contents"
+#' If a link to the notes page is required, set one of the extralines to "Link to notes"
+#' If a link to the definitions page is required, set one of the extralines to "Link to definitions"
+#' extralines1-6 can be set to hyperlinks - e.g., extraline5 = "[BBC](https://www.bbc.co.uk)"
+#' 
+#' @param title Title of worksheet
+#' @param subtitle Subtitle of worksheet (optional)
+#' @param extraline1 First extra line above main data (optional)
+#' @param extraline2 Second extra line above main data (optional)
+#' @param extraline3 Third extra line above main data (optional)
+#' @param extraline4 Fourth extra line above main data (optional)
+#' @param extraline5 Fifth extra line above main data (optional)
+#' @param extraline5 Sixth extra line above main data (optional)
+#' @param sheetname Tab name
+#' @param table_data Name of table within R global environment
+#' @param headrowsize Height of row containing column headings (optional)
+#' @param numdatacols Position of columns in table containing number data (optional)
+#' @param numdatacolsdp Number of decimal places wanted for each column of number data (optional)
+#' @param othdatacols Position of columns in table containing non-number data (optional)
+#' @param tablename Name for table in final output (optional)
+#' @param gridlines Define whether gridlines are present (optional)
+#' @param columnwidths Define method for assigning widths of columns (optional)
+#' @param width_adj Additional width adjustment for columns (optional)
+#' @param colwid_spec Define widths of columns (optional)
+#' 
+#' @return A worksheet with data formatted to meet accessibility criteria.
+#' 
+#' @export
 
 creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2 = NULL, extraline3 = NULL,
                            extraline4 = NULL, extraline5 = NULL, extraline6 = NULL, sheetname, table_data, 
@@ -502,7 +553,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     stop("The number of characters in sheetname must not exceed 31")
     
   }
-   
+  
   if (!is.null(sheetname) & is.numeric(sheetname)) {
     
     sheetname <- as.character(sheetname)
@@ -608,7 +659,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
     numdatacolsdp <- rep(numdatacolsdp, length(numdatacols))
     warning("numdatacols specifies more than one column. numdatacolsdp has only one value and so it has been assumed that this one value represents the number of decimal places required for each column specified by numdatacols.")
-  
+    
   } else if (!is.null(numdatacols) & !is.null(numdatacolsdp) & length(numdatacols) != length(numdatacolsdp)) {
     
     stop("The number of elements in numdatacols and numdatacolsdp needs to be the same (e.g., if numdatacols = c(x,y,z) then numdatacolsdp = c(a,b,c)) or numdatacolsdp set to one value to be applied to all columns in numdatacols")
@@ -730,32 +781,32 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     columnwidths <- "Default"
     
   } else if (length(columnwidths) > 1) {
-      
+    
     columnwidths <- "R_auto"
     warning("columnwidths should be a single word, not a vector. It will be changed back to the default of \"R_auto\".")
-      
+    
   } else if (columnwidths == "none" | columnwidths == "no" | columnwidths == "n" | columnwidths == "default") {
-      
+    
     columnwidths <- "Default"
-      
+    
   } else if (!is.null(columnwidths) & !is.character(columnwidths)) {
-      
+    
     columnwidths <- "R_auto"
     warning("columnwidths should be a character string. It will be changed back to the default of \"R_auto\".")
     
   } else if (columnwidths == "r_auto") {
-      
+    
     columnwidths <- "R_auto"
-      
+    
   } else if (columnwidths == "character") {
-      
+    
     columnwidths <- "characters"
-      
+    
   } else if (columnwidths != "r_auto" & columnwidths != "characters" & columnwidths != "specified") {
-      
+    
     columnwidths <- "R_auto"
     warning("columnwidths has not been set to \"R_auto\" or \"characters\" or \"specified\" or NULL. It will be changed back to the default of \"R_auto\".")
-      
+    
   }
   
   if (!is.null(colwid_spec)) {
@@ -765,9 +816,9 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       stop("Column widths cannot be 0 or negative")
       
     }
-      
-  }
     
+  }
+  
   if (columnwidths == "specified" & is.null(colwid_spec)) {
     
     stop("The option to specify column widths has been selected but the widths have not been provided")
@@ -790,11 +841,11 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   if (!is.null(width_adj)) {
     
     if (!is.numeric(width_adj)) {
-    
+      
       stop("width_adj must be a numeric value")
       
     } else if (length(width_adj) > 1 & length(width_adj) != length(colnames(table_data)) & columnwidths == "characters") {
-    
+      
       stop("The number of elements in width_adj is not equal to the number of columns in the table data. The number of elements and columns should either be equal or width_adj should be set to only a single value.")
       
     }
@@ -825,9 +876,9 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       if (i < 6) {
         
         x <- extralines1[i-1]
-          
+        
         assign(paste0("extraline", i), x)
-          
+        
         rm(x)
         
       } else if (i >= 6) {
@@ -839,11 +890,11 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
         rm(x)
         
       }
-        
+      
     }
-      
+    
     extraline1 <- "Temporary holder"
-      
+    
     temp <- length(title) + length(subtitle) + 1
     assign(paste0(sheetname, "_startrow"), temp, envir = .GlobalEnv)
     rm(temp)
@@ -956,7 +1007,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   # If there are no columns with numbers stored as text then the data are left alone
   
   if (!is.null(numcharcols) & !is.null(numcharcolsdp)) {
-  
+    
     purrr::pmap(list(numcharcols, numcharcolsdp), numcharvars2)
     
   } else if (!is.null(numcharcols) & is.null(numcharcolsdp)) {
@@ -1090,6 +1141,8 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
         
         x <- extralines2[i]
         
+        # Hyperlink code taken from Matt Dray's a11ytables
+        
         md_rx <- "\\[(([[:graph:]]|[[:space:]])+?)\\]\\([[:graph:]]+?\\)"
         md_match <- regexpr(md_rx, x, perl = TRUE)
         md_extract <- regmatches(x, md_match)[[1]]
@@ -1124,7 +1177,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       }
       
       rm(y)
-     
+      
     }
     
   }
@@ -1161,16 +1214,16 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   if (!is.null(numericcolsdp)) {
     
     for (i in seq_along(numericcolsdp)) {
-    
-      if (numericcolsdp[i] > 0) {
       
+      if (numericcolsdp[i] > 0) {
+        
         fmta <- paste0("#,##0.", strrep("0", numericcolsdp[i]))
         fmt <- openxlsx::createStyle(numFmt = fmta)
         openxlsx::addStyle(wb, sheetname, fmt, rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), cols = numericcols[i], stack = TRUE, gridExpand = TRUE)
         rm(fmta, fmt)
         
       } else if (numericcolsdp[i] == 0) {
-      
+        
         fmt <- openxlsx::createStyle(numFmt = "#,##0")
         openxlsx::addStyle(wb, sheetname, fmt, rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), cols = numericcols[i], stack = TRUE, gridExpand = TRUE)
         rm(fmt)
@@ -1230,7 +1283,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
     tabcontents <<- tabcontents %>%
       dplyr::add_row("Sheet name" = sheetname, "Table description" = title)
-      
+    
   } else if (sheetname != "Contents" & !exists("tabcontents", envir = .GlobalEnv)) {
     
     tabcontents <<- data.frame() %>%
@@ -1240,7 +1293,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   }
   
   if (exists("tabcontents", envir = .GlobalEnv)) {
-  
+    
     tabcontents2 <- tabcontents %>%
       dplyr::rename(sheet_name = "Sheet name") %>%
       dplyr::group_by(sheet_name) %>%
@@ -1260,13 +1313,13 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       stop("Duplicated sheet name(s)")
       
     }
-  
+    
     if (tabcontents3$check > 1) {
       
       warning("Duplicated table description(s). Explore to see if this is an issue.")
       
     }
-  
+    
     rm(tabcontents2, tabcontents3)
     
   }
@@ -1323,12 +1376,24 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
 ###################################################################################################################
 # CONTENTS
 
-# contentstable function creates a table of contents for the workbook
-# If no contents page wanted, then do not run the contentstable function
-# gridlines is by default set to "Yes", change to "No" if gridlines are not wanted
-# Column widths are automatically set unless user defines specific values in colwid_spec
-# Extra columns can be added, need to set extracols to "Yes" and create a dataframe extracols_contents with the desired extra columns 
-
+#' @title contentstable
+#' 
+#' @description Create a contents page for the workbook.
+#' 
+#' @details 
+#' contentstable function creates a table of contents for the workbook.
+#' If no contents page wanted, then do not run the contentstable function.
+#' gridlines is by default set to "Yes", change to "No" if gridlines are not wanted.
+#' Column widths are automatically set unless user defines specific values in colwid_spec.
+#' Extra columns can be added, need to set extracols to "Yes" and create a dataframe extracols_contents with the desired extra columns.
+#' 
+#' @param gridlines Define whether gridlines are present (optional)
+#' @param colwid_spec Define widths of columns (optional)
+#' @param extracols Define whether additional columns required (optional)
+#' 
+#' @return A worksheet with a contents page of tables in the workbook.
+#' 
+#' @export
 
 contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
   
@@ -1585,26 +1650,55 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
 ###################################################################################################################
 # COVER
 
-# coverpage function will create a cover page for the front of the workbook
-# If a cover page is not wanted, do not run the coverpage function
-# The only compulsory parameter is title
-# All other parameters are optional and preset, only populate if they are wanted
-# intro: Introductory information / about: About these data / dop: Date of publication
-# source: Data source(s) used / blank: Information about why some cells are blank, if necessary
-# relatedlink and relatedtext - any publications associated with the data (relatedlink is the actual hyperlink, relatedtext is the text you want to appear to the user)
-# names: Contact name / email: Contact email / phone: Contact telephone
-# reuse: Set to "Yes" if you want the information displayed about the reuse of the data (will automatically be populated)
-# govdept: Default is "ONS" but if want reuse information without reference to ONS change govdept
-# extrafields: Any additional fields that the user wants present on the cover page
-# extrafieldsb: The text to go in any additional fields. Only one row per field. extrafields and extrafields must be vectors of the same length.
-# additlinks: Any additional hyperlinks the user wants
-# addittext: The text to appear over any additional hyperlinks. additlinks and addittext must be vectors of the same length.
-# order: If the user wants the cover page to be ordered in a specific way, list the fields in a vector with each field name in speech marks
-# e.g., order = c("intro", "about", relatedlink", "names", "phone", "email", "extrafields")
-# Change gridlines to "No" if gridlines are not wanted
-# Column width automatically set unless user specifies a value in colwid_spec
-# intro, about, source, dop, blank, names, phone can be set to hyperlinks - e.g., source = "[ONS](https://www.ons.gov.uk)"
-
+#' @title coverpage
+#' 
+#' @description Create a cover page for the workbook.
+#' 
+#' @details 
+#' coverpage function will create a cover page for the front of the workbook.
+#' If a cover page is not wanted, do not run the coverpage function.
+#' The only compulsory parameter is title.
+#' All other parameters are optional and preset, only populate if they are wanted.
+#' intro: Introductory information / about: About these data / dop: Date of publication.
+#' source: Data source(s) used / blank: Information about why some cells are blank, if necessary.
+#' relatedlink and relatedtext - any publications associated with the data (relatedlink is the actual hyperlink, relatedtext is the text you want to appear to the user).
+#' names: Contact name / email: Contact email / phone: Contact telephone.
+#' reuse: Set to "Yes" if you want the information displayed about the reuse of the data (will automatically be populated).
+#' govdept: Default is "ONS" but if want reuse information without reference to ONS change govdept.
+#' extrafields: Any additional fields that the user wants present on the cover page.
+#' extrafieldsb: The text to go in any additional fields. Only one row per field. extrafields and extrafields must be vectors of the same length.
+#' additlinks: Any additional hyperlinks the user wants.
+#' addittext: The text to appear over any additional hyperlinks. additlinks and addittext must be vectors of the same length.
+#' order: If the user wants the cover page to be ordered in a specific way, list the fields in a vector with each field name in speech marks.
+#' e.g., order = c("intro", "about", relatedlink", "names", "phone", "email", "extrafields").
+#' Change gridlines to "No" if gridlines are not wanted.
+#' Column width automatically set unless user specifies a value in colwid_spec.
+#' intro, about, source, dop, blank, names, phone can be set to hyperlinks - e.g., source = "[ONS](https://www.ons.gov.uk)".
+#' 
+#' @param title Title for workbook
+#' @param intro Introductory information (optional)
+#' @param about About the data (optional)
+#' @param source Data source(s) (optional)
+#' @param relatedlink Link(s) to related publications (optional)
+#' @param relatedtext Text to appear in place of associated link (optional)
+#' @param dop Date of publication (optional)
+#' @param blank Blank cell information (optional)
+#' @param names Contact name (optional)
+#' @param email Contact email (optional)
+#' @param phone Contact phone number (optional)
+#' @param reuse Define whether want to use default text on reuse of publication (optional)
+#' @param gridlines Define whether gridlines are present (optional)
+#' @param govdept UK Government department name (optional)
+#' @param extrafields Additional fields for the cover page (optional)
+#' @param extrafieldsb Text to appear in additional fields (optional)
+#' @param additlinks Additional links of relevance (optional)
+#' @param addittext Text to appear in place of associated additional link (optional)
+#' @param colwid_spec Define widths of columns (optional)
+#' @param order List of fields in order of appearance wanted on cover page (optional)
+#' 
+#' @return A worksheet of the cover page for workbook
+#' 
+#' @export
 
 coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedlink = NULL, relatedtext = NULL,
                       dop = NULL, blank = NULL, names = NULL, email = NULL, phone = NULL, reuse = NULL,
@@ -2136,6 +2230,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
         
       }
       
+      # Hyperlink code taken from Matt Dray's a11ytables
+      
       md_rx <- "\\[(([[:graph:]]|[[:space:]])+?)\\]\\([[:graph:]]+?\\)"
       md_match <- regexpr(md_rx, fields2[i], perl = TRUE)
       md_extract <- regmatches(fields2[i], md_match)[[1]]
@@ -2331,6 +2427,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
         }
         
         x <- extrafieldsb[i]
+        
+        # Hyperlink code taken from Matt Dray's a11ytables
         
         md_rx <- "\\[(([[:graph:]]|[[:space:]])+?)\\]\\([[:graph:]]+?\\)"
         md_match <- regexpr(md_rx, x, perl = TRUE)
@@ -2655,14 +2753,28 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
 ###################################################################################################################
 # NOTES
 
-# addnote function will add a note and its description to the workbook, specifically in the notes worksheet
-# Add notes if wanted, if not then do not run the addnote function
-# A link can be provided with each note as well a list of tables that the note applies to
-# notenumber and notetext are the only compulsory parameters
-# All other parameters are optional and preset to NULL, so only need to be defined if they are wanted
-# applictabtext should be set to a vector of sheet names if a column is wanted which lists which worksheets a note is applicable to
-# linktext1 and linktext2: linktext1 should be the text you want to appear and linktext2 should be the underlying link to a website, file etc
-
+#' @title addnote
+#'
+#' @description Add a note to a particular table or tables
+#' 
+#' @details 
+#' addnote function will add a note and its description to the workbook, specifically in the notes worksheet.
+#' Add notes if wanted, if not then do not run the addnote function.
+#' A link can be provided with each note as well a list of tables that the note applies to.
+#' notenumber and notetext are the only compulsory parameters.
+#' All other parameters are optional and preset to NULL, so only need to be defined if they are wanted.
+#' applictabtext should be set to a vector of sheet names if a column is wanted which lists which worksheets a note is applicable to.
+#' linktext1 and linktext2: linktext1 should be the text you want to appear and linktext2 should be the underlying link to a website, file etc.
+#' 
+#' @param notenumber Note number
+#' @param notetext Note description
+#' @param applictabtext Table(s) a note is applicable to (optional)
+#' @param linktext1 Text to appear in place of a link associated to a note (optional)
+#' @param linktext2 Link associated to a note (optional)
+#' 
+#' @return A dataframe containing all information associated to notes
+#' 
+#' @export
 
 addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL, linktext2 = NULL) {
   
@@ -2741,7 +2853,7 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
   if (!is.null(applictabtext)) {
     
     check <- 0
-  
+    
     for (i in seq_along(applictabtext)) {
       
       if (tolower(applictabtext[i]) == "all") {applictabtext[i] <- "All"}
@@ -2782,7 +2894,7 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
   }
   
   # Cleaning up the linktext1 and linktext2 parameters where no link information provided
-    
+  
   if (is.null(applictabtext)) {applictabtext <- ""}
   
   applictabtext2 <- paste(applictabtext, collapse = ", ")
@@ -2894,12 +3006,25 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
   
 }
 
-# notestab function will create a notes worksheet in the workbook and includes notes added using the addnote function
-# If notes not wanted, then do not run the notestab function
-# There are three parameters and they are optional and preset. Change contentslink to "No" if you want a contents tab but do not want a link to it in the notes tab. Change gridlines to "No" if gridlines are not wanted.
-# Column widths are automatically set but the user can specify the required widths in colwid_spec
-# Extra columns can be added by setting extracols to "Yes" and creating a dataframe extracols_notes with the desired extra columns
-
+#' @title notestab
+#'
+#' @description Create a notes page for the workbook.
+#' 
+#' @details 
+#' notestab function will create a notes worksheet in the workbook and includes notes added using the addnote function.
+#' If notes not wanted, then do not run the notestab function.
+#' There are three parameters and they are optional and preset. Change contentslink to "No" if you want a contents tab but do not want a link to it in the notes tab. Change gridlines to "No" if gridlines are not wanted.
+#' Column widths are automatically set but the user can specify the required widths in colwid_spec.
+#' Extra columns can be added by setting extracols to "Yes" and creating a dataframe extracols_notes with the desired extra columns.
+#' 
+#' @param contentslink Define whether a link to the contents page is wanted (optional)
+#' @param gridlines Define whether gridlines are present (optional)
+#' @param colwid_spec Define widths of columns (optional)
+#' @param extracols Define whether additional columns required (optional)
+#' 
+#' @return A worksheet of the notes page for the workbook.
+#' 
+#' @export
 
 notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
   
@@ -3170,7 +3295,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   }
   
   if (links == "Yes" & applictabs == "Yes") {
-  
+    
     notesdf <<- notesdf %>%
       dplyr::select("Note number", "Note text", "Applicable tables", "Link") %>%
       {if (exists("extracols_notes", envir = .GlobalEnv)) dplyr::bind_cols(., extracols_notes) else .}
@@ -3332,7 +3457,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   # Creating the text to be inserted in the main data tables regarding which notes are associated with which table
   
   if (applictabs == "Yes" & autonotes2 == "Yes") {
-  
+    
     tabcontents2 <- tabcontents %>%
       dplyr::filter(.[[1]] != "Notes" & .[[1]] != "Definitions")
     
@@ -3347,30 +3472,30 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
         dplyr::filter(stringr::str_detect(applic_tab, tablelist[i]) == TRUE)
       
       notes <- paste0("[", notesdf7[[1]], "]")
-        
+      
       if (length(notes) > 2) {
-          
+        
         notes1 <- utils::tail(notes, 2)
-          
+        
         notes2 <- utils::head(notes, -2)
-          
+        
         notes3 <- paste(notes1, collapse = " and ")
         notes4 <- paste0(", ", notes3)
-          
+        
         notes5 <- paste(notes2, collapse = ", ")
-          
+        
         notes6 <- paste0(notes5, notes4)
-          
+        
         rm(notes1, notes2, notes3, notes4, notes5)
-          
+        
       } else if (length(notes) == 2) {
-          
+        
         notes6 <- paste(notes, collapse = " and ")
-          
+        
       } else if (length(notes) == 1) {
-          
+        
         notes6 <- paste0(notes)
-          
+        
       }
       
       if (nrow(notesdf7) == 0) {
@@ -3383,13 +3508,13 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
         notes7 <- paste0("This worksheet contains one table. For notes, see ", notes6, " on the notes worksheet.")
         
       }
-        
+      
       tempstartrow <- get(paste0(tablelist[i], "_startrow"), envir = .GlobalEnv)
-        
+      
       openxlsx::writeData(wb, tablelist[i], notes7, startCol = 1, startRow = tempstartrow)
-        
+      
       rm(notes, notes6, notes7, tempstartrow, notesdf7)
-        
+      
     }
     
     rm(tabcontents2, tablelist)
@@ -3440,7 +3565,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     }
     
     rm(tablelist, tablelist2, notesdf8, tabcontents2, notesdf9, applictablist, applictablist2, applictablist3)
-  
+    
   }
   
   rm(list = ls(pattern = "_startrow", envir = .GlobalEnv), envir = .GlobalEnv)
@@ -3461,12 +3586,25 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
 ###################################################################################################################
 # DEFINITIONS
 
-# adddefinition function will add a definition and its description to the workbook, specifically in the definitions worksheet
-# Add definitions if wanted, if not then do run the adddefinition function
-# term and definition are compulsory parameters
-# A link can be added with each definition
-# linktext1 and linktext2: linktext1 should be the text you want to appear and linktext2 should be the underlying link to a website, file etc
-
+#' @title adddefinition
+#'
+#' @description Add a definition of a term relevant to the workbook.
+#' 
+#' @details 
+#' adddefinition function will add a definition and its description to the workbook, specifically in the definitions worksheet.
+#' Add definitions if wanted, if not then do run the adddefinition function.
+#' term and definition are compulsory parameters.
+#' A link can be added with each definition.
+#' linktext1 and linktext2: linktext1 should be the text you want to appear and linktext2 should be the underlying link to a website, file etc.
+#' 
+#' @param term Term to be defined
+#' @param definition Definition of term
+#' @param linktext1 Text to appear in place of link associated with definition (optional)
+#' @param linktext2 Link associated with definition (optional)
+#' 
+#' @return A dataframe containing all information associated to definitions.
+#' 
+#' @export
 
 adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) {
   
@@ -3613,12 +3751,25 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
   
 }
 
-# definitionstab creates the worksheet with information on definitions
-# If definitions not wanted, then do not run the definitionstab function
-# There are three parameters and they are optional and preset. Change contentslink to "No" if you want a contents tab but do not want a link to it in the definitions tab. Change gridlines to "No" if gridlines are not wanted.
-# Column widths are automatically set but the user can specify the required widths in colwid_spec
-# Extra columns can be added by setting extracols to "Yes" and creating a dataframe extracols_definitions with the desired extra columns
-
+#' @title definitionstab
+#' 
+#' @description Create a definitions page for the workbook.
+#' 
+#' @details 
+#' definitionstab creates the worksheet with information on definitions.
+#' If definitions not wanted, then do not run the definitionstab function.
+#' There are three parameters and they are optional and preset. Change contentslink to "No" if you want a contents tab but do not want a link to it in the definitions tab. Change gridlines to "No" if gridlines are not wanted.
+#' Column widths are automatically set but the user can specify the required widths in colwid_spec.
+#' Extra columns can be added by setting extracols to "Yes" and creating a dataframe extracols_definitions with the desired extra columns.
+#' 
+#' @param contentslink Define whether a link to the contents page is wanted (optional)
+#' @param gridlines Define whether gridlines are present (optional)
+#' @param colwid_spec Define widths of columns (optional)
+#' @param extracols Define whether additional columns required (optional)
+#' 
+#' @return A worksheet of the definitions page for the workbook.
+#' 
+#' @export
 
 definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
   
@@ -3989,13 +4140,25 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
 ###################################################################################################################
 # SAVING THE FINAL SPREADSHEET
 
-# The savingtables function only requires that the location and name of the spreadsheet be specified
-# An xls file can be saved but it is recommended to use an xlsx file instead
-# Cannot save directly to ods, instead first an xlsx file is saved and then converted
-# Default setting is not to create the ods file from the xlsx file
-# If only xlsx file is wanted keep odsfile = "No" but if both ods and xlsx file wanted set odsfile = "Yes" and deletexlsx = "No"
-# If only the ods file wanted set odsfile = "Yes" and deletexlsx = "Yes"
-
+#' @title savingtables
+#' 
+#' @description Saving the final output
+#' 
+#' @details 
+#' The savingtables function only requires that the location and name of the spreadsheet be specified.
+#' A xls file can be saved but it is recommended to use a xlsx file instead.
+#' Cannot save directly to ods, instead first a xlsx file is saved and then converted.
+#' Default setting is not to create the ods file from the xlsx file.
+#' If only xlsx file is wanted keep odsfile = "No" but if both ods and xlsx file wanted set odsfile = "Yes" and deletexlsx = "No".
+#' If only the ods file wanted set odsfile = "Yes" and deletexlsx = "Yes".
+#' 
+#' @param filename File path and file name of final output, including file type
+#' @param odsfile Define whether to convert output to an ods file (optional)
+#' @param deletexlsx Define whether to delete the xlsx file output (optional)
+#' 
+#' @return A workbook saved to the network drive
+#'
+#' @export
 
 savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
   
@@ -4074,6 +4237,8 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
     stop("deletexlsx is more than a single entity")
     
   }
+  
+  # reverse function from https://www.geeksforgeeks.org/how-to-reverse-a-string-in-r/
   
   reverse <- function(str) {
     
