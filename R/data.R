@@ -1,4 +1,4 @@
-#' @title dummydf: a demo data.frame object
+#' @title dummydf: an accessibletablesR demo data.frame object
 #' 
 #' @description A dataset for the purpose of demonstrating how the accessibletablesR package can be used.
 #' 

@@ -2,7 +2,7 @@
 ###################################################################################################################
 # CREATE WORKBOOK
 
-#' @title workbook
+#' @title accessibletablesR::workbook
 #' 
 #' @description Create the openxlsx workbook where data tables are added.
 #' 
@@ -450,7 +450,7 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
 ###################################################################################################################
 # MAIN TABLES
 
-#' @title creatingtables
+#' @title accessibletablesR::creatingtables
 #' 
 #' @description Create a worksheet, formatted to meet accessibility criteria, containing data table.
 #' 
@@ -1466,7 +1466,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
 ###################################################################################################################
 # CONTENTS
 
-#' @title contentstable
+#' @title accessibletablesR::contentstable
 #' 
 #' @description Create a contents page for the workbook.
 #' 
@@ -1790,7 +1790,7 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
 ###################################################################################################################
 # COVER
 
-#' @title coverpage
+#' @title accessibletablesR::coverpage
 #' 
 #' @description Create a cover page for the workbook.
 #' 
@@ -2943,7 +2943,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
 ###################################################################################################################
 # NOTES
 
-#' @title addnote
+#' @title accessibletablesR::addnote
 #'
 #' @description Add a note to a particular table or tables
 #' 
@@ -3246,7 +3246,7 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
   
 }
 
-#' @title notestab
+#' @title accessibletablesR::notestab
 #'
 #' @description Create a notes page for the workbook.
 #' 
@@ -3876,7 +3876,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
 ###################################################################################################################
 # DEFINITIONS
 
-#' @title adddefinition
+#' @title accessibletablesR::adddefinition
 #'
 #' @description Add a definition of a term relevant to the workbook.
 #' 
@@ -4091,7 +4091,7 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
   
 }
 
-#' @title definitionstab
+#' @title accessibletablesR::definitionstab
 #' 
 #' @description Create a definitions page for the workbook.
 #' 
@@ -4530,7 +4530,7 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
 ###################################################################################################################
 # SAVING THE FINAL SPREADSHEET
 
-#' @title savingtables
+#' @title accessibletablesR::savingtables
 #' 
 #' @description Saving the final output
 #' 
