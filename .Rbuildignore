@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 ^EXAMPLE_CODE$
 ^README\.Rmd$
+^data-raw$

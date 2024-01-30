@@ -29,7 +29,7 @@
 #' @param subject Define the subject to go into the document information in the final output (optional)
 #' @param category Define the category to go into the document information in the final output (optional)
 #' 
-#' @return A workbook called wb will appear in the global environment. Necessary R packages will be installed.
+#' @returns A workbook called wb will appear in the global environment. Necessary R packages will be installed.
 #' 
 #' @export
 
@@ -461,7 +461,7 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
 #' @param width_adj Additional width adjustment for columns (optional)
 #' @param colwid_spec Define widths of columns (optional)
 #' 
-#' @return A worksheet with data formatted to meet accessibility criteria.
+#' @returns A worksheet with data formatted to meet accessibility criteria.
 #' 
 #' @export
 
@@ -470,6 +470,16 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
                            headrowsize = NULL, numdatacols = NULL, numdatacolsdp = NULL, othdatacols = NULL, 
                            tablename = NULL, gridlines = "Yes", columnwidths = "R_auto", width_adj = NULL,
                            colwid_spec = NULL) {
+  
+  if (!("tidyverse" %in% utils::installed.packages()) | !("openxlsx" %in% utils::installed.packages())) {
+    
+    stop("Not all required packages installed. Run the \"workbook\" function first to ensure packages are installed.")
+    
+  } else if (utils::packageVersion("tidyverse") < "2.0.0" | utils::packageVersion("openxlsx") < "4.2.5.2") {
+    
+    stop("Older versions of packages detected. Run the \"workbook\" function first to ensure up to date packages are installed.")
+    
+  }
   
   # Checking some of the parameters to ensure they are properly populated, if not the function will error or display a warning in the console
   
@@ -1391,11 +1401,21 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
 #' @param colwid_spec Define widths of columns (optional)
 #' @param extracols Define whether additional columns required (optional)
 #' 
-#' @return A worksheet with a contents page of tables in the workbook.
+#' @returns A worksheet with a contents page of tables in the workbook.
 #' 
 #' @export
 
 contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
+  
+  if (!("tidyverse" %in% utils::installed.packages()) | !("openxlsx" %in% utils::installed.packages())) {
+    
+    stop("Not all required packages installed. Run the \"workbook\" function first to ensure packages are installed.")
+    
+  } else if (utils::packageVersion("tidyverse") < "2.0.0" | utils::packageVersion("openxlsx") < "4.2.5.2") {
+    
+    stop("Older versions of packages detected. Run the \"workbook\" function first to ensure up to date packages are installed.")
+    
+  }
   
   # Check to see that a contents page is wanted, based on whether a worksheet was created in the initial workbook
   
@@ -1696,7 +1716,7 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
 #' @param colwid_spec Define widths of columns (optional)
 #' @param order List of fields in order of appearance wanted on cover page (optional)
 #' 
-#' @return A worksheet of the cover page for workbook
+#' @returns A worksheet of the cover page for workbook
 #' 
 #' @export
 
@@ -1704,6 +1724,16 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
                       dop = NULL, blank = NULL, names = NULL, email = NULL, phone = NULL, reuse = NULL,
                       gridlines = "Yes", govdept = "ONS", extrafields = NULL, extrafieldsb = NULL,
                       additlinks = NULL, addittext = NULL, colwid_spec = NULL, order = NULL) {
+  
+  if (!("openxlsx" %in% utils::installed.packages())) {
+    
+    stop("Not all required packages installed. Run the \"workbook\" function first to ensure packages are installed.")
+    
+  } else if (utils::packageVersion("openxlsx") < "4.2.5.2") {
+    
+    stop("Older versions of packages detected. Run the \"workbook\" function first to ensure up to date packages are installed.")
+    
+  }
   
   # Check to see that a coverpage is wanted, based on whether a worksheet was created in the initial workbook
   
@@ -2772,11 +2802,21 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
 #' @param linktext1 Text to appear in place of a link associated to a note (optional)
 #' @param linktext2 Link associated to a note (optional)
 #' 
-#' @return A dataframe containing all information associated to notes
+#' @returns A dataframe containing all information associated to notes
 #' 
 #' @export
 
 addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL, linktext2 = NULL) {
+  
+  if (!("tidyverse" %in% utils::installed.packages())) {
+    
+    stop("Not all required packages installed. Run the \"workbook\" function first to ensure packages are installed.")
+    
+  } else if (utils::packageVersion("tidyverse") < "2.0.0") {
+    
+    stop("Older versions of packages detected. Run the \"workbook\" function first to ensure up to date packages are installed.")
+    
+  }
   
   # Checking that a notes page is wanted, based on whether a worksheet was created in the initial workbook
   
@@ -3022,11 +3062,21 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
 #' @param colwid_spec Define widths of columns (optional)
 #' @param extracols Define whether additional columns required (optional)
 #' 
-#' @return A worksheet of the notes page for the workbook.
+#' @returns A worksheet of the notes page for the workbook.
 #' 
 #' @export
 
 notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
+  
+  if (!("tidyverse" %in% utils::installed.packages()) | !("openxlsx" %in% utils::installed.packages())) {
+    
+    stop("Not all required packages installed. Run the \"workbook\" function first to ensure packages are installed.")
+    
+  } else if (utils::packageVersion("tidyverse") < "2.0.0" | utils::packageVersion("openxlsx") < "4.2.5.2") {
+    
+    stop("Older versions of packages detected. Run the \"workbook\" function first to ensure up to date packages are installed.")
+    
+  }
   
   # Check that a notes page is wanted, based on whether a worksheet was created in the initial workbook
   
@@ -3602,11 +3652,21 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
 #' @param linktext1 Text to appear in place of link associated with definition (optional)
 #' @param linktext2 Link associated with definition (optional)
 #' 
-#' @return A dataframe containing all information associated to definitions.
+#' @returns A dataframe containing all information associated to definitions.
 #' 
 #' @export
 
 adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) {
+  
+  if (!("tidyverse" %in% utils::installed.packages())) {
+    
+    stop("Not all required packages installed. Run the \"workbook\" function first to ensure packages are installed.")
+    
+  } else if (utils::packageVersion("tidyverse") < "2.0.0") {
+    
+    stop("Older versions of packages detected. Run the \"workbook\" function first to ensure up to date packages are installed.")
+    
+  }
   
   # Checking that a definitions page is wanted, based on whether a worksheet was created in the initial workbook
   
@@ -3767,11 +3827,21 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
 #' @param colwid_spec Define widths of columns (optional)
 #' @param extracols Define whether additional columns required (optional)
 #' 
-#' @return A worksheet of the definitions page for the workbook.
+#' @returns A worksheet of the definitions page for the workbook.
 #' 
 #' @export
 
 definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
+  
+  if (!("tidyverse" %in% utils::installed.packages()) | !("openxlsx" %in% utils::installed.packages())) {
+    
+    stop("Not all required packages installed. Run the \"workbook\" function first to ensure packages are installed.")
+    
+  } else if (utils::packageVersion("tidyverse") < "2.0.0" | utils::packageVersion("openxlsx") < "4.2.5.2") {
+    
+    stop("Older versions of packages detected. Run the \"workbook\" function first to ensure up to date packages are installed.")
+    
+  }
   
   # Checking that a definitions page is wanted, based on whether a worksheet was created in the initial workbook
   
@@ -4156,11 +4226,21 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
 #' @param odsfile Define whether to convert output to an ods file (optional)
 #' @param deletexlsx Define whether to delete the xlsx file output (optional)
 #' 
-#' @return A workbook saved to the network drive
+#' @returns A workbook saved to the network drive
 #'
 #' @export
 
 savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
+  
+  if (!("odsconvertr" %in% utils::installed.packages()) | !("openxlsx" %in% utils::installed.packages())) {
+    
+    stop("Not all required packages installed. Run the \"workbook\" function first to ensure packages are installed.")
+    
+  } else if (utils::packageVersion("odsconvertr") < "0.2.2" | utils::packageVersion("openxlsx") < "4.2.5.2") {
+    
+    stop("Older versions of packages detected. Run the \"workbook\" function first to ensure up to date packages are installed.")
+    
+  }
   
   if (length(filename) > 1) {
     
