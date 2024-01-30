@@ -15,4 +15,8 @@ Useful links:
 }
 
 }
+\author{
+\strong{Maintainer}: Matthew Minifie \email{matthew.minifie@ons.gov.uk}
+
+}
 \keyword{internal}
