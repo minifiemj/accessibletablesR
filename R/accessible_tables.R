@@ -32,7 +32,6 @@
 #' @returns A workbook called wb will appear in the global environment. Necessary R packages will be installed.
 #' 
 #' @export
-
 workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, autonotes = NULL,
                      definitionstab = NULL, fontnm = "Arial", fontcol = "black",
                      fontsz = 12, fontszst = 14, fontszt = 16, title = NULL, creator = NULL,
@@ -464,7 +463,6 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
 #' @returns A worksheet with data formatted to meet accessibility criteria.
 #' 
 #' @export
-
 creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2 = NULL, extraline3 = NULL,
                            extraline4 = NULL, extraline5 = NULL, extraline6 = NULL, sheetname, table_data, 
                            headrowsize = NULL, numdatacols = NULL, numdatacolsdp = NULL, othdatacols = NULL, 
@@ -1404,7 +1402,6 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
 #' @returns A worksheet with a contents page of tables in the workbook.
 #' 
 #' @export
-
 contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
   
   if (!("tidyverse" %in% utils::installed.packages()) | !("openxlsx" %in% utils::installed.packages())) {
@@ -1719,7 +1716,6 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
 #' @returns A worksheet of the cover page for workbook
 #' 
 #' @export
-
 coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedlink = NULL, relatedtext = NULL,
                       dop = NULL, blank = NULL, names = NULL, email = NULL, phone = NULL, reuse = NULL,
                       gridlines = "Yes", govdept = "ONS", extrafields = NULL, extrafieldsb = NULL,
@@ -2805,7 +2801,6 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
 #' @returns A dataframe containing all information associated to notes
 #' 
 #' @export
-
 addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL, linktext2 = NULL) {
   
   if (!("tidyverse" %in% utils::installed.packages())) {
@@ -3065,7 +3060,6 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
 #' @returns A worksheet of the notes page for the workbook.
 #' 
 #' @export
-
 notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
   
   if (!("tidyverse" %in% utils::installed.packages()) | !("openxlsx" %in% utils::installed.packages())) {
@@ -3655,7 +3649,6 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
 #' @returns A dataframe containing all information associated to definitions.
 #' 
 #' @export
-
 adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) {
   
   if (!("tidyverse" %in% utils::installed.packages())) {
@@ -3830,7 +3823,6 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
 #' @returns A worksheet of the definitions page for the workbook.
 #' 
 #' @export
-
 definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
   
   if (!("tidyverse" %in% utils::installed.packages()) | !("openxlsx" %in% utils::installed.packages())) {
@@ -4229,7 +4221,6 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
 #' @returns A workbook saved to the network drive
 #'
 #' @export
-
 savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
   
   if (!("odsconvertr" %in% utils::installed.packages()) | !("openxlsx" %in% utils::installed.packages())) {
