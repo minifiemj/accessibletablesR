@@ -2,7 +2,7 @@
 % Please edit documentation in R/accessible_tables.R
 \name{savingtables}
 \alias{savingtables}
-\title{savingtables}
+\title{accessibletablesR::savingtables}
 \usage{
 savingtables(filename, odsfile = "No", deletexlsx = NULL)
 }

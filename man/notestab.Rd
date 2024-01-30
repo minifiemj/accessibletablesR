@@ -2,7 +2,7 @@
 % Please edit documentation in R/accessible_tables.R
 \name{notestab}
 \alias{notestab}
-\title{notestab}
+\title{accessibletablesR::notestab}
 \usage{
 notestab(
   contentslink = NULL,

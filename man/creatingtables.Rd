@@ -2,7 +2,7 @@
 % Please edit documentation in R/accessible_tables.R
 \name{creatingtables}
 \alias{creatingtables}
-\title{creatingtables}
+\title{accessibletablesR::creatingtables}
 \usage{
 creatingtables(
   title,

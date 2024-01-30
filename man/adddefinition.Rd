@@ -2,7 +2,7 @@
 % Please edit documentation in R/accessible_tables.R
 \name{adddefinition}
 \alias{adddefinition}
-\title{adddefinition}
+\title{accessibletablesR::adddefinition}
 \usage{
 adddefinition(term, definition, linktext1 = NULL, linktext2 = NULL)
 }

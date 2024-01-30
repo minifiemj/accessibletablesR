@@ -2,7 +2,7 @@
 % Please edit documentation in R/accessible_tables.R
 \name{addnote}
 \alias{addnote}
-\title{addnote}
+\title{accessibletablesR::addnote}
 \usage{
 addnote(
   notenumber,

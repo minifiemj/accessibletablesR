@@ -2,7 +2,7 @@
 % Please edit documentation in R/accessible_tables.R
 \name{contentstable}
 \alias{contentstable}
-\title{contentstable}
+\title{accessibletablesR::contentstable}
 \usage{
 contentstable(gridlines = "Yes", colwid_spec = NULL, extracols = NULL)
 }

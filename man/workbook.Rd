@@ -2,7 +2,7 @@
 % Please edit documentation in R/accessible_tables.R
 \name{workbook}
 \alias{workbook}
-\title{workbook}
+\title{accessibletablesR::workbook}
 \usage{
 workbook(
   covertab = NULL,

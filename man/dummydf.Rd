@@ -3,7 +3,7 @@
 \docType{data}
 \name{dummydf}
 \alias{dummydf}
-\title{dummydf: a demo data.frame object}
+\title{dummydf: an accessibletablesR demo data.frame object}
 \format{
 A data frame with 32 rows and 13 columns.
 }

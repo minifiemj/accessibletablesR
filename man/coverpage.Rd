@@ -2,7 +2,7 @@
 % Please edit documentation in R/accessible_tables.R
 \name{coverpage}
 \alias{coverpage}
-\title{coverpage}
+\title{accessibletablesR::coverpage}
 \usage{
 coverpage(
   title,
