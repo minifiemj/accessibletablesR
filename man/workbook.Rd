@@ -57,12 +57,17 @@ A workbook called wb will appear in the global environment. Necessary R packages
 Create the openxlsx workbook where data tables are added.
 }
 \details{
-The workbook function creates a new workbook with the required metadata worksheets and defines the workbook's font name, colour and sizes.
+The workbook function creates a new workbook with the required metadata worksheets and defines 
+the workbook's font name, colour and sizes.
 All parameters are optional and preset.
-If a cover page, contents page, notes page or definitions page are required then set the parameter to "Yes" when calling the function.
-autonotes is required if a line is wanted towards the top of the worksheet which lists all the note numbers associated with the worksheet (set to "Yes" if wanted).
-Default font is Arial with a black colour and size ranging from 12 to 16 - change if want to when calling the function.
-title, creator, subject and category refer to the document information properties displayed in the final Excel workbook.
+If a cover page, contents page, notes page or definitions page are required then set the 
+parameter to "Yes" when calling the function.
+autonotes is required if a line is wanted towards the top of the worksheet which lists all the 
+note numbers associated with the worksheet (set to "Yes" if wanted).
+Default font is Arial with a black colour and size ranging from 12 to 16 - change if want to when
+calling the function.
+title, creator, subject and category refer to the document information properties displayed in 
+the final Excel workbook.
 }
 \examples{
 accessibletablesR::workbook(covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes",
