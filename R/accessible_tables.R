@@ -1,5 +1,5 @@
-###################################################################################################################
-###################################################################################################################
+###################################################################################################
+###################################################################################################
 # CREATE WORKBOOK
 
 #' @title accessibletablesR::workbook
@@ -22,7 +22,8 @@
 #' @param covertab Define whether a cover page is required  (optional)
 #' @param contentstab Define whether a contents page is required (optional)
 #' @param notestab Define whether a notes page is required (optional)
-#' @param autonotes Define whether automated listing of notes associated with a table is required (optional)
+#' @param autonotes Define whether automated listing of notes associated with a table is required 
+#'                  (optional)
 #' @param definitionstab Define whether a definitions page is required (optional)
 #' @param fontnm Define the font name used in the final output (optional)
 #' @param fontcol Define the font colour used in the final output (optional)
@@ -30,49 +31,64 @@
 #' @param fontszst Define the font size for subtitles used in the final output (optional)
 #' @param fontszt Define the font size for titles used in the final output (optional)
 #' @param title Define the title to go into the document information in the final output (optional)
-#' @param creator Define the creator to go into the document information in the final output (optional)
-#' @param subject Define the subject to go into the document information in the final output (optional)
-#' @param category Define the category to go into the document information in the final output (optional)
+#' @param creator Define the creator to go into the document information in the final output 
+#'                (optional)
+#' @param subject Define the subject to go into the document information in the final output 
+#'                (optional)
+#' @param category Define the category to go into the document information in the final output  
+#'                 (optional)
 #' 
-#' @returns A workbook called wb will appear in the global environment. Necessary R packages will be installed.
+#' @returns 
+#' A workbook called wb will appear in the global environment. Necessary R packages will be
+#' installed.
 #' 
 #' @examples 
-#' accessibletablesR::workbook(covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes",
-#'                             autonotes = "Yes", title = "Fuel consumption and aspects of car design and performance for various cars",
-#'                             creator = "An organisation")
+#' accessibletablesR::workbook(
+#'    covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes", 
+#'    autonotes = "Yes", 
+#'    title = "Fuel consumption and aspects of car design and performance for various cars",
+#'    creator = "An organisation")
 #'                             
-#' accessibletablesR::creatingtables(title = "Fuel consumption and aspects of car design and performance for various cars C",
-#'                                   subtitle = "Cars",
-#'                                   extraline1 = "Link to contents",
-#'                                   extraline2 = "Link to notes",
-#'                                   extraline3 = "Link to definitions",
-#'                                   sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
-#'                                   numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
-#'                                   othdatacols = c(9,10), columnwidths = "specified",
-#'                                   colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
+#' accessibletablesR::creatingtables(
+#'    title = "Fuel consumption and aspects of car design and performance for various cars C",
+#'    subtitle = "Cars",
+#'    extraline1 = "Link to contents",
+#'    extraline2 = "Link to notes",
+#'    extraline3 = "Link to definitions",
+#'    sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
+#'    numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
+#'    othdatacols = c(9,10), columnwidths = "specified",
+#'    colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
 #'                                   
 #' accessibletablesR::contentstable()
 #' 
-#' accessibletablesR::addnote(notenumber = "note1", notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google", linktext2 = "https://www.ons.google.co.uk") 
+#' accessibletablesR::addnote(notenumber = "note1", 
+#'    notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google",
+#'                linktext2 = "https://www.ons.google.co.uk") 
 #' 
 #' accessibletablesR::notestab()
 #' 
-#' accessibletablesR::adddefinition(term = "Usual resident", definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and had stayed or intended to stay in the UK for a period of 12 months or more, or had a permanent UK address and was outside the UK and intended to be outside the UK for less than 12 months.")
+#' accessibletablesR::adddefinition(term = "Usual resident", 
+#'    definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and 
+#'                  had stayed or intended to stay in the UK for a period of 12 months or more, or 
+#'                  had a permanent UK address and was outside the UK and intended to be outside the
+#'                  UK for less than 12 months.")
 #'
 #' accessibletablesR::definitionstab()
 #' 
-#' accessibletablesR::coverpage(title = "Fuel consumption and aspects of car design and performance for various cars",
-#'                              intro = "Some made up data about cars",
-#'                              about = "The output of an example of how to use accessibletablesR",
-#'                              source = "R mtcars",
-#'                              relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
-#'                              relatedtext = "mtcars: Motor trend car road tests",
-#'                              dop = "26 October 2023",
-#'                              blank = "There should be no blank cells",
-#'                              names = "Your name",
-#'                              email = "yourname@emailprovider.com",
-#'                              phone = "01111 1111111111111",
-#'                              reuse = "Yes", govdept = NULL)
+#' accessibletablesR::coverpage(
+#'    title = "Fuel consumption and aspects of car design and performance for various cars",
+#'    intro = "Some made up data about cars",
+#'    about = "The output of an example of how to use accessibletablesR",
+#'    source = "R mtcars",
+#'    relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+#'    relatedtext = "mtcars: Motor trend car road tests",
+#'    dop = "26 October 2023",
+#'    blank = "There should be no blank cells",
+#'    names = "Your name",
+#'    email = "yourname@emailprovider.com",
+#'    phone = "01111 1111111111111",
+#'    reuse = "Yes", govdept = NULL)
 #'                              
 #' accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 #' 
@@ -94,7 +110,8 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
       
       utils::install.packages(listofpackages[i], dependencies = TRUE, type = "binary")
       
-    } else if (listofpackages[i] %in% utils::installed.packages() & utils::packageVersion(listofpackages[i]) < packageversions[i]) {
+    } else if (listofpackages[i] %in% utils::installed.packages() & 
+               utils::packageVersion(listofpackages[i]) < packageversions[i]) {
       
       base::unloadNamespace(listofpackages[i])
       utils::install.packages(listofpackages[i], dependencies = TRUE, type = "binary")
@@ -114,7 +131,8 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
       base::library("devtools")
       devtools::install_github(base::paste0(repogroupings[i], "/", listofpackages2[i]))
       
-    } else if (listofpackages2[i] %in% utils::installed.packages() & utils::packageVersion(listofpackages2[i]) < packageversions2[i]) {
+    } else if (listofpackages2[i] %in% utils::installed.packages() & 
+               utils::packageVersion(listofpackages2[i]) < packageversions2[i]) {
       
       base::unloadNamespace(listofpackages2[i])
       base::library("devtools")
@@ -126,9 +144,11 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   
   base::library("conflicted")
   
-  # When functions are used in this script, the package from which the function comes from is specified e.g., dplyr::filter
+  # When functions are used in this script, the package from which the function comes from is... 
+  # ...specified e.g., dplyr::filter
   # The exception to this is if the functions come from the R base package
-  # To ensure there is no unintentional masking of base functions, conflict_prefer_all will set it so base is the package used unless otherwise specified
+  # To ensure there is no unintentional masking of base functions, conflict_prefer_all will set...
+  # ...it so base is the package used unless otherwise specified
   
   conflicted::conflict_prefer_all("base", quiet = TRUE)
   conflicted::conflict_prefer("%>%", "dplyr", quiet = TRUE)
@@ -209,11 +229,14 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     
   }
   
-  # Checking some of the parameters to ensure they are properly populated, if not the function will error
+  # Checking some of the parameters to ensure they are properly populated, if not the function...
+  # ...will error
   
-  if (length(covertab) > 1 | length(contentstab) > 1 | length(notestab) > 1 | length(autonotes) > 1 | length(definitionstab) > 1) {
+  if (length(covertab) > 1 | length(contentstab) > 1 | length(notestab) > 1 | 
+      length(autonotes) > 1 | length(definitionstab) > 1) {
     
-    stop("One or more of covertab, contentstab, notestab, definitionstab and autnotes not populated with a single word (\"Yes\", \"No\")")
+    stop("One or more of covertab, contentstab, notestab, definitionstab and autnotes not populated 
+         with a single word (\"Yes\", \"No\")")
     
   }
   
@@ -265,9 +288,11 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     
   }
   
-  if (length(fontnm) > 1 | length(fontcol) > 1 | length(fontsz) > 1 | length(fontszst) > 1 | length(fontszt) > 1) {
+  if (length(fontnm) > 1 | length(fontcol) > 1 | length(fontsz) > 1 | length(fontszst) > 1 | 
+      ength(fontszt) > 1) {
     
-    stop("One or more of fontnm, fontcol, fontsz, fontszst and fontszt is more than a single entity")
+    stop("One or more of fontnm, fontcol, fontsz, fontszst and fontszt is more than a single 
+         entity")
     
   }
   
@@ -303,7 +328,8 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   
   if (exists("xxx_table_data2_xxx", envir = .GlobalEnv)) {
     
-    stop("A data frame called xxx_table_data2_xxx exists in the global environment. This needs to be renamed. The code will overwrite any file named xxx_table_data2_xxx.")
+    stop("A data frame called xxx_table_data2_xxx exists in the global environment. This needs to be 
+         renamed. The code will overwrite any file named xxx_table_data2_xxx.")
     
   }
   
@@ -318,7 +344,10 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   if (exists("wb", envir = .GlobalEnv)) {
     
     rm(wb, envir = .GlobalEnv)
-    warning("wb has been removed from the global environment. If wb is a remnant from a previous run of the table code then it is not a problem. However, if wb is a data frame or variable that you have created then you will need to shut R down and start again but rename whatever you had called wb to something else.")
+    warning("wb has been removed from the global environment. If wb is a remnant from a previous run 
+            of the table code then it is not a problem. However, if wb is a data frame or variable 
+            that you have created then you will need to shut R down and start again but rename 
+            whatever you had called wb to something else.")
     
   }
   
@@ -330,46 +359,68 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   if (exists("tabcontents", envir = .GlobalEnv)) {
     
     rm(tabcontents, envir = .GlobalEnv)
-    warning("tabcontents has been removed from the global environment. If tabcontents is a remnant from a previous run of the table code then it is not a problem. However, if tabcontents is a data frame or variable that you have created then you will need to shut R down and start again but rename whatever you had called tabcontents to something else.")
+    warning("tabcontents has been removed from the global environment. If tabcontents is a remnant 
+            from a previous run of the table code then it is not a problem. However, if tabcontents 
+            is a data frame or variable that you have created then you will need to shut R down and 
+            start again but rename whatever you had called tabcontents to something else.")
     
   }
   
   if (exists("notesdf", envir = .GlobalEnv)) {
     
     rm(notesdf, envir = .GlobalEnv)
-    warning("notesdf has been removed from the global environment. If notesdf is a remnant from a previous run of the table code then it is not a problem. However, if notesdf is a data frame or variable that you have created then you will need to shut R down and start again but rename whatever you had called notesdf to something else.")
+    warning("notesdf has been removed from the global environment. If notesdf is a remnant from a 
+            previous run of the table code then it is not a problem. However, if notesdf is a data 
+            frame or variable that you have created then you will need to shut R down and start 
+            again but rename whatever you had called notesdf to something else.")
     
   }
   
   if (exists("definitionsdf", envir = .GlobalEnv)) {
     
     rm(definitionsdf, envir = .GlobalEnv)
-    warning("definitionsdf has been removed from the global environment. If definitionsdf is a remnant from a previous run of the table code then it is not a problem. However, if definitionsdf is a data frame or variable that you have created then you will need to shut R down and start again but rename whatever you had called definitionsdf to something else.")
+    warning("definitionsdf has been removed from the global environment. If definitionsdf is a 
+            remnant from a previous run of the table code then it is not a problem. However, if 
+            definitionsdf is a data frame or variable that you have created then you will need to 
+            shut R down and start again but rename whatever you had called definitionsdf to 
+            something else.")
     
   }
   
   if (exists("covernumrow", envir = .GlobalEnv)) {
     
     rm(covernumrow, envir = .GlobalEnv)
-    warning("covernumrow has been removed from the global environment. If covernumrow is a remnant from a previous run of the table code then it is not a problem. However, if covernumrow is a data frame or variable that you have created then you will need to shut R down and start again but rename whatever you had called covernumrow to something else.")
+    warning("covernumrow has been removed from the global environment. If covernumrow is a remnant 
+            from a previous run of the table code then it is not a problem. However, if covernumrow 
+            is a data frame or variable that you have created then you will need to shut R down and 
+            start again but rename whatever you had called covernumrow to something else.")
     
   }
   
   if (length(ls(pattern = "_startrow", envir = .GlobalEnv)) > 0) {
     
     rm(list = ls(pattern = "_startrow", envir = .GlobalEnv), envir = .GlobalEnv)
-    warning("Strings containing \"_startrow\" have been removed from the global environment. If these are remnants from a previous run of the table code then it is not a problem. However, if they were data frames or variables that you have created then you will need to shut R down and start again but rename whatever you had called these objects to something else.")
+    warning("Strings containing \"_startrow\" have been removed from the global environment. If 
+            these are remnants from a previous run of the table code then it is not a problem. 
+            However, if they were data frames or variables that you have created then you will need 
+            to shut R down and start again but rename whatever you had called these objects to 
+            something else.")
     
   }
   
   if (length(ls(pattern = "_tablestart", envir = .GlobalEnv)) > 0) {
     
     rm(list = ls(pattern = "_tablestart", envir = .GlobalEnv), envir = .GlobalEnv)
-    warning("Strings containing \"_tablestart\" have been removed from the global environment. If these are remnants from a previous run of the table code then it is not a problem. However, if they were data frames or variables that you have created then you will need to shut R down and start again but rename whatever you had called these objects to something else.")
+    warning("Strings containing \"_tablestart\" have been removed from the global environment. If 
+            these are remnants from a previous run of the table code then it is not a problem. 
+            However, if they were data frames or variables that you have created then you will need 
+            to shut R down and start again but rename whatever you had called these objects to 
+            something else.")
     
   }
   
-  # Add required metadata worksheets to the workbook and create new notes and definitions data frames if wanted
+  # Add required metadata worksheets to the workbook and create new notes and definitions data...
+  # ...frames if wanted
   
   if (covertab == "Yes") {
     
@@ -386,7 +437,10 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   if (exists("autonotes2", envir = .GlobalEnv)) {
     
     rm(autonotes2, envir = .GlobalEnv)
-    warning("autonotes2 has been removed from the global environment. If autonotes2 is a remnant from a previous run of the table code then it is not a problem. However, if autonotes2 is a data frame or variable that you have created then you will need to shut R down and start again but rename whatever you had called autonotes2 to something else.")
+    warning("autonotes2 has been removed from the global environment. If autonotes2 is a remnant 
+            from a previous run of the table code then it is not a problem. However, if autonotes2 
+            is a data frame or variable that you have created then you will need to shut R down and 
+            start again but rename whatever you had called autonotes2 to something else.")
     
   }
   
@@ -395,7 +449,8 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     openxlsx::addWorksheet(wb, "Notes")
     
     notesdf <<- data.frame() %>%
-      dplyr::mutate("Note number" = "", "Note text" = "", "Applicable tables" = "", "Link1" = "", "Link2" = "")
+      dplyr::mutate("Note number" = "", "Note text" = "", "Applicable tables" = "", "Link1" = "", 
+                    "Link2" = "")
     
   }
   
@@ -425,21 +480,30 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   if (exists("fontsz", envir = .GlobalEnv)) {
     
     rm(fontsz, envir = .GlobalEnv)
-    warning("fontsz has been removed from the global environment. If fontsz is a remnant from a previous run of the table code then it is not a problem. However, if fontsz is a data frame or variable that you have created then you will need to shut R down and start again but rename whatever you had called fontsz to something else.")
+    warning("fontsz has been removed from the global environment. If fontsz is a remnant from a 
+            previous run of the table code then it is not a problem. However, if fontsz is a data 
+            frame or variable that you have created then you will need to shut R down and start 
+            again but rename whatever you had called fontsz to something else.")
     
   }
   
   if (exists("fontszst", envir = .GlobalEnv)) {
     
     rm(fontszst, envir = .GlobalEnv)
-    warning("fontszst has been removed from the global environment. If fontszst is a remnant from a previous run of the table code then it is not a problem. However, if fontszst is a data frame or variable that you have created then you will need to shut R down and start again but rename whatever you had called fontszst to something else.")
+    warning("fontszst has been removed from the global environment. If fontszst is a remnant from a 
+            previous run of the table code then it is not a problem. However, if fontszst is a data 
+            frame or variable that you have created then you will need to shut R down and start 
+            again but rename whatever you had called fontszst to something else.")
     
   }
   
   if (exists("fontszt", envir = .GlobalEnv)) {
     
     rm(fontszt, envir = .GlobalEnv)
-    warning("fontszt has been removed from the global environment. If fontszt is a remnant from a previous run of the table code then it is not a problem. However, if fontszt is a data frame or variable that you have created then you will need to shut R down and start again but rename whatever you had called fontszt to something else.")
+    warning("fontszt has been removed from the global environment. If fontszt is a remnant from a 
+            previous run of the table code then it is not a problem. However, if fontszt is a data 
+            frame or variable that you have created then you will need to shut R down and start 
+            again but rename whatever you had called fontszt to something else.")
     
   }
   
@@ -451,8 +515,8 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   
 }
 
-###################################################################################################################
-###################################################################################################################
+###################################################################################################
+###################################################################################################
 # MAIN TABLES
 
 #' @title accessibletablesR::creatingtables
