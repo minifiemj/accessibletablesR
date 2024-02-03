@@ -77,18 +77,18 @@
 #' accessibletablesR::definitionstab()
 #' 
 #' accessibletablesR::coverpage(
-#'    title = "Fuel consumption and aspects of car design and performance for various cars",
-#'    intro = "Some made up data about cars",
-#'    about = "The output of an example of how to use accessibletablesR",
-#'    source = "R mtcars",
-#'    relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
-#'    relatedtext = "mtcars: Motor trend car road tests",
-#'    dop = "26 October 2023",
-#'    blank = "There should be no blank cells",
-#'    names = "Your name",
-#'    email = "yourname@emailprovider.com",
-#'    phone = "01111 1111111111111",
-#'    reuse = "Yes", govdept = NULL)
+#'   title = "Fuel consumption and aspects of car design and performance for various cars",
+#'   intro = "Some made up data about cars",
+#'   about = "The output of an example of how to use accessibletablesR",
+#'   source = "R mtcars",
+#'   relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+#'   relatedtext = "mtcars: Motor trend car road tests",
+#'   dop = "26 October 2023",
+#'   blank = "There should be no blank cells",
+#'   names = "Your name",
+#'   email = "yourname@emailprovider.com",
+#'   phone = "01111 1111111111111",
+#'   reuse = "Yes", govdept = NULL)
 #'                              
 #' accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 #' 
@@ -235,8 +235,8 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   if (length(covertab) > 1 | length(contentstab) > 1 | length(notestab) > 1 | 
       length(autonotes) > 1 | length(definitionstab) > 1) {
     
-    stop("One or more of covertab, contentstab, notestab, definitionstab and autnotes not populated 
-         with a single word (\"Yes\", \"No\")")
+    stop(strwrap("One or more of covertab, contentstab, notestab, definitionstab and autnotes not 
+         populated with a single word (\"Yes\", \"No\")", prefix = " ", initial = ""))
     
   }
   
@@ -289,10 +289,10 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   }
   
   if (length(fontnm) > 1 | length(fontcol) > 1 | length(fontsz) > 1 | length(fontszst) > 1 | 
-      ength(fontszt) > 1) {
+      length(fontszt) > 1) {
     
-    stop("One or more of fontnm, fontcol, fontsz, fontszst and fontszt is more than a single 
-         entity")
+    stop(strwrap("One or more of fontnm, fontcol, fontsz, fontszst and fontszt is more than a single 
+         entity", prefix = " ", initial = ""))
     
   }
   
@@ -328,8 +328,9 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   
   if (exists("xxx_table_data2_xxx", envir = .GlobalEnv)) {
     
-    stop("A data frame called xxx_table_data2_xxx exists in the global environment. This needs to be 
-         renamed. The code will overwrite any file named xxx_table_data2_xxx.")
+    stop(strwrap("A data frame called xxx_table_data2_xxx exists in the global environment. This 
+         needs to be renamed. The code will overwrite any file named xxx_table_data2_xxx.",
+         prefix = " ", initial = ""))
     
   }
   
@@ -344,10 +345,10 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   if (exists("wb", envir = .GlobalEnv)) {
     
     rm(wb, envir = .GlobalEnv)
-    warning("wb has been removed from the global environment. If wb is a remnant from a previous run 
-            of the table code then it is not a problem. However, if wb is a data frame or variable 
-            that you have created then you will need to shut R down and start again but rename 
-            whatever you had called wb to something else.")
+    warning(strwrap("wb has been removed from the global environment. If wb is a remnant from a 
+            previous run of the table code then it is not a problem. However, if wb is a data frame 
+            or variable that you have created then you will need to shut R down and start again but 
+            rename whatever you had called wb to something else.", prefix = " ", initial = ""))
     
   }
   
@@ -359,63 +360,66 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   if (exists("tabcontents", envir = .GlobalEnv)) {
     
     rm(tabcontents, envir = .GlobalEnv)
-    warning("tabcontents has been removed from the global environment. If tabcontents is a remnant 
-            from a previous run of the table code then it is not a problem. However, if tabcontents 
-            is a data frame or variable that you have created then you will need to shut R down and 
-            start again but rename whatever you had called tabcontents to something else.")
+    warning(strwrap("tabcontents has been removed from the global environment. If tabcontents is a 
+            remnant from a previous run of the table code then it is not a problem. However, if 
+            tabcontents is a data frame or variable that you have created then you will need to shut 
+            R down and start again but rename whatever you had called tabcontents to something 
+            else.", prefix = " ", initial = ""))
     
   }
   
   if (exists("notesdf", envir = .GlobalEnv)) {
     
     rm(notesdf, envir = .GlobalEnv)
-    warning("notesdf has been removed from the global environment. If notesdf is a remnant from a 
-            previous run of the table code then it is not a problem. However, if notesdf is a data 
-            frame or variable that you have created then you will need to shut R down and start 
-            again but rename whatever you had called notesdf to something else.")
+    warning(strwrap("notesdf has been removed from the global environment. If notesdf is a remnant 
+            from a previous run of the table code then it is not a problem. However, if notesdf is a 
+            data frame or variable that you have created then you will need to shut R down and start 
+            again but rename whatever you had called notesdf to something else.", prefix = " ",
+            initial = ""))
     
   }
   
   if (exists("definitionsdf", envir = .GlobalEnv)) {
     
     rm(definitionsdf, envir = .GlobalEnv)
-    warning("definitionsdf has been removed from the global environment. If definitionsdf is a 
-            remnant from a previous run of the table code then it is not a problem. However, if 
+    warning(strwrap("definitionsdf has been removed from the global environment. If definitionsdf is 
+            a remnant from a previous run of the table code then it is not a problem. However, if 
             definitionsdf is a data frame or variable that you have created then you will need to 
             shut R down and start again but rename whatever you had called definitionsdf to 
-            something else.")
+            something else.", prefix = " ", initial = ""))
     
   }
   
   if (exists("covernumrow", envir = .GlobalEnv)) {
     
     rm(covernumrow, envir = .GlobalEnv)
-    warning("covernumrow has been removed from the global environment. If covernumrow is a remnant 
-            from a previous run of the table code then it is not a problem. However, if covernumrow 
-            is a data frame or variable that you have created then you will need to shut R down and 
-            start again but rename whatever you had called covernumrow to something else.")
+    warning(strwrap("covernumrow has been removed from the global environment. If covernumrow is a 
+            remnant from a previous run of the table code then it is not a problem. However, if 
+            covernumrow is a data frame or variable that you have created then you will need to shut 
+            R down and start again but rename whatever you had called covernumrow to something 
+            else.", prefix = " ", initial = ""))
     
   }
   
   if (length(ls(pattern = "_startrow", envir = .GlobalEnv)) > 0) {
     
     rm(list = ls(pattern = "_startrow", envir = .GlobalEnv), envir = .GlobalEnv)
-    warning("Strings containing \"_startrow\" have been removed from the global environment. If 
-            these are remnants from a previous run of the table code then it is not a problem. 
+    warning(strwrap("Strings containing \"_startrow\" have been removed from the global environment. 
+            If these are remnants from a previous run of the table code then it is not a problem. 
             However, if they were data frames or variables that you have created then you will need 
             to shut R down and start again but rename whatever you had called these objects to 
-            something else.")
+            something else.", prefix = " ", initial = ""))
     
   }
   
   if (length(ls(pattern = "_tablestart", envir = .GlobalEnv)) > 0) {
     
     rm(list = ls(pattern = "_tablestart", envir = .GlobalEnv), envir = .GlobalEnv)
-    warning("Strings containing \"_tablestart\" have been removed from the global environment. If 
-            these are remnants from a previous run of the table code then it is not a problem. 
-            However, if they were data frames or variables that you have created then you will need 
-            to shut R down and start again but rename whatever you had called these objects to 
-            something else.")
+    warning(strwrap("Strings containing \"_tablestart\" have been removed from the global 
+            environment. If these are remnants from a previous run of the table code then it is not 
+            a problem. However, if they were data frames or variables that you have created then you 
+            will need to shut R down and start again but rename whatever you had called these 
+            objects to something else.", prefix = " ", initial = ""))
     
   }
   
@@ -437,10 +441,11 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   if (exists("autonotes2", envir = .GlobalEnv)) {
     
     rm(autonotes2, envir = .GlobalEnv)
-    warning("autonotes2 has been removed from the global environment. If autonotes2 is a remnant 
-            from a previous run of the table code then it is not a problem. However, if autonotes2 
-            is a data frame or variable that you have created then you will need to shut R down and 
-            start again but rename whatever you had called autonotes2 to something else.")
+    warning(strwrap("autonotes2 has been removed from the global environment. If autonotes2 is a 
+            remnant from a previous run of the table code then it is not a problem. However, if 
+            autonotes2 is a data frame or variable that you have created then you will need to shut 
+            R down and start again but rename whatever you had called autonotes2 to something 
+            else.", prefix = " ", initial = ""))
     
   }
   
@@ -480,30 +485,33 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   if (exists("fontsz", envir = .GlobalEnv)) {
     
     rm(fontsz, envir = .GlobalEnv)
-    warning("fontsz has been removed from the global environment. If fontsz is a remnant from a 
-            previous run of the table code then it is not a problem. However, if fontsz is a data 
-            frame or variable that you have created then you will need to shut R down and start 
-            again but rename whatever you had called fontsz to something else.")
+    warning(strwrap("fontsz has been removed from the global environment. If fontsz is a remnant 
+            from a previous run of the table code then it is not a problem. However, if fontsz is a 
+            data frame or variable that you have created then you will need to shut R down and start 
+            again but rename whatever you had called fontsz to something else.", prefix = " ",
+            initial = ""))
     
   }
   
   if (exists("fontszst", envir = .GlobalEnv)) {
     
     rm(fontszst, envir = .GlobalEnv)
-    warning("fontszst has been removed from the global environment. If fontszst is a remnant from a 
-            previous run of the table code then it is not a problem. However, if fontszst is a data 
-            frame or variable that you have created then you will need to shut R down and start 
-            again but rename whatever you had called fontszst to something else.")
+    warning(strwrap("fontszst has been removed from the global environment. If fontszst is a remnant 
+            from a previous run of the table code then it is not a problem. However, if fontszst is 
+            a data frame or variable that you have created then you will need to shut R down and 
+            start again but rename whatever you had called fontszst to something else.", 
+            prefix= " ", initial = ""))
     
   }
   
   if (exists("fontszt", envir = .GlobalEnv)) {
     
     rm(fontszt, envir = .GlobalEnv)
-    warning("fontszt has been removed from the global environment. If fontszt is a remnant from a 
-            previous run of the table code then it is not a problem. However, if fontszt is a data 
-            frame or variable that you have created then you will need to shut R down and start 
-            again but rename whatever you had called fontszt to something else.")
+    warning(strwrap("fontszt has been removed from the global environment. If fontszt is a remnant 
+            from a previous run of the table code then it is not a problem. However, if fontszt is a 
+            data frame or variable that you have created then you will need to shut R down and start 
+            again but rename whatever you had called fontszt to something else.", prefix = " ",
+            initial = ""))
     
   }
   
@@ -524,31 +532,50 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
 #' @description Create a worksheet, formatted to meet accessibility criteria, containing data table.
 #' 
 #' @details 
-#' The creatingtables function will create a worksheet with all the data and annotations
-#' title, sheetname and table_data are the only compulsory parameters
-#' All other parameters are optional and most are preset to NULL, so only need to be defined if they are wanted
+#' The creatingtables function will create a worksheet with all the data and annotations.
+#' title, sheetname and table_data are the only compulsory parameters.
+#' All other parameters are optional and most are preset to NULL, so only need to be defined if 
+#' they are wanted.
 #' sheetname is what you want the sheet to be called in the published workbook
-#' table_data is the name of the R dataframe containing the data to be included in the published workbook
-#' headrowsize is the height of the row containing the table column names
-#' numdatacols is the column position(s) of columns containing number data values (character or numeric class) - it is useful for right aligning data columns and inserting thousand commas
-#' numdatacolsdp is the number of desired decimal places for columns with numbers (character or numeric class)
-#' othdatacols is the column position(s) of columns containing data values that are not numbers (e.g., text, dates) - it is useful for formatting (although at present it seems dates do not obey the given formatting)
-#' Character class data columns will have thousand commas inserted as long as the column position is identified in numdatacols
-#' Numeric class data columns will only have thousand commas inserted if numdatacolsdp is populated
-#' numdatacolsdp either should be one value which will be applied to all numdatacols columns or a vector the same length as numdatacols
-#' For character variables, the figure in Excel will only be the value rounded to the specified number of decimal places. For numeric variables, the figure in Excel will be maintained but the displayed figure will be the value rounded to the specified number of decimal places.
-#' Enter 0 in numdatacolsdp if no decimal places wanted. If an element in numdatacols represents a non-character and non-numeric class column, enter 0 in the corresponding position in numdatacolsdp
-#' tablename is the name of the table within the worksheet that a screen reader will detect. It is automatically selected to be the same as the sheetname unless tablename is populated.
-#' gridlines is preset to "Yes", change to "No" if gridlines are not wanted
-#' columnwidths is preset to "R_auto" which allows openxlsx to automatically determine column widths. If automatic width determination is not wanted, set to NULL.
-#' columnwidths can alternatively be set to "characters" which will base the column widths on the number of characters in a column cell.
-#' If columnwidths = "characters" then width_adj can be modified. width_adj adds an additional few spaces to the number of characters in a column cell.
-#' width_adj can either be one value which will be applied to all columns or a vector the same length as the number of columns in the table
-#' If you want to specify the exact width of each column, set columnwidths = "specified" and provide the widths in colwid_spec (e.g., colwid_spec = c(3,4,5))
-#' If a link to the contents page is required, set one of the extralines to "Link to contents"
-#' If a link to the notes page is required, set one of the extralines to "Link to notes"
-#' If a link to the definitions page is required, set one of the extralines to "Link to definitions"
-#' extralines1-6 can be set to hyperlinks - e.g., extraline5 = "[BBC](https://www.bbc.co.uk)"
+#' table_data is the name of the R dataframe containing the data to be included in the published 
+#' workbook.
+#' headrowsize is the height of the row containing the table column names.
+#' numdatacols is the column position(s) of columns containing number data values (character or 
+#' numeric class) - it is useful for right aligning data columns and inserting thousand commas.
+#' numdatacolsdp is the number of desired decimal places for columns with numbers (character or 
+#' numeric class).
+#' othdatacols is the column position(s) of columns containing data values that are not numbers 
+#' (e.g., text, dates) - it is useful for formatting (although at present it seems dates do not 
+#' obey the given formatting).
+#' Character class data columns will have thousand commas inserted as long as the column position 
+#' is identified in numdatacols.
+#' Numeric class data columns will only have thousand commas inserted if numdatacolsdp is populated.
+#' numdatacolsdp either should be one value which will be applied to all numdatacols columns or a 
+#' vector the same length as numdatacols.
+#' For character variables, the figure in Excel will only be the value rounded to the specified 
+#' number of decimal places. For numeric variables, the figure in Excel will be maintained but the 
+#' displayed figure will be the value rounded to the specified number of decimal places.
+#' Enter 0 in numdatacolsdp if no decimal places wanted. If an element in numdatacols represents a 
+#' non-character and non-numeric class column, enter 0 in the corresponding position in 
+#' numdatacolsdp.
+#' tablename is the name of the table within the worksheet that a screen reader will detect. It is 
+#' automatically selected to be the same as the sheetname unless tablename is populated.
+#' gridlines is preset to "Yes", change to "No" if gridlines are not wanted.
+#' columnwidths is preset to "R_auto" which allows openxlsx to automatically determine column 
+#' widths. If automatic width determination is not wanted, set to NULL.
+#' columnwidths can alternatively be set to "characters" which will base the column widths on the 
+#' number of characters in a column cell.
+#' If columnwidths = "characters" then width_adj can be modified. width_adj adds an additional few 
+#' spaces to the number of characters in a column cell.
+#' width_adj can either be one value which will be applied to all columns or a vector the same 
+#' length as the number of columns in the table.
+#' If you want to specify the exact width of each column, set columnwidths = "specified" and provide 
+#' the widths in colwid_spec (e.g., colwid_spec = c(3,4,5)).
+#' If a link to the contents page is required, set one of the extralines to "Link to contents".
+#' If a link to the notes page is required, set one of the extralines to "Link to notes".
+#' If a link to the definitions page is required, set one of the extralines to "Link to 
+#' definitions".
+#' extralines1-6 can be set to hyperlinks - e.g., extraline5 = "[BBC](https://www.bbc.co.uk)".
 #' 
 #' @param title Title of worksheet
 #' @param subtitle Subtitle of worksheet (optional)
@@ -573,64 +600,80 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
 #' @returns A worksheet with data formatted to meet accessibility criteria.
 #' 
 #' @examples 
-#' accessibletablesR::workbook(covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes",
-#'                             autonotes = "Yes", title = "Fuel consumption and aspects of car design and performance for various cars",
-#'                             creator = "An organisation")
+#' accessibletablesR::workbook(
+#'    covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes", 
+#'    autonotes = "Yes", 
+#'    title = "Fuel consumption and aspects of car design and performance for various cars",
+#'    creator = "An organisation")
 #'                             
-#' accessibletablesR::creatingtables(title = "Fuel consumption and aspects of car design and performance for various cars C",
-#'                                   subtitle = "Cars",
-#'                                   extraline1 = "Link to contents",
-#'                                   extraline2 = "Link to notes",
-#'                                   extraline3 = "Link to definitions",
-#'                                   sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
-#'                                   numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
-#'                                   othdatacols = c(9,10), columnwidths = "specified",
-#'                                   colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
+#' accessibletablesR::creatingtables(
+#'    title = "Fuel consumption and aspects of car design and performance for various cars C",
+#'    subtitle = "Cars",
+#'    extraline1 = "Link to contents",
+#'    extraline2 = "Link to notes",
+#'    extraline3 = "Link to definitions",
+#'    sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
+#'    numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
+#'    othdatacols = c(9,10), columnwidths = "specified",
+#'    colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
 #'                                   
 #' accessibletablesR::contentstable()
 #' 
-#' accessibletablesR::addnote(notenumber = "note1", notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google", linktext2 = "https://www.ons.google.co.uk") 
+#' accessibletablesR::addnote(notenumber = "note1", 
+#'    notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google",
+#'                linktext2 = "https://www.ons.google.co.uk") 
 #' 
 #' accessibletablesR::notestab()
 #' 
-#' accessibletablesR::adddefinition(term = "Usual resident", definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and had stayed or intended to stay in the UK for a period of 12 months or more, or had a permanent UK address and was outside the UK and intended to be outside the UK for less than 12 months.")
+#' accessibletablesR::adddefinition(term = "Usual resident", 
+#'    definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and 
+#'                  had stayed or intended to stay in the UK for a period of 12 months or more, or 
+#'                  had a permanent UK address and was outside the UK and intended to be outside the
+#'                  UK for less than 12 months.")
 #'
 #' accessibletablesR::definitionstab()
 #' 
-#' accessibletablesR::coverpage(title = "Fuel consumption and aspects of car design and performance for various cars",
-#'                              intro = "Some made up data about cars",
-#'                              about = "The output of an example of how to use accessibletablesR",
-#'                              source = "R mtcars",
-#'                              relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
-#'                              relatedtext = "mtcars: Motor trend car road tests",
-#'                              dop = "26 October 2023",
-#'                              blank = "There should be no blank cells",
-#'                              names = "Your name",
-#'                              email = "yourname@emailprovider.com",
-#'                              phone = "01111 1111111111111",
-#'                              reuse = "Yes", govdept = NULL)
+#' accessibletablesR::coverpage(
+#'   title = "Fuel consumption and aspects of car design and performance for various cars",
+#'   intro = "Some made up data about cars",
+#'   about = "The output of an example of how to use accessibletablesR",
+#'   source = "R mtcars",
+#'   relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+#'   relatedtext = "mtcars: Motor trend car road tests",
+#'   dop = "26 October 2023",
+#'   blank = "There should be no blank cells",
+#'   names = "Your name",
+#'   email = "yourname@emailprovider.com",
+#'   phone = "01111 1111111111111",
+#'   reuse = "Yes", govdept = NULL)
 #'                              
 #' accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 #' 
 #' @export
 
-creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2 = NULL, extraline3 = NULL,
-                           extraline4 = NULL, extraline5 = NULL, extraline6 = NULL, sheetname, table_data, 
-                           headrowsize = NULL, numdatacols = NULL, numdatacolsdp = NULL, othdatacols = NULL, 
-                           tablename = NULL, gridlines = "Yes", columnwidths = "R_auto", width_adj = NULL,
-                           colwid_spec = NULL) {
+creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2 = NULL, 
+                           extraline3 = NULL, extraline4 = NULL, extraline5 = NULL, 
+                           extraline6 = NULL, sheetname, table_data, headrowsize = NULL, 
+                           numdatacols = NULL, numdatacolsdp = NULL, othdatacols = NULL, 
+                           tablename = NULL, gridlines = "Yes", columnwidths = "R_auto", 
+                           width_adj = NULL, colwid_spec = NULL) {
   
-  if (!("tidyverse" %in% utils::installed.packages()) | !("openxlsx" %in% utils::installed.packages())) {
+  if (!("tidyverse" %in% utils::installed.packages()) | 
+      !("openxlsx" %in% utils::installed.packages())) {
     
-    stop("Not all required packages installed. Run the \"workbook\" function first to ensure packages are installed.")
+    stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
+         packages are installed.", prefix = " ", initial = ""))
     
-  } else if (utils::packageVersion("tidyverse") < "2.0.0" | utils::packageVersion("openxlsx") < "4.2.5.2") {
+  } else if (utils::packageVersion("tidyverse") < "2.0.0" | 
+             utils::packageVersion("openxlsx") < "4.2.5.2") {
     
-    stop("Older versions of packages detected. Run the \"workbook\" function first to ensure up to date packages are installed.")
+    stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
+         up to date packages are installed.", prefix = " ", initial = ""))
     
   }
   
-  # Checking some of the parameters to ensure they are properly populated, if not the function will error or display a warning in the console
+  # Checking some of the parameters to ensure they are properly populated, if not the function...
+  # ...will error or display a warning in the console
   
   table_data_temp <- table_data %>%
     dplyr::mutate(dplyr::across(dplyr::everything(), ~ dplyr::case_when(.x == "" ~ NA,
@@ -650,7 +693,9 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   if (table_data_temp2[["numcellmiss3"]] == 1) {
     
-    warning("There is at least one row missing data in all columns. Check to make sure there is not a problem. This code is not designed to produce worksheets with more than one table in them.")
+    warning(strwrap("There is at least one row missing data in all columns. Check to make sure there 
+            is not a problem. This code is not designed to produce worksheets with more than one 
+            table in them.", prefix = " ", initial = ""))
     
   }
   
@@ -667,7 +712,9 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   if (colsmiss2 == 1) {
     
-    warning("There is at least one column missing data. Check to make sure there is not a problem. This code is not designed to produce worksheets with more than one table in them.")
+    warning(strwrap("There is at least one column missing data. Check to make sure there is not a 
+            problem. This code is not designed to produce worksheets with more than one table in 
+            them.", prefix = " ", initial = ""))
     
   }
   
@@ -675,7 +722,8 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   if (any(is.na(table_data_temp)) == TRUE) {
     
-    warning("There are some blank cells present in the data. Check to make sure these are not a problem.")
+    warning(strwrap("There are some blank cells present in the data. Check to make sure these are 
+            not a problem.", prefix = " ", initial = ""))
     
   }
   
@@ -696,14 +744,25 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   if (length(title) > 1 | length(subtitle) > 1 | length(sheetname) > 1 | length(headrowsize) > 1 | 
       length(tablename) > 1 | length(gridlines) > 1) {
     
-    stop("One or more of title, subtitle, sheetname, headrowsize, tablename and gridlines are not populated properly. They must be a single entity and not a vector.")
+    stop(strwrap("One or more of title, subtitle, sheetname, headrowsize, tablename and gridlines 
+         are not populated properly. They must be a single entity and not a vector.", prefix = " ",
+         initial = ""))
     
   }
   
-  if (length(extraline1) > 1 | length(extraline2) > 1 | length(extraline3) > 1 | length(extraline4) > 1 |
-      length(extraline5) > 1 | length(extraline6) > 1) {
+  if (length(extraline1) > 1 | length(extraline2) > 1 | length(extraline3) > 1 | 
+      length(extraline4) > 1 | length(extraline5) > 1 | length(extraline6) > 1) {
     
-    warning("One or more of extraline1, extraline2, extraline3, extraline4, extraline5 and extraline6 is a vector. Check that this is intentional.")
+    warning(strwrap("One or more of extraline1, extraline2, extraline3, extraline4, extraline5 and 
+            extraline6 is a vector. Check that this is intentional.", prefix = " ", initial = ""))
+    
+  }
+  
+  if (any(duplicated(c(title, subtitle, extraline1, extraline2, extraline3, extraline4,
+                       extraline5, extraline6))) == TRUE) {
+    
+    warning(strwrap("There is duplicated text somewhere in the title, subtitle and extralines1-6. 
+            Check that this is intentional.", prefix = " ", initial = ""))
     
   }
   
@@ -750,7 +809,8 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   if (!grepl("\\D", sheetname, perl = TRUE) == TRUE) {
     
-    warning("sheetname is only comprised of numbers - this can cause an issue when opening up the final spreadsheet")
+    warning(strwrap("sheetname is only comprised of numbers - this can cause an issue when opening 
+            up the final spreadsheet", prefix = " ", initial = ""))
     
   }
   
@@ -762,19 +822,23 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   if (deparse(substitute(table_data)) == "xxx_table_data2_xxx") {
     
-    stop("Data frame used as table_data needs to be renamed. The code will overwrite any file named xxx_table_data2_xxx.")
+    stop(strwrap("Data frame used as table_data needs to be renamed. The code will overwrite any 
+         file named xxx_table_data2_xxx.", prefix = " ", initial = ""))
     
   }
   
-  if ("xxx_temp_xxx" %in% colnames(table_data) | "xxx_temp_xxx2" %in% colnames(table_data) | "xxx_temp_xxx3" %in% colnames(table_data))  { 
+  if ("xxx_temp_xxx" %in% colnames(table_data) | "xxx_temp_xxx2" %in% colnames(table_data) | 
+      "xxx_temp_xxx3" %in% colnames(table_data))  { 
     
-    stop("Temporary variables (xxx_temp_xxx or xxx_temp_xxx2 or xxx_temp_xxx3) already exist on the file")
+    stop(strwrap("Temporary variables (xxx_temp_xxx or xxx_temp_xxx2 or xxx_temp_xxx3) already exist 
+         on the file", prefix = " ", initial = ""))
     
   }
   
   if (!is.null(numdatacols) & !is.numeric(numdatacols)) {
     
-    stop("numdatacols either needs to be numeric (e.g., numdatacols = 6 or numdatacols = c(2,5) or NULL")
+    stop(strwrap("numdatacols either needs to be numeric (e.g., numdatacols = 6 or numdatacols = 
+         c(2,5) or NULL", prefix = " ", initial = ""))
     
   }
   
@@ -794,7 +858,8 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   if (!is.null(numdatacolsdp) & !is.numeric(numdatacolsdp)) {
     
-    stop("numdatacolsdp either needs to be numeric (e.g., numdatacolsdp = 6 or numdatacolsdp = c(2,5) or NULL")
+    stop(strwrap("numdatacolsdp either needs to be numeric (e.g., numdatacolsdp = 6 or 
+         numdatacolsdp = c(2,5) or NULL", prefix = " ", initial = ""))
     
   }
   
@@ -810,18 +875,25 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   if (is.null(numdatacols) & !is.null(numdatacolsdp)) {
     
-    stop("numdatacols has not been populated but numdatacolsdp has. Need to also populate numdatacols or set numdatacolsdp to NULL.")
+    stop(strwrap("numdatacols has not been populated but numdatacolsdp has. Need to also populate 
+         numdatacols or set numdatacolsdp to NULL.", prefix = " ", initial = ""))
     
   }
   
-  if (!is.null(numdatacols) & !is.null(numdatacolsdp) & length(numdatacols) > 1 & length(numdatacolsdp) == 1) {
+  if (!is.null(numdatacols) & !is.null(numdatacolsdp) & length(numdatacols) > 1 & 
+      length(numdatacolsdp) == 1) {
     
     numdatacolsdp <- rep(numdatacolsdp, length(numdatacols))
-    warning("numdatacols specifies more than one column. numdatacolsdp has only one value and so it has been assumed that this one value represents the number of decimal places required for each column specified by numdatacols.")
+    warning(strwrap("numdatacols specifies more than one column. numdatacolsdp has only one value 
+            and so it has been assumed that this one value represents the number of decimal places 
+            required for each column specified by numdatacols.", prefix = " ", initial = ""))
     
-  } else if (!is.null(numdatacols) & !is.null(numdatacolsdp) & length(numdatacols) != length(numdatacolsdp)) {
+  } else if (!is.null(numdatacols) & !is.null(numdatacolsdp) & 
+             length(numdatacols) != length(numdatacolsdp)) {
     
-    stop("The number of elements in numdatacols and numdatacolsdp needs to be the same (e.g., if numdatacols = c(x,y,z) then numdatacolsdp = c(a,b,c)) or numdatacolsdp set to one value to be applied to all columns in numdatacols")
+    stop(strwrap("The number of elements in numdatacols and numdatacolsdp needs to be the same 
+         (e.g., if numdatacols = c(x,y,z) then numdatacolsdp = c(a,b,c)) or numdatacolsdp set to 
+         one value to be applied to all columns in numdatacols", prefix = " ", initial = ""))
     
   }
   
@@ -833,7 +905,8 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   if (!is.null(othdatacols) & !is.numeric(othdatacols)) {
     
-    stop("othdatacols either needs to be numeric (e.g., othdatacols = 6 or othdatacols = c(2,5) or NULL")
+    stop(strwrap("othdatacols either needs to be numeric (e.g., othdatacols = 6 or othdatacols = 
+         c(2,5) or NULL", prefix = " ", initial = ""))
     
   }
   
@@ -870,9 +943,12 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   for (i in seq_along(numdatacols)) {
     
-    if (!is.null(numdatacols) & class(table_data[[numdatacols[i]]]) != "character" & class(table_data[[numdatacols[i]]]) != "numeric" & class(table_data[[numdatacols[i]]]) != "integer") {
+    if (!is.null(numdatacols) & class(table_data[[numdatacols[i]]]) != "character" & 
+        class(table_data[[numdatacols[i]]]) != "numeric" & 
+        class(table_data[[numdatacols[i]]]) != "integer") {
       
-      warning("A column identified as a number column is not of class character or numeric. Check that is intentional.")
+      warning(strwrap("A column identified as a number column is not of class character or numeric. 
+              Check that is intentional.", prefix = " ", initial = ""))
       othdatacols <- append(othdatacols, numdatacols[i])
       
     } else if (class(table_data[[numdatacols[i]]]) == "character") {
@@ -880,7 +956,8 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       numcharcols <- append(numcharcols, numdatacols[i])
       numcharcolsdp <- append(numcharcolsdp, numdatacolsdp[i])
       
-    } else if (class(table_data[[numdatacols[i]]]) == "numeric" | class(table_data[[numdatacols[i]]]) == "integer") {
+    } else if (class(table_data[[numdatacols[i]]]) == "numeric" | 
+               class(table_data[[numdatacols[i]]]) == "integer") {
       
       numericcols <- append(numericcols, numdatacols[i])
       numericcolsdp <- append(numericcolsdp, numdatacolsdp[i])
@@ -891,7 +968,10 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   if (!is.null(numericcols) & is.null(numericcolsdp)) {
     
-    warning("There are data columns of class numeric but the number of decimal places desired has not been specified. This means that thousand commas cannot be inserted automatically. If these commas are desired then consider entering 0 in the appropriate position in numdatacolsdp.")
+    warning(strwrap("There are data columns of class numeric but the number of decimal places 
+            desired has not been specified. This means that thousand commas cannot be inserted 
+            automatically. If these commas are desired then consider entering 0 in the appropriate 
+            position in numdatacolsdp.", prefix = " ", initial = ""))
     
   }
   
@@ -942,16 +1022,19 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   } else if (length(columnwidths) > 1) {
     
     columnwidths <- "R_auto"
-    warning("columnwidths should be a single word, not a vector. It will be changed back to the default of \"R_auto\".")
+    warning(strwrap("columnwidths should be a single word, not a vector. It will be changed back to 
+            the default of \"R_auto\".", prefix = " ", initial = ""))
     
-  } else if (columnwidths == "none" | columnwidths == "no" | columnwidths == "n" | columnwidths == "default") {
+  } else if (columnwidths == "none" | columnwidths == "no" | columnwidths == "n" | 
+             columnwidths == "default") {
     
     columnwidths <- "Default"
     
   } else if (!is.null(columnwidths) & !is.character(columnwidths)) {
     
     columnwidths <- "R_auto"
-    warning("columnwidths should be a character string. It will be changed back to the default of \"R_auto\".")
+    warning(strwrap("columnwidths should be a character string. It will be changed back to the 
+            default of \"R_auto\".", prefix = " ", initial = ""))
     
   } else if (columnwidths == "r_auto") {
     
@@ -961,10 +1044,13 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
     columnwidths <- "characters"
     
-  } else if (columnwidths != "r_auto" & columnwidths != "characters" & columnwidths != "specified") {
+  } else if (columnwidths != "r_auto" & columnwidths != "characters" & 
+             columnwidths != "specified") {
     
     columnwidths <- "R_auto"
-    warning("columnwidths has not been set to \"R_auto\" or \"characters\" or \"specified\" or NULL. It will be changed back to the default of \"R_auto\".")
+    warning(strwrap("columnwidths has not been set to \"R_auto\" or \"characters\" or \"specified\" 
+            or NULL. It will be changed back to the default of \"R_auto\".", prefix = " ",
+            initial = ""))
     
   }
   
@@ -980,20 +1066,27 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   if (columnwidths == "specified" & is.null(colwid_spec)) {
     
-    stop("The option to specify column widths has been selected but the widths have not been provided")
+    stop(strwrap("The option to specify column widths has been selected but the widths have not 
+         been provided", prefix = " ", initial = ""))
     
   } else if (columnwidths != "specified" & !is.null(colwid_spec)) {
     
-    stop("The option to specify column widths has not been selected but the widths have been provided")
+    stop(strwrap("The option to specify column widths has not been selected but the widths have been 
+         provided", prefix = " ", initial = ""))
     
-  } else if (columnwidths == "specified" & length(colwid_spec) == 1 & length(colnames(table_data)) > 1) {
+  } else if (columnwidths == "specified" & length(colwid_spec) == 1 & 
+             length(colnames(table_data)) > 1) {
     
     colwid_spec <- rep(colwid_spec, length(colnames(table_data)))
-    warning("There is more than one column in the table. colwid_spec has only one value and so it has been assumed that this one value represents the widths of all columns.")
+    warning(strwrap("There is more than one column in the table. colwid_spec has only one value and 
+            so it has been assumed that this one value represents the widths of all columns.",
+            prefix = " ", initial = ""))
     
   } else if (columnwidths == "specified" & length(colwid_spec) != length(colnames(table_data))) {
     
-    stop("The number of elements in colwid_spec and the number of columns in the table need to be the same, or colwid_spec set to one value to be applied to all columns in the table")
+    stop(strwrap("The number of elements in colwid_spec and the number of columns in the table need 
+         to be the same, or colwid_spec set to one value to be applied to all columns in the table",
+         prefix = " ", initial = ""))
     
   }
   
@@ -1003,16 +1096,22 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       
       stop("width_adj must be a numeric value")
       
-    } else if (length(width_adj) > 1 & length(width_adj) != length(colnames(table_data)) & columnwidths == "characters") {
+    } else if (length(width_adj) > 1 & length(width_adj) != length(colnames(table_data)) & 
+               columnwidths == "characters") {
       
-      stop("The number of elements in width_adj is not equal to the number of columns in the table data. The number of elements and columns should either be equal or width_adj should be set to only a single value.")
+      stop(strwrap("The number of elements in width_adj is not equal to the number of columns in the 
+           table data. The number of elements and columns should either be equal or width_adj should 
+           be set to only a single value.", prefix = " ", initial = ""))
       
     }
     
   }
   
-  # In addition to the title and subtitle, six other fields are permitted above the main data - these extra fields can be provided as vectors and so there is really no limit to the number of rows that can come before the main data
-  # If a line with information on notes is wanted, this is initially created and existing rows with information are shifted down one row position
+  # In addition to the title and subtitle, six other fields are permitted above the main data - ...
+  # ... these extra fields can be provided as vectors and so there is really no limit to the ...
+  # ... number of rows that can come before the main data
+  # If a line with information on notes is wanted, this is initially created and existing rows ...
+  # ... with information are shifted down one row position
   
   extralines1 <- c(extraline1, extraline2, extraline3, extraline4, extraline5, extraline6)
   
@@ -1020,9 +1119,13 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
     for (i in seq_along(extralines1)) {
       
-      if (stringr::str_detect(extralines1[i], "This worksheet contains one table|this worksheet contains one table|\\[note")) {
+      if (stringr::str_detect(extralines1[i], 
+          "This worksheet contains one table|this worksheet contains one table|\\[note")) {
         
-        warning("If autonotes2 is set to \"Yes\" then the information about the worksheet containing one table or the notes tab will automatically be inserted and so there is no need to have one of the extralines already stating this")
+        warning(strwrap("If autonotes2 is set to \"Yes\" then the information about the worksheet 
+                containing one table or the notes tab will automatically be inserted and so there is 
+                no need to have one of the extralines already stating this", prefix = " ", 
+                initial = ""))
         
       }
       
@@ -1065,13 +1168,15 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
     for (i in seq_along(extralines1)) {
       
-      if (stringr::str_detect(extralines1[i], "This worksheet contains one table|this worksheet contains one table")) {
+      if (stringr::str_detect(extralines1[i], 
+          "This worksheet contains one table|this worksheet contains one table")) {
         
         onetablenote <- 1
         
       }
       
-      if ("Notes" %in% colnames(table_data) | "Note" %in% colnames(table_data) | stringr::str_detect(extralines1[i], "\\[note")) {
+      if ("Notes" %in% colnames(table_data) | "Note" %in% colnames(table_data) |
+          stringr::str_detect(extralines1[i], "\\[note")) {
         
         notescolumn <- 1
         
@@ -1081,13 +1186,16 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
     if (onetablenote == 0) {
       
-      warning("There is no recognisable reference to the worksheet containing one table. Consider whether you want to make a reference to this in one of the extra lines above the main data.")
+      warning(strwrap("There is no recognisable reference to the worksheet containing one table. 
+              Consider whether you want to make a reference to this in one of the extra lines above 
+              the main data.", prefix = " ", initial = ""))
       
     }
     
     if (notescolumn == 0) {
       
-      warning("There is no recognisable notes column or reference to notes. Check whether this is OK.")
+      warning(strwrap("There is no recognisable notes column or reference to notes. Check whether 
+              this is OK.", prefix = " ", initial = ""))
       
     }
     
@@ -1103,8 +1211,10 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
   }
   
-  # Function to deal with columns containing numbers stored as text, likely as some cells contain character values (e.g., [c] to indicate some form of statistical disclosure control)
-  # The function recognises characters accepted by the GSS as symbols or shorthand applicable for use in tables (b, c, e, er, f, low, p, r, u, w, x, z)
+  # Function to deal with columns containing numbers stored as text, likely as some cells ...
+  # ... contain character values (e.g., [c] to indicate some form of statistical disclosure control)
+  # The function recognises characters accepted by the GSS as symbols or shorthand applicable ,,,
+  # ... for use in tables (b, c, e, er, f, low, p, r, u, w, x, z)
   # Thousand commas will be inserted if necessary (e.g., 1,340)
   # Function will be called only when a specific number of decimal places is not given
   
@@ -1113,18 +1223,20 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   numcharvars <- function(numcharcols) {
     
     dfx <- xxx_table_data2_xxx %>%
-      dplyr::mutate(xxx_temp_xxx = dplyr::case_when(.[[numcharcols]] %in% c("[b]", "[c]", "[e]", "[er]", "[f]",
-                                                                            "[low]", "[p]", "[r]", "[u]", "[w]",
-                                                                            "[x]", "[z]", "") ~ "0",
-                                                    is.na(.[[numcharcols]]) ~ "0",
-                                                    !is.na(.[[numcharcols]]) ~ gsub(",", "", .[[numcharcols]]))) %>%
+      dplyr::mutate(xxx_temp_xxx = 
+             dplyr::case_when(.[[numcharcols]] %in% c("[b]", "[c]", "[e]", "[er]", "[f]",
+                                                      "[low]", "[p]", "[r]", "[u]", "[w]",
+                                                      "[x]", "[z]", "") ~ "0",
+                                   is.na(.[[numcharcols]]) ~ "0",
+                                   !is.na(.[[numcharcols]]) ~ gsub(",", "", .[[numcharcols]]))) %>%
       dplyr::mutate(xxx_temp_xxx = as.numeric(xxx_temp_xxx)) %>%
       dplyr::mutate(xxx_temp_xxx2 = format(xxx_temp_xxx, big.mark = ",", scientific = FALSE)) %>%
-      dplyr::mutate(xxx_temp_xxx3 = dplyr::case_when(.[[numcharcols]] %in% c("[b]", "[c]", "[e]", "[er]", "[f]",
-                                                                             "[low]", "[p]", "[r]", "[u]", "[w]",
-                                                                             "[x]", "[z]", "") ~ as.character(.[[numcharcols]]),
-                                                     is.na(.[[numcharcols]]) ~ "",
-                                                     TRUE ~ as.character(xxx_temp_xxx2)))
+      dplyr::mutate(xxx_temp_xxx3 = 
+        dplyr::case_when(.[[numcharcols]] %in% c("[b]", "[c]", "[e]", "[er]", "[f]",
+                                                 "[low]", "[p]", "[r]", "[u]", "[w]",
+                                                 "[x]", "[z]", "") ~ as.character(.[[numcharcols]]),
+                                                 is.na(.[[numcharcols]]) ~ "",
+                                                 TRUE ~ as.character(xxx_temp_xxx2)))
     
     dfx[[numcharcols]] <- dfx$xxx_temp_xxx3
     
@@ -1133,26 +1245,33 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
   }
   
-  # Function to deal with columns containing numbers stored as text, likely as some cells contain character values (e.g., [c] to indicate some form of statistical disclosure control)
-  # The function recognises characters accepted by the GSS as symbols or shorthand applicable for use in tables (b, c, e, er, f, low, p, r, u, w, x, z)
+  # Function to deal with columns containing numbers stored as text, likely as some cells ...
+  # ... contain character values (e.g., [c] to indicate some form of statistical disclosure control)
+  # The function recognises characters accepted by the GSS as symbols or shorthand applicable ...
+  # ... for use in tables (b, c, e, er, f, low, p, r, u, w, x, z)
   # Thousand commas will be inserted if necessary (e.g., 1,340.54)
   # Function will be called only when a specific number of decimal places is given
   
   numcharvars2 <- function(numcharcols, numcharcolsdp) {
     
     dfx <- xxx_table_data2_xxx %>%
-      dplyr::mutate(xxx_temp_xxx = dplyr::case_when(.[[numcharcols]] %in% c("[b]", "[c]", "[e]", "[er]", "[f]",
-                                                                            "[low]", "[p]", "[r]", "[u]", "[w]",
-                                                                            "[x]", "[z]", "") ~ "0",
-                                                    is.na(.[[numcharcols]]) ~ "0",
-                                                    !is.na(.[[numcharcols]]) ~ gsub(",", "", .[[numcharcols]]))) %>%
-      dplyr::mutate(xxx_temp_xxx = if (numcharcolsdp >= 2) as.numeric(xxx_temp_xxx) else round(as.numeric(xxx_temp_xxx), digits = numcharcolsdp)) %>%
-      dplyr::mutate(xxx_temp_xxx2 = if (numcharcolsdp >= 2) format(xxx_temp_xxx, big.mark = ",", scientific = FALSE, nsmall = numcharcolsdp) else format(xxx_temp_xxx, big.mark = ",", scientific = FALSE)) %>%
-      dplyr::mutate(xxx_temp_xxx3 = dplyr::case_when(.[[numcharcols]] %in% c("[b]", "[c]", "[e]", "[er]", "[f]",
-                                                                             "[low]", "[p]", "[r]", "[u]", "[w]",
-                                                                             "[x]", "[z]", "") ~ as.character(.[[numcharcols]]),
-                                                     is.na(.[[numcharcols]]) ~ "",
-                                                     TRUE ~ as.character(xxx_temp_xxx2)))
+      dplyr::mutate(xxx_temp_xxx = 
+             dplyr::case_when(.[[numcharcols]] %in% c("[b]", "[c]", "[e]", "[er]", "[f]",
+                                                     "[low]", "[p]", "[r]", "[u]", "[w]",
+                                                     "[x]", "[z]", "") ~ "0",
+                                   is.na(.[[numcharcols]]) ~ "0",
+                                   !is.na(.[[numcharcols]]) ~ gsub(",", "", .[[numcharcols]]))) %>%
+      dplyr::mutate(xxx_temp_xxx = if (numcharcolsdp >= 2) as.numeric(xxx_temp_xxx) else 
+        round(as.numeric(xxx_temp_xxx), digits = numcharcolsdp)) %>%
+      dplyr::mutate(xxx_temp_xxx2 = if (numcharcolsdp >= 2) 
+        format(xxx_temp_xxx, big.mark = ",", scientific = FALSE, nsmall = numcharcolsdp) else 
+        format(xxx_temp_xxx, big.mark = ",", scientific = FALSE)) %>%
+      dplyr::mutate(xxx_temp_xxx3 = 
+        dplyr::case_when(.[[numcharcols]] %in% c("[b]", "[c]", "[e]", "[er]", "[f]",
+                                                 "[low]", "[p]", "[r]", "[u]", "[w]",
+                                                 "[x]", "[z]", "") ~ as.character(.[[numcharcols]]),
+                                                 is.na(.[[numcharcols]]) ~ "",
+                                                 TRUE ~ as.character(xxx_temp_xxx2)))
     
     dfx[[numcharcols]] <- dfx$xxx_temp_xxx3
     
@@ -1161,8 +1280,10 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
   }
   
-  # If there are columns with numbers stored as text then one of the two functions above will be ran
-  # Which function depends on whether the numbers stored as text should have a specific number of decimal places or not
+  # If there are columns with numbers stored as text then one of the two functions above will ...
+  # ... be ran
+  # Which function depends on whether the numbers stored as text should have a specific number ...
+  # ... of decimal places or not
   # If there are no columns with numbers stored as text then the data are left alone
   
   if (!is.null(numcharcols) & !is.null(numcharcolsdp)) {
@@ -1193,12 +1314,17 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   normalformat <- openxlsx::createStyle(valign = "top")
   linkformat <- openxlsx::createStyle(fontColour = "blue", textDecoration = "underline")
   topformat <- openxlsx::createStyle(valign = "bottom")
-  headingsformat <- openxlsx::createStyle(textDecoration = "bold", wrapText = TRUE, border = NULL, valign = "top")
-  headingsformat2 <- openxlsx::createStyle(textDecoration = "bold", wrapText = TRUE, border = NULL, valign = "top", halign = "right")
+  headingsformat <- openxlsx::createStyle(textDecoration = "bold", wrapText = TRUE, border = NULL, 
+                                          valign = "top")
+  headingsformat2 <- openxlsx::createStyle(textDecoration = "bold", wrapText = TRUE, border = NULL, 
+                                           valign = "top", halign = "right")
   dataformat <- openxlsx::createStyle(halign = "right", valign = "top")
   
-  openxlsx::addStyle(wb, sheetname, normalformat, rows = 1:(nrow(xxx_table_data2_xxx) + tablestart), cols = 1:ncol(xxx_table_data2_xxx), gridExpand = TRUE)
-  openxlsx::addStyle(wb, sheetname, topformat, rows = 1:(length(title) + length(subtitle) + length(extralines2)), cols = 1, gridExpand = TRUE)
+  openxlsx::addStyle(wb, sheetname, normalformat, rows = 1:(nrow(xxx_table_data2_xxx) + tablestart),
+                     cols = 1:ncol(xxx_table_data2_xxx), gridExpand = TRUE)
+  openxlsx::addStyle(wb, sheetname, topformat, 
+                     rows = 1:(length(title) + length(subtitle) + length(extralines2)), cols = 1, 
+                     gridExpand = TRUE)
   
   openxlsx::writeData(wb, sheetname, title, startCol = 1, startRow = 1)
   
@@ -1211,7 +1337,8 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
   }
   
-  # If a link is wanted to the contents or notes or definitions page then the code below will create the hyperlink
+  # If a link is wanted to the contents or notes or definitions page then the code below will ...
+  # ... create the hyperlink
   
   for (i in seq_along(extralines2)) {
     
@@ -1223,7 +1350,8 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
     if (extralines2[i] == "Link to notes" & !("Notes" %in% names(wb))) {
       
-      stop("Cannot put a link in to the notes tab unless notestab set to \"Yes\" in the workbook function call")
+      stop(strwrap("Cannot put a link in to the notes tab unless notestab set to \"Yes\" in the 
+           workbook function call", prefix = " ", initial = ""))
       
     }
     
@@ -1235,11 +1363,13 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
     if (extralines2[i] == "Link to contents" & !("Contents" %in% names(wb))) {
       
-      stop("Cannot put a link in to the contents tab unless contentstab set to \"Yes\" in the workbook function call")
+      stop(strwrap("Cannot put a link in to the contents tab unless contentstab set to \"Yes\" in 
+           the workbook function call", prefix = " ", initial = ""))
       
     }
     
-    if (tolower(extralines2[i]) == "link to definitions" | tolower(extralines2[i]) == "definitions") {
+    if (tolower(extralines2[i]) == "link to definitions" | 
+        tolower(extralines2[i]) == "definitions") {
       
       extralines2[i] <- "Link to definitions"
       
@@ -1247,24 +1377,34 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
     if (extralines2[i] == "Link to definitions" & !("Definitions" %in% names(wb))) {
       
-      stop("Cannot put a link in to the definitions tab unless definitionstab set to \"Yes\" in the workbook function call")
+      stop(strwrap("Cannot put a link in to the definitions tab unless definitionstab set to \"Yes\" 
+           in the workbook function call", prefix = " ", initial = ""))
       
     }
     
     if (extralines2[i] == "Link to notes") {
       
-      openxlsx::writeFormula(wb, sheetname, startRow = length(title) + length(subtitle) + i, x = openxlsx::makeHyperlinkString("Notes", row = 1, col = 1, text = "Link to notes"))
-      openxlsx::addStyle(wb, sheetname, linkformat, rows = length(title) + length(subtitle) + i, cols = 1, stack = TRUE)
+      openxlsx::writeFormula(wb, sheetname, startRow = length(title) + length(subtitle) + i, 
+                             x = openxlsx::makeHyperlinkString("Notes", row = 1, col = 1, 
+                                                               text = "Link to notes"))
+      openxlsx::addStyle(wb, sheetname, linkformat, rows = length(title) + length(subtitle) + i, 
+                         cols = 1, stack = TRUE)
       
     } else if (extralines2[i] == "Link to contents") {
       
-      openxlsx::writeFormula(wb, sheetname, startRow = length(title) + length(subtitle) + i, x = openxlsx::makeHyperlinkString("Contents", row = 1, col = 1, text = "Link to contents"))
-      openxlsx::addStyle(wb, sheetname, linkformat, rows = length(title) + length(subtitle) + i, cols = 1, stack = TRUE)
+      openxlsx::writeFormula(wb, sheetname, startRow = length(title) + length(subtitle) + i, 
+                             x = openxlsx::makeHyperlinkString("Contents", row = 1, col = 1, 
+                                                               text = "Link to contents"))
+      openxlsx::addStyle(wb, sheetname, linkformat, rows = length(title) + length(subtitle) + i, 
+                         cols = 1, stack = TRUE)
       
     } else if (extralines2[i] == "Link to definitions") {
       
-      openxlsx::writeFormula(wb, sheetname, startRow = length(title) + length(subtitle) + i, x = openxlsx::makeHyperlinkString("Definitions", row = 1, col = 1, text = "Link to definitions"))
-      openxlsx::addStyle(wb, sheetname, linkformat, rows = length(title) + length(subtitle) + i, cols = 1, stack = TRUE)
+      openxlsx::writeFormula(wb, sheetname, startRow = length(title) + length(subtitle) + i, 
+                             x = openxlsx::makeHyperlinkString("Definitions", row = 1, col = 1, 
+                                                               text = "Link to definitions"))
+      openxlsx::addStyle(wb, sheetname, linkformat, rows = length(title) + length(subtitle) + i, 
+                         cols = 1, stack = TRUE)
       
     } else if (!is.null(extralines2[i])) {
       
@@ -1272,29 +1412,41 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       
       if (grepl(hyper_rx, extralines2[i]) == TRUE) {
         
-        if (substr(extralines2[i], 1, 1) != "[" | substr(extralines2[i], nchar(extralines2[i]), nchar(extralines2[i])) != ")") {
+        if (substr(extralines2[i], 1, 1) != "[" | 
+            substr(extralines2[i], nchar(extralines2[i]), nchar(extralines2[i])) != ")") {
           
-          warning(paste0(extralines2[i], " - if this is meant to be a hyperlink, it needs to be in the format \"[xxx](xxxxxx)\""))
-          
-        }
-        
-        if ("Link to contents" %in% extralines2 & stringr::str_detect(tolower(extralines2[i]), "\\[link to contents|\\[contents")) {
-          
-          warning(paste0(extralines2[i], " - this appears to be duplicating a link to the contents page in another extraline parameter"))
-          
-        } else if ("Link to notes" %in% extralines2 & stringr::str_detect(tolower(extralines2[i]), "\\[link to notes|\\[notes")) {
-          
-          warning(paste0(extralines2[i], " - this appears to be duplicating a link to the notes page in another extraline parameter"))
-          
-        } else if ("Link to definitions" %in% extralines2 & stringr::str_detect(tolower(extralines2[i]), "\\[link to definitions|\\[definitions")) {
-          
-          warning(paste0(extralines2[i], " - this appears to be duplicating a link to the definitions page in another extraline parameter"))
+          warning(strwrap(paste0(extralines2[i], " - if this is meant to be a hyperlink, it needs to 
+                  be in the format \"[xxx](xxxxxx)\""), prefix = " ", initial = ""))
           
         }
         
-        if (stringr::str_detect(tolower(extralines2[i]), "\\[link to contents|\\[link to notes|\\[link to definitions|\\[contents|\\[notes|\\[definitions")) {
+        if ("Link to contents" %in% extralines2 & 
+            stringr::str_detect(tolower(extralines2[i]), "\\[link to contents|\\[contents")) {
           
-          warning("If you want an internal link to the contents, notes or definitions page, then set one of extraline1-6 to \"Link to contents\" or \"Link to notes\" or \"Link to definitions\"")
+          warning(strwrap(paste0(extralines2[i], " - this appears to be duplicating a link to the 
+                  contents page in another extraline parameter"), prefix = " ", initial = ""))
+          
+        } else if ("Link to notes" %in% extralines2 & 
+                   stringr::str_detect(tolower(extralines2[i]), "\\[link to notes|\\[notes")) {
+          
+          warning(strwrap(paste0(extralines2[i], " - this appears to be duplicating a link to the 
+                  notes page in another extraline parameter"), prefix = " ", initial = ""))
+          
+        } else if ("Link to definitions" %in% extralines2 & 
+                   stringr::str_detect(tolower(extralines2[i]), 
+                                       "\\[link to definitions|\\[definitions")) {
+          
+          warning(strwrap(paste0(extralines2[i], " - this appears to be duplicating a link to the 
+                  definitions page in another extraline parameter"), prefix = " ", initial = ""))
+          
+        }
+        
+        if (stringr::str_detect(tolower(extralines2[i]), "\\[link to contents|\\[link to notes|
+                                \\[link to definitions|\\[contents|\\[notes|\\[definitions")) {
+          
+          warning(strwrap("If you want an internal link to the contents, notes or definitions page, 
+                  then set one of extraline1-6 to \"Link to contents\" or \"Link to notes\" or 
+                  \"Link to definitions\"", prefix = " ", initial = ""))
           
         }
         
@@ -1319,7 +1471,8 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
         y <- stats::setNames(url_extract, string_extract)
         class(y) <- "hyperlink"
         
-        rm(x, md_rx, md_match, md_extract, url_rx, url_match, url_extract, string_rx, string_match, string_extract)
+        rm(x, md_rx, md_match, md_extract, url_rx, url_match, url_extract, string_rx, string_match, 
+           string_extract)
         
       } else {
         
@@ -1327,11 +1480,13 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
         
       }
       
-      openxlsx::writeData(wb, sheetname, y, startCol = 1, startRow = length(title) + length(subtitle) + i)
+      openxlsx::writeData(wb, sheetname, y, startCol = 1, 
+                          startRow = length(title) + length(subtitle) + i)
       
       if (grepl(hyper_rx, extralines2[i]) == TRUE) {
         
-        openxlsx::addStyle(wb, sheetname, linkformat, rows = length(title) + length(subtitle) + i, cols = 1, stack = TRUE)
+        openxlsx::addStyle(wb, sheetname, linkformat, 
+                           rows = length(title) + length(subtitle) + i, cols = 1, stack = TRUE)
         
       }
       
@@ -1343,32 +1498,40 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   openxlsx::addStyle(wb, sheetname, normalformat, rows = tablestart - 1, cols = 1, stack = TRUE)
   
-  openxlsx::addStyle(wb, sheetname, headingsformat, rows = tablestart, cols = 1:ncol(xxx_table_data2_xxx))
+  openxlsx::addStyle(wb, sheetname, headingsformat, rows = tablestart, 
+                     cols = 1:ncol(xxx_table_data2_xxx))
   
   # Applying specific formatting to data columns
   
   if (!is.null(numericcols)) {
     
     openxlsx::addStyle(wb, sheetname, headingsformat2, rows = tablestart, cols = numericcols)
-    openxlsx::addStyle(wb, sheetname, dataformat, rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), cols = numericcols, stack = TRUE, gridExpand = TRUE)
+    openxlsx::addStyle(wb, sheetname, dataformat, 
+                       rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), 
+                       cols = numericcols, stack = TRUE, gridExpand = TRUE)
     
   }
   
   if (!is.null(numcharcols)) {
     
     openxlsx::addStyle(wb, sheetname, headingsformat2, rows = tablestart, cols = numcharcols)
-    openxlsx::addStyle(wb, sheetname, dataformat, rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), cols = numcharcols, stack = TRUE, gridExpand = TRUE)
+    openxlsx::addStyle(wb, sheetname, dataformat, 
+                       rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), 
+                       cols = numcharcols, stack = TRUE, gridExpand = TRUE)
     
   }
   
   if (!is.null(othdatacols)) {
     
     openxlsx::addStyle(wb, sheetname, headingsformat2, rows = tablestart, cols = othdatacols)
-    openxlsx::addStyle(wb, sheetname, dataformat, rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), cols = othdatacols, stack = TRUE, gridExpand = TRUE)
+    openxlsx::addStyle(wb, sheetname, dataformat, 
+                       rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), 
+                       cols = othdatacols, stack = TRUE, gridExpand = TRUE)
     
   }
   
-  # If a specific number of decimal places is wanted for numeric columns, the code below will do this as well as inserting thousand commas
+  # If a specific number of decimal places is wanted for numeric columns, the code below will ...
+  # ... do this as well as inserting thousand commas
   
   if (!is.null(numericcolsdp)) {
     
@@ -1378,13 +1541,17 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
         
         fmta <- paste0("#,##0.", strrep("0", numericcolsdp[i]))
         fmt <- openxlsx::createStyle(numFmt = fmta)
-        openxlsx::addStyle(wb, sheetname, fmt, rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), cols = numericcols[i], stack = TRUE, gridExpand = TRUE)
+        openxlsx::addStyle(wb, sheetname, fmt, 
+                           rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), 
+                           cols = numericcols[i], stack = TRUE, gridExpand = TRUE)
         rm(fmta, fmt)
         
       } else if (numericcolsdp[i] == 0) {
         
         fmt <- openxlsx::createStyle(numFmt = "#,##0")
-        openxlsx::addStyle(wb, sheetname, fmt, rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), cols = numericcols[i], stack = TRUE, gridExpand = TRUE)
+        openxlsx::addStyle(wb, sheetname, fmt, 
+                           rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), 
+                           cols = numericcols[i], stack = TRUE, gridExpand = TRUE)
         rm(fmt)
         
       }
@@ -1397,7 +1564,9 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   wrapformat <- openxlsx::createStyle(wrapText = TRUE)
   
-  openxlsx::addStyle(wb, sheetname, wrapformat, rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), cols = 1:ncol(xxx_table_data2_xxx), stack = TRUE, gridExpand = TRUE)
+  openxlsx::addStyle(wb, sheetname, wrapformat, 
+                     rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), 
+                     cols = 1:ncol(xxx_table_data2_xxx), stack = TRUE, gridExpand = TRUE)
   
   # tablename2 will be the name of the table accessible in Excel
   # If no specific name is given, then the name of the table will be the same as the sheetname
@@ -1414,7 +1583,9 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   # Setting some specific row heights based in part on the font size
   
-  openxlsx::writeDataTable(wb, sheetname, xxx_table_data2_xxx, tableName = tablename2, startRow = tablestart, startCol = 1, withFilter = FALSE, tableStyle = "none")
+  openxlsx::writeDataTable(wb, sheetname, xxx_table_data2_xxx, tableName = tablename2, 
+                           startRow = tablestart, startCol = 1, withFilter = FALSE, 
+                           tableStyle = "none")
   
   if (length(extralines2) > 0) {
     
@@ -1492,7 +1663,8 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   }
   
   # Automatically determining column widths
-  # Automatic column widths can be hit and miss, so may need to sort these after running the accessible tables script
+  # Automatic column widths can be hit and miss, so may need to sort these after running the ...
+  # ... accessible tables script
   
   if (columnwidths == "R_auto") {
     
@@ -1512,14 +1684,16 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       
     }
     
-    width_vec <- apply(xxx_table_data2_xxx, MARGIN = 2, FUN = function(x) max(nchar(as.character(x)), na.rm = TRUE))
+    width_vec <- apply(xxx_table_data2_xxx, MARGIN = 2, 
+                       FUN = function(x) max(nchar(as.character(x)), na.rm = TRUE))
     width_vec <- width_vec + width_adj
     
     width_vec_header <- nchar(colnames(xxx_table_data2_xxx)) + width_adj
     
     max_vec_header <- pmax(width_vec, width_vec_header)
     
-    openxlsx::setColWidths(wb, sheetname, cols = 1:ncol(xxx_table_data2_xxx), widths = max_vec_header)
+    openxlsx::setColWidths(wb, sheetname, cols = 1:ncol(xxx_table_data2_xxx), 
+                           widths = max_vec_header)
     
   } else if (columnwidths == "specified") {
     
@@ -1531,8 +1705,8 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
 }
 
-###################################################################################################################
-###################################################################################################################
+###################################################################################################
+###################################################################################################
 # CONTENTS
 
 #' @title accessibletablesR::contentstable
@@ -1544,7 +1718,8 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
 #' If no contents page wanted, then do not run the contentstable function.
 #' gridlines is by default set to "Yes", change to "No" if gridlines are not wanted.
 #' Column widths are automatically set unless user defines specific values in colwid_spec.
-#' Extra columns can be added, need to set extracols to "Yes" and create a dataframe extracols_contents with the desired extra columns.
+#' Extra columns can be added, need to set extracols to "Yes" and create a dataframe 
+#' extracols_contents with the desired extra columns.
 #' 
 #' @param gridlines Define whether gridlines are present (optional)
 #' @param colwid_spec Define widths of columns (optional)
@@ -1553,42 +1728,52 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
 #' @returns A worksheet with a contents page of tables in the workbook.
 #' 
 #' @examples 
-#' accessibletablesR::workbook(covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes",
-#'                             autonotes = "Yes", title = "Fuel consumption and aspects of car design and performance for various cars",
-#'                             creator = "An organisation")
+#' accessibletablesR::workbook(
+#'    covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes", 
+#'    autonotes = "Yes", 
+#'    title = "Fuel consumption and aspects of car design and performance for various cars",
+#'    creator = "An organisation")
 #'                             
-#' accessibletablesR::creatingtables(title = "Fuel consumption and aspects of car design and performance for various cars C",
-#'                                   subtitle = "Cars",
-#'                                   extraline1 = "Link to contents",
-#'                                   extraline2 = "Link to notes",
-#'                                   extraline3 = "Link to definitions",
-#'                                   sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
-#'                                   numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
-#'                                   othdatacols = c(9,10), columnwidths = "specified",
-#'                                   colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
+#' accessibletablesR::creatingtables(
+#'    title = "Fuel consumption and aspects of car design and performance for various cars C",
+#'    subtitle = "Cars",
+#'    extraline1 = "Link to contents",
+#'    extraline2 = "Link to notes",
+#'    extraline3 = "Link to definitions",
+#'    sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
+#'    numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
+#'    othdatacols = c(9,10), columnwidths = "specified",
+#'    colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
 #'                                   
 #' accessibletablesR::contentstable()
 #' 
-#' accessibletablesR::addnote(notenumber = "note1", notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google", linktext2 = "https://www.ons.google.co.uk") 
+#' accessibletablesR::addnote(notenumber = "note1", 
+#'    notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google",
+#'                linktext2 = "https://www.ons.google.co.uk") 
 #' 
 #' accessibletablesR::notestab()
 #' 
-#' accessibletablesR::adddefinition(term = "Usual resident", definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and had stayed or intended to stay in the UK for a period of 12 months or more, or had a permanent UK address and was outside the UK and intended to be outside the UK for less than 12 months.")
+#' accessibletablesR::adddefinition(term = "Usual resident", 
+#'    definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and 
+#'                  had stayed or intended to stay in the UK for a period of 12 months or more, or 
+#'                  had a permanent UK address and was outside the UK and intended to be outside the
+#'                  UK for less than 12 months.")
 #'
 #' accessibletablesR::definitionstab()
 #' 
-#' accessibletablesR::coverpage(title = "Fuel consumption and aspects of car design and performance for various cars",
-#'                              intro = "Some made up data about cars",
-#'                              about = "The output of an example of how to use accessibletablesR",
-#'                              source = "R mtcars",
-#'                              relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
-#'                              relatedtext = "mtcars: Motor trend car road tests",
-#'                              dop = "26 October 2023",
-#'                              blank = "There should be no blank cells",
-#'                              names = "Your name",
-#'                              email = "yourname@emailprovider.com",
-#'                              phone = "01111 1111111111111",
-#'                              reuse = "Yes", govdept = NULL)
+#' accessibletablesR::coverpage(
+#'   title = "Fuel consumption and aspects of car design and performance for various cars",
+#'   intro = "Some made up data about cars",
+#'   about = "The output of an example of how to use accessibletablesR",
+#'   source = "R mtcars",
+#'   relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+#'   relatedtext = "mtcars: Motor trend car road tests",
+#'   dop = "26 October 2023",
+#'   blank = "There should be no blank cells",
+#'   names = "Your name",
+#'   email = "yourname@emailprovider.com",
+#'   phone = "01111 1111111111111",
+#'   reuse = "Yes", govdept = NULL)
 #'                              
 #' accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 #' 
@@ -1596,17 +1781,22 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
 
 contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
   
-  if (!("tidyverse" %in% utils::installed.packages()) | !("openxlsx" %in% utils::installed.packages())) {
+  if (!("tidyverse" %in% utils::installed.packages()) | 
+      !("openxlsx" %in% utils::installed.packages())) {
     
-    stop("Not all required packages installed. Run the \"workbook\" function first to ensure packages are installed.")
+    stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
+         packages are installed.", prefix = " ", initial = ""))
     
-  } else if (utils::packageVersion("tidyverse") < "2.0.0" | utils::packageVersion("openxlsx") < "4.2.5.2") {
+  } else if (utils::packageVersion("tidyverse") < "2.0.0" | 
+             utils::packageVersion("openxlsx") < "4.2.5.2") {
     
-    stop("Older versions of packages detected. Run the \"workbook\" function first to ensure up to date packages are installed.")
+    stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
+         up to date packages are installed.", prefix = " ", initial = ""))
     
   }
   
-  # Check to see that a contents page is wanted, based on whether a worksheet was created in the initial workbook
+  # Check to see that a contents page is wanted, based on whether a worksheet was created in the ...
+  # ... initial workbook
   
   if (!("Contents" %in% names(wb))) {
     
@@ -1614,7 +1804,8 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
     
   }
   
-  # Checking some of the parameters to ensure they are properly populated, if not the function will error or display a warning in the console
+  # Checking some of the parameters to ensure they are properly populated, if not the function ...
+  # ... will error or display a warning in the console
   
   if (is.null(gridlines)) {
     
@@ -1638,7 +1829,8 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
   
   if (length(gridlines) > 1) {
     
-    stop("gridlines has not been populated properly. It must be a single word, either \"Yes\" or \"No\".")
+    stop(strwrap("gridlines has not been populated properly. It must be a single word, either 
+         \"Yes\" or \"No\".", prefix = " ", initial = ""))
     
   }
   
@@ -1664,7 +1856,8 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
   
   if (length(extracols) > 1) {
     
-    stop("extracols has not been populated properly. It must be a single word, either \"Yes\" or \"No\".")
+    stop(strwrap("extracols has not been populated properly. It must be a single word, either 
+         \"Yes\" or \"No\".", prefix = " ", initial = ""))
     
   }
   
@@ -1724,19 +1917,23 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
     
   }
   
-  # To insert additional columns which are not default columns allowed by the function, a dataframe called "extracols_contents" needs to be created with the extra columns
+  # To insert additional columns which are not default columns allowed by the function, a ...
+  # ... dataframe called "extracols_contents" needs to be created with the extra columns
   
   if (extracols == "Yes" & exists("extracols_contents", envir = .GlobalEnv)) {
     
     if ((nrow(tabcontents) + nrow(notesdf2a) + nrow(notesdf2b)) != nrow(extracols_contents)) {
       
-      stop("The number of rows in the table of contents is not the same as in the dataframe of extra columns")
+      stop(strwrap("The number of rows in the table of contents is not the same as in the dataframe 
+           of extra columns", prefix = " ", initial = ""))
       
     }
     
-    if ("Sheet name" %in% colnames(extracols_contents) | "Table description" %in% c(extracols_contents)) {
+    if ("Sheet name" %in% colnames(extracols_contents) | 
+        "Table description" %in% c(extracols_contents)) {
       
-      warning("There is at least one duplicate column name in the contents table and the extracols_contents dataframe")
+      warning(strwrap("There is at least one duplicate column name in the contents table and the 
+              extracols_contents dataframe", prefix = " ", initial = ""))
       
     }
     
@@ -1749,13 +1946,16 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
     
     if (extracols == "Yes") {
       
-      warning("extracols has been set to \"Yes\" but the dataframe extracols_contents does not exist. No extra columns will be added.")
+      warning(strwrap("extracols has been set to \"Yes\" but the dataframe extracols_contents does 
+              not exist. No extra columns will be added.", prefix = " ", initial = ""))
       
     }
     
   } else if (extracols == "No" & exists("extracols_contents", envir = .GlobalEnv)) {
     
-    warning("extracols has been set to \"No\" but a dataframe extracols_contents exist. Check if extra columns are wanted. No extra columns have been added.")
+    warning(strwrap("extracols has been set to \"No\" but a dataframe extracols_contents exist. 
+            Check if extra columns are wanted. No extra columns have been added.", prefix = " ",
+            initial = ""))
     
   }
   
@@ -1794,10 +1994,13 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
   titleformat <- openxlsx::createStyle(fontSize = fontszt, textDecoration = "bold")
   extralineformat <- openxlsx::createStyle(wrapText = FALSE, valign = "top")
   normalformat <- openxlsx::createStyle(wrapText = TRUE, valign = "top")
-  linkformat <- openxlsx::createStyle(fontColour = "blue", wrapText = TRUE, valign = "top", textDecoration = "underline")
-  headingsformat <- openxlsx::createStyle(textDecoration = "bold", wrapText = TRUE, border = NULL, valign = "top")
+  linkformat <- openxlsx::createStyle(fontColour = "blue", wrapText = TRUE, valign = "top", 
+                                      textDecoration = "underline")
+  headingsformat <- openxlsx::createStyle(textDecoration = "bold", wrapText = TRUE, border = NULL, 
+                                          valign = "top")
   
-  openxlsx::addStyle(wb, "Contents", normalformat, rows = 1:(nrow(tabcontents) + 3), cols = 1:ncol(tabcontents), gridExpand = TRUE)
+  openxlsx::addStyle(wb, "Contents", normalformat, rows = 1:(nrow(tabcontents) + 3), 
+                     cols = 1:ncol(tabcontents), gridExpand = TRUE)
   
   openxlsx::writeData(wb, "Contents", title, startCol = 1, startRow = 1)
   
@@ -1809,7 +2012,8 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
   
   openxlsx::addStyle(wb, "Contents", headingsformat, rows = 3, cols = 1:ncol(tabcontents))
   
-  openxlsx::writeDataTable(wb, "Contents", tabcontents, tableName = "contents_table", startRow = 3, startCol = 1, withFilter = FALSE, tableStyle = "none")
+  openxlsx::writeDataTable(wb, "Contents", tabcontents, tableName = "contents_table", 
+                           startRow = 3, startCol = 1, withFilter = FALSE, tableStyle = "none")
   
   numchars <- max(nchar(tabcontents$"Sheet name"))
   
@@ -1819,14 +2023,19 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
     
   } else if (is.null(colwid_spec) & ncol(tabcontents) > 2) {
     
-    openxlsx::setColWidths(wb, "Contents", cols = c(1,2,3:ncol(tabcontents)), widths = c(max(15, numchars + 3), 100, "auto"))
+    openxlsx::setColWidths(wb, "Contents", cols = c(1,2,3:ncol(tabcontents)), 
+                           widths = c(max(15, numchars + 3), 100, "auto"))
     
   } else if (!is.numeric(colwid_spec) | length(colwid_spec) != ncol(tabcontents)) {
     
-    warning("colwid_spec has either been provided as non-numeric or a vector of length not equal to the number of columns in tabcontents. The default column widths have been used instead.") ######################################
-    openxlsx::setColWidths(wb, "Contents", cols = c(1,2,3:max(ncol(tabcontents),3)), widths = c(max(15, numchars + 3), 100, "auto"))
+    warning(strwrap("colwid_spec has either been provided as non-numeric or a vector of length not 
+                    equal to the number of columns in tabcontents. The default column widths have 
+                    been used instead.", prefix = " ", initial = ""))
+    openxlsx::setColWidths(wb, "Contents", cols = c(1,2,3:max(ncol(tabcontents),3)), 
+                           widths = c(max(15, numchars + 3), 100, "auto"))
     
-  } else if (!is.null(colwid_spec) & is.numeric(colwid_spec) & length(colwid_spec) == ncol(tabcontents)) {  
+  } else if (!is.null(colwid_spec) & is.numeric(colwid_spec) & 
+             length(colwid_spec) == ncol(tabcontents)) {  
     
     openxlsx::setColWidths(wb, "Contents", cols = 1:ncol(tabcontents), widths = colwid_spec)            
     
@@ -1840,7 +2049,10 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
   
   for (i in c(4:(3 + contentrows))) {
     
-    openxlsx::writeFormula(wb, "Contents", startRow = i, x = openxlsx::makeHyperlinkString(paste0(tabcontents[i-3, 1]), row = 1, col = 1, text = paste0(tabcontents[i-3, 1])))
+    openxlsx::writeFormula(wb, "Contents", startRow = i, 
+                           x = openxlsx::makeHyperlinkString(paste0(tabcontents[i-3, 1]), row = 1, 
+                                                             col = 1, 
+                                                             text = paste0(tabcontents[i-3, 1])))
     openxlsx::addStyle(wb, "Contents", linkformat, rows = i, cols = 1)
     
   }
@@ -1855,8 +2067,8 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
   
 }  
 
-###################################################################################################################
-###################################################################################################################
+###################################################################################################
+###################################################################################################
 # COVER
 
 #' @title accessibletablesR::coverpage
@@ -1870,19 +2082,25 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
 #' All other parameters are optional and preset, only populate if they are wanted.
 #' intro: Introductory information / about: About these data / dop: Date of publication.
 #' source: Data source(s) used / blank: Information about why some cells are blank, if necessary.
-#' relatedlink and relatedtext - any publications associated with the data (relatedlink is the actual hyperlink, relatedtext is the text you want to appear to the user).
+#' relatedlink and relatedtext - any publications associated with the data (relatedlink is the 
+#' actual hyperlink, relatedtext is the text you want to appear to the user).
 #' names: Contact name / email: Contact email / phone: Contact telephone.
-#' reuse: Set to "Yes" if you want the information displayed about the reuse of the data (will automatically be populated).
+#' reuse: Set to "Yes" if you want the information displayed about the reuse of the data (will 
+#' automatically be populated).
 #' govdept: Default is "ONS" but if want reuse information without reference to ONS change govdept.
 #' extrafields: Any additional fields that the user wants present on the cover page.
-#' extrafieldsb: The text to go in any additional fields. Only one row per field. extrafields and extrafields must be vectors of the same length.
+#' extrafieldsb: The text to go in any additional fields. Only one row per field. extrafields and 
+#' extrafields must be vectors of the same length.
 #' additlinks: Any additional hyperlinks the user wants.
-#' addittext: The text to appear over any additional hyperlinks. additlinks and addittext must be vectors of the same length.
-#' order: If the user wants the cover page to be ordered in a specific way, list the fields in a vector with each field name in speech marks.
+#' addittext: The text to appear over any additional hyperlinks. additlinks and addittext must be 
+#' vectors of the same length.
+#' order: If the user wants the cover page to be ordered in a specific way, list the fields in a 
+#' vector with each field name in speech marks.
 #' e.g., order = c("intro", "about", relatedlink", "names", "phone", "email", "extrafields").
 #' Change gridlines to "No" if gridlines are not wanted.
 #' Column width automatically set unless user specifies a value in colwid_spec.
-#' intro, about, source, dop, blank, names, phone can be set to hyperlinks - e.g., source = "[ONS](https://www.ons.gov.uk)".
+#' intro, about, source, dop, blank, names, phone can be set to hyperlinks - 
+#' e.g., source = "[ONS](https://www.ons.gov.uk)".
 #' 
 #' @param title Title for workbook
 #' @param intro Introductory information (optional)
@@ -1908,63 +2126,77 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
 #' @returns A worksheet of the cover page for workbook
 #' 
 #' @examples 
-#' accessibletablesR::workbook(covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes",
-#'                             autonotes = "Yes", title = "Fuel consumption and aspects of car design and performance for various cars",
-#'                             creator = "An organisation")
+#' accessibletablesR::workbook(
+#'    covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes", 
+#'    autonotes = "Yes", 
+#'    title = "Fuel consumption and aspects of car design and performance for various cars",
+#'    creator = "An organisation")
 #'                             
-#' accessibletablesR::creatingtables(title = "Fuel consumption and aspects of car design and performance for various cars C",
-#'                                   subtitle = "Cars",
-#'                                   extraline1 = "Link to contents",
-#'                                   extraline2 = "Link to notes",
-#'                                   extraline3 = "Link to definitions",
-#'                                   sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
-#'                                   numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
-#'                                   othdatacols = c(9,10), columnwidths = "specified",
-#'                                   colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
+#' accessibletablesR::creatingtables(
+#'    title = "Fuel consumption and aspects of car design and performance for various cars C",
+#'    subtitle = "Cars",
+#'    extraline1 = "Link to contents",
+#'    extraline2 = "Link to notes",
+#'    extraline3 = "Link to definitions",
+#'    sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
+#'    numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
+#'    othdatacols = c(9,10), columnwidths = "specified",
+#'    colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
 #'                                   
 #' accessibletablesR::contentstable()
 #' 
-#' accessibletablesR::addnote(notenumber = "note1", notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google", linktext2 = "https://www.ons.google.co.uk") 
+#' accessibletablesR::addnote(notenumber = "note1", 
+#'    notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google",
+#'                linktext2 = "https://www.ons.google.co.uk") 
 #' 
 #' accessibletablesR::notestab()
 #' 
-#' accessibletablesR::adddefinition(term = "Usual resident", definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and had stayed or intended to stay in the UK for a period of 12 months or more, or had a permanent UK address and was outside the UK and intended to be outside the UK for less than 12 months.")
+#' accessibletablesR::adddefinition(term = "Usual resident", 
+#'    definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and 
+#'                  had stayed or intended to stay in the UK for a period of 12 months or more, or 
+#'                  had a permanent UK address and was outside the UK and intended to be outside the
+#'                  UK for less than 12 months.")
 #'
 #' accessibletablesR::definitionstab()
 #' 
-#' accessibletablesR::coverpage(title = "Fuel consumption and aspects of car design and performance for various cars",
-#'                              intro = "Some made up data about cars",
-#'                              about = "The output of an example of how to use accessibletablesR",
-#'                              source = "R mtcars",
-#'                              relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
-#'                              relatedtext = "mtcars: Motor trend car road tests",
-#'                              dop = "26 October 2023",
-#'                              blank = "There should be no blank cells",
-#'                              names = "Your name",
-#'                              email = "yourname@emailprovider.com",
-#'                              phone = "01111 1111111111111",
-#'                              reuse = "Yes", govdept = NULL)
+#' accessibletablesR::coverpage(
+#'   title = "Fuel consumption and aspects of car design and performance for various cars",
+#'   intro = "Some made up data about cars",
+#'   about = "The output of an example of how to use accessibletablesR",
+#'   source = "R mtcars",
+#'   relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+#'   relatedtext = "mtcars: Motor trend car road tests",
+#'   dop = "26 October 2023",
+#'   blank = "There should be no blank cells",
+#'   names = "Your name",
+#'   email = "yourname@emailprovider.com",
+#'   phone = "01111 1111111111111",
+#'   reuse = "Yes", govdept = NULL)
 #'                              
 #' accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 #' 
 #' @export
 
-coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedlink = NULL, relatedtext = NULL,
-                      dop = NULL, blank = NULL, names = NULL, email = NULL, phone = NULL, reuse = NULL,
-                      gridlines = "Yes", govdept = "ONS", extrafields = NULL, extrafieldsb = NULL,
-                      additlinks = NULL, addittext = NULL, colwid_spec = NULL, order = NULL) {
+coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedlink = NULL, 
+                      relatedtext = NULL, dop = NULL, blank = NULL, names = NULL, email = NULL, 
+                      phone = NULL, reuse = NULL, gridlines = "Yes", govdept = "ONS", 
+                      extrafields = NULL, extrafieldsb = NULL, additlinks = NULL, addittext = NULL, 
+                      colwid_spec = NULL, order = NULL) {
   
   if (!("openxlsx" %in% utils::installed.packages())) {
     
-    stop("Not all required packages installed. Run the \"workbook\" function first to ensure packages are installed.")
+    stop(strwrao("Not all required packages installed. Run the \"workbook\" function first to ensure 
+         packages are installed.", prefix = " ", initial = ""))
     
   } else if (utils::packageVersion("openxlsx") < "4.2.5.2") {
     
-    stop("Older versions of packages detected. Run the \"workbook\" function first to ensure up to date packages are installed.")
+    stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
+         up to date packages are installed.", prefix = " ", initial = ""))
     
   }
   
-  # Check to see that a coverpage is wanted, based on whether a worksheet was created in the initial workbook
+  # Check to see that a coverpage is wanted, based on whether a worksheet was created in the ...
+  # ... initial workbook
   
   if (!("Cover" %in% names(wb))) {
     
@@ -1984,11 +2216,12 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
   }
   
-  if (length(title) > 1 | length(intro) > 1 | length(about) > 1 | length(source) > 1 | length(dop) > 1 |
-      length(blank) > 1 | length(names) > 1 | length(email) > 1 | length(phone) > 1 | length(reuse) > 1 |
-      length(govdept) > 1) {
+  if (length(title) > 1 | length(intro) > 1 | length(about) > 1 | length(source) > 1 | 
+      length(dop) > 1 | length(blank) > 1 | length(names) > 1 | length(email) > 1 | 
+      length(phone) > 1 | length(reuse) > 1 | length(govdept) > 1) {
     
-    stop("One of title, intro, about, source, dop, blank, names, email, phone, reuse and govdept is more than a single entity")
+    stop(strwrap("One of title, intro, about, source, dop, blank, names, email, phone, reuse and 
+         govdept is more than a single entity", prefix = " ", initial = ""))
     
   }
   
@@ -2002,7 +2235,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
   } else if (length(relatedlink) != length(relatedtext)) {
     
-    stop("relatedlink and relatedtext must be of the same length and contain the same number of elements")
+    stop(strwrap("relatedlink and relatedtext must be of the same length and contain the same number 
+         of elements", prefix = " ", initial = ""))
     
   }
   
@@ -2016,7 +2250,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
   } else if (length(extrafields) != length(extrafieldsb)) {
     
-    stop("extrafields and extrafieldsb must be of the same length and contain the same number of elements")
+    stop(strwrap("extrafields and extrafieldsb must be of the same length and contain the same 
+         number of elements", prefix = " ", initial = ""))
     
   }
   
@@ -2030,7 +2265,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
   } else if (length(additlinks) != length(addittext)) {
     
-    stop("additlinks and addittext must be of the same length and contain the same number of elements")
+    stop(strwrap("additlinks and addittext must be of the same length and contain the same number of 
+         elements", prefix = " ", initial = ""))
     
   }
   
@@ -2062,7 +2298,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   
   if (length(gridlines) > 1) {
     
-    stop("gridlines has not been populated properly. It must be a single word, either \"Yes\" or \"No\".")
+    stop(strwrap("gridlines has not been populated properly. It must be a single word, either 
+         \"Yes\" or \"No\".", prefix = " ", initial = ""))
     
   }
   
@@ -2088,17 +2325,20 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   
   if (stringr::str_remove_all(phone, "[\" \"\\[\\]\\(\\)+[:digit:]]") != "") {
     
-    warning("The phone number provided appears to contain characters which are unusual for a phone number. Check if there are any errors.")
+    warning(strwrap("The phone number provided appears to contain characters which are unusual for a 
+            phone number. Check if there are any errors.", prefix = " ", initial = ""))
     
   }
   
   if (grepl("\\.", email) == FALSE | grepl("@", email) == FALSE) {
     
-    warning("The email address provided does not appear to contain @ and/or a dot (.). Check if there are any errors.")
+    warning(strwrap("The email address provided does not appear to contain @ and/or a dot (.). Check 
+            if there are any errors.", prefix = " ", initial = ""))
     
   }
   
-  # In case the function is run multiple times, removing previous row heights to ensure there will be no strange looking rows
+  # In case the function is run multiple times, removing previous row heights to ensure there ...
+  # ... will be no strange looking rows
   
   if (exists("covernumrow", envir = .GlobalEnv)) {
     
@@ -2123,7 +2363,10 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   if (!is.null(additlinks)) {additlinks2 <- 1} else if (is.null(additlinks)) {additlinks2 <- 0}
   if (!is.null(names)) {names2 <- 1} else if (is.null(names)) {names2 <- 0}
   
-  covernumrow <<- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + length(extrafields) + length(extrafieldsb) + additlinks2 + length(additlinks) + length(names) + names2 + length(email) + length(phone) + length(reuse) + 4
+  covernumrow <<- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + 
+    source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + 
+    length(extrafields) + length(extrafieldsb) + additlinks2 + length(additlinks) + length(names) + 
+    names2 + length(email) + length(phone) + length(reuse) + 4
   
   # Populating the cover page with the required text
   
@@ -2146,22 +2389,63 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   
   if (!is.null(order)) {
     
-    fields <- c(title, intro, about, source, relatedlink, dop, blank, names, email, phone, reuse, extrafields, additlinks)
+    fields <- c(title, intro, about, source, relatedlink, dop, blank, names, email, phone, reuse, 
+                extrafields, additlinks)
     
     for (i in seq_along(order)) {
       
-      if (tolower(order[i]) %in% c("intro", "introduction", "introductory information")) {order[i] <- intro}
-      else if (tolower(order[i]) %in% c("about", "about these data")) {order[i] <- about}
-      else if (tolower(order[i]) %in% c("source", "source of data", "data source", "sources", "sources of data", "data sources")) {order[i] <- source}
-      else if (tolower(order[i]) %in% c("related publications", "related publication", "related", "relatedlink", "relatedlinks", "relatedtext")) {order[i] <- "relatedlink"}
-      else if (tolower(order[i]) %in% c("dop", "date of publication", "publication date")) {order[i] <- dop}
-      else if (tolower(order[i]) %in% c("blank", "blank cells")) {order[i] <- blank}
-      else if (tolower(order[i]) %in% c("names", "name", "contact", "contact details")) {order[i] <- names}
-      else if (tolower(order[i]) %in% c("email", "email address", "e-mail", "e-mail address")) {order[i] <- email}
-      else if (tolower(order[i]) %in% c("phone", "telephone", "phone number", "telephone number", "tel", "tel:")) {order[i] <- phone}
-      else if (tolower(order[i]) %in% c("reuse", "reusing this publication", "reuse this publication")) {order[i] <- reuse}
-      else if (tolower(order[i]) %in% c("extrafields", "extrafield", "extrafieldsb", "extrafieldb")) {order[i] <- "extrafields"}
-      else if (tolower(order[i]) %in% c("additlinks", "additlink", "addittext", "additional links", "additional link")) {order[i] <- "additlinks"}
+      if (tolower(order[i]) %in% c("intro", "introduction", "introductory information")) {
+        
+        order[i] <- intro
+        
+      } else if (tolower(order[i]) %in% c("about", "about these data")) {
+        
+        order[i] <- about
+        
+      } else if (tolower(order[i]) %in% c("source", "source of data", "data source", "sources", 
+                                          "sources of data", "data sources")) {
+        
+        order[i] <- source
+        
+      } else if (tolower(order[i]) %in% c("related publications", "related publication", "related", 
+                                          "relatedlink", "relatedlinks", "relatedtext")) {
+        
+        order[i] <- "relatedlink"
+        
+      } else if (tolower(order[i]) %in% c("dop", "date of publication", "publication date")) {
+        
+        order[i] <- dop
+        
+      } else if (tolower(order[i]) %in% c("blank", "blank cells")) {
+        
+        order[i] <- blank
+        
+      } else if (tolower(order[i]) %in% c("names", "name", "contact", "contact details")) {
+        
+        order[i] <- names
+        
+      } else if (tolower(order[i]) %in% c("email", "email address", "e-mail", "e-mail address")) {
+        
+        order[i] <- email
+        
+      } else if (tolower(order[i]) %in% c("phone", "telephone", "phone number", "telephone number", 
+                                          "tel", "tel:")) {
+        
+        order[i] <- phone
+        
+      } else if (tolower(order[i]) %in% c("reuse", "reusing this publication", 
+                                          "reuse this publication")) {
+        
+        order[i] <- reuse
+        
+      } else if (tolower(order[i]) %in% c("extrafields", "extrafield", "extrafieldsb", 
+                                          "extrafieldb")) {
+        
+        order[i] <- "extrafields"
+        
+      } else if (tolower(order[i]) %in% c("additlinks", "additlink", "addittext", 
+                                          "additional links", "additional link")) 
+        {order[i] <- "additlinks"}
       
     }
     
@@ -2171,9 +2455,12 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     if (names %in% order & phone %in% order & email %in% order) {
       
-      if ((phone2 < names2) | (email2 < names2) | (phone2 > (names2 + 2)) | (email2 > (names2 + 2))) {
+      if ((phone2 < names2) | (email2 < names2) | (phone2 > (names2 + 2)) | 
+          (email2 > (names2 + 2))) {
         
-        stop("The relative positions of names, phone and email are not consistent with the expected stucture (i.e., names, phone or email, email or phone)")
+        stop(strwrap("The relative positions of names, phone and email are not consistent with the 
+             expected stucture (i.e., names, phone or email, email or phone)", prefix = " ",
+             initial = ""))
         
       }
       
@@ -2181,7 +2468,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
       if ((phone2 < names2) | (phone2 > (names2 + 1))) {
         
-        stop("The relative positions of names and phone are not consistent with the expected structure (i.e., names, phone)")
+        stop(strwrap("The relative positions of names and phone are not consistent with the expected 
+             structure (i.e., names, phone)", prefix = " ", initial = ""))
         
       }
       
@@ -2189,13 +2477,15 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
       if ((email2 < names2) | (email2 > (names2 + 1))) {
         
-        stop("The relative positions of names and email are not consistent with the expected structure (i.e., names, email)")
+        stop(strwrap("The relative positions of names and email are not consistent with the expected 
+             structure (i.e., names, email)", prefix = " ", initial = ""))
         
       }
       
     } else if (((email %in% order) | (phone %in% order)) & !(names %in% order)) {
       
-      warning("email and/or phone have been populated but a contact name has not been provided. Check that this is intentional.")
+      warning(strwrap("email and/or phone have been populated but a contact name has not been 
+              provided. Check that this is intentional.", prefix = " ", initial = ""))
       
     }
     
@@ -2426,14 +2716,16 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       else if (order[i] == email) {emailstartpos <- orderl[i] + length(title)}
       else if (order[i] == phone) {phonestartpos <- orderl[i] + length(title)}
       else if (order[i] == reuse) {reusestartpos <- orderl[i] + length(title)}
-      else if (order[i] %in% extrafields) {extrastartpos <- append(extrastartpos, orderl[i] + length(title))}
+      else if (order[i] %in% extrafields) 
+        {extrastartpos <- append(extrastartpos, orderl[i] + length(title))}
       else if (order[i] == additlinks[1]) {additstartpos <- orderl[i] + length(title)}
       
     }
     
-    if (is.null(introstartpos) & is.null(aboutstartpos) & is.null(sourcestartpos) & is.null(relatedstartpos) &
-        is.null(dopstartpos) & is.null(blankstartpos) & is.null(namesstartpos) & is.null(emailstartpos) &
-        is.null(phonestartpos) & is.null(reusestartpos) & is.null(extrastartpos) & is.null(additstartpos)) {
+    if (is.null(introstartpos) & is.null(aboutstartpos) & is.null(sourcestartpos) & 
+        is.null(relatedstartpos) & is.null(dopstartpos) & is.null(blankstartpos) & 
+        is.null(namesstartpos) & is.null(emailstartpos) & is.null(phonestartpos) & 
+        is.null(reusestartpos) & is.null(extrastartpos) & is.null(additstartpos)) {
       
       stop("No starting positions have been generated")
       
@@ -2441,7 +2733,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     if (length(extrastartpos) != length(extrafields)) {
       
-      stop("The lengths of the vectors for extrafields and their row starting positions are not equal. Investigate why.")
+      stop(strwrap("The lengths of the vectors for extrafields and their row starting positions are 
+           not equal. Investigate why.", prefix = " ", initial = ""))
       
     }
     
@@ -2477,9 +2770,11 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     if (grepl(hyper_rx, fields2[i]) == TRUE) {
       
-      if (substr(fields2[i], 1, 1) != "[" | substr(fields2[i], nchar(fields2[i]), nchar(fields2[i])) != ")") {
+      if (substr(fields2[i], 1, 1) != "[" | 
+          substr(fields2[i], nchar(fields2[i]), nchar(fields2[i])) != ")") {
         
-        warning(paste0(fields2[i], " - if this is meant to be a hyperlink, it needs to be in the format \"[xxx](xxxxxx)\""))
+        warning(strwrap(paste0(fields2[i], " - if this is meant to be a hyperlink, it needs to be in 
+                the format \"[xxx](xxxxxx)\""), prefix = " ", initial = ""))
         
       }
       
@@ -2545,7 +2840,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
         
       }
       
-      rm(x, md_rx, md_match, md_extract, url_rx, url_match, url_extract, string_rx, string_match, string_extract)
+      rm(x, md_rx, md_match, md_extract, url_rx, url_match, url_extract, string_rx, string_match, 
+         string_extract)
       
     } else if (grepl(hyper_rx, fields2[i]) == FALSE & "phone" %in% fields5[i]) {
       
@@ -2567,7 +2863,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
     }
     
-    openxlsx::writeData(wb, "Cover", "Introductory information", startCol = 1, startRow = introstart)
+    openxlsx::writeData(wb, "Cover", "Introductory information", startCol = 1, 
+                        startRow = introstart)
     openxlsx::writeData(wb, "Cover", intro, startCol = 1, startRow = introstart + 1)
     
   }
@@ -2610,7 +2907,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     if (is.null(relatedstartpos)) {
       
-      relatedstart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + 1
+      relatedstart <- length(title) + length(intro) + intro2 + length(about) + about2 + 
+        length(source) + source2 + 1
       
     } else if (!is.null(relatedstartpos)) {
       
@@ -2631,7 +2929,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     if (is.null(dopstartpos)) {
       
-      dopstart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + 1
+      dopstart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + 
+        source2 + length(relatedlink) + related2 + 1
       
     } else if (!is.null(dopstartpos)) {
       
@@ -2649,7 +2948,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     if (is.null(blankstartpos)) {
       
-      blankstart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + 1
+      blankstart <- length(title) + length(intro) + intro2 + length(about) + about2 + 
+        length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + 1
       
     } else if (!is.null(blankstartpos)) {
       
@@ -2669,7 +2969,9 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
       if (is.null(extrastartpos)) {
         
-        extrastart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + 1 + (2 * i) - 2
+        extrastart <- length(title) + length(intro) + intro2 + length(about) + about2 + 
+          length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + 
+          length(blank) + blank2 + 1 + (2 * i) - 2
         
       } else if (!is.null(extrastartpos)) {
         
@@ -2679,9 +2981,11 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
       if (grepl(hyper_rx, extrafieldsb[i]) == TRUE) {
         
-        if (substr(extrafieldsb[i], 1, 1) != "[" | substr(extrafieldsb[i], nchar(extrafieldsb[i]), nchar(extrafieldsb[i])) != ")") {
+        if (substr(extrafieldsb[i], 1, 1) != "[" | 
+            substr(extrafieldsb[i], nchar(extrafieldsb[i]), nchar(extrafieldsb[i])) != ")") {
           
-          warning(paste0(extrafieldsb[i], " - if this is meant to be a hyperlink, it needs to be in the format \"[xxx](xxxxxx)\""))
+          warning(strwrap(paste0(extrafieldsb[i], " - if this is meant to be a hyperlink, it needs 
+                  to be in the format \"[xxx](xxxxxx)\""), prefix = " ", initial = ""))
           
         }
         
@@ -2706,7 +3010,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
         y <- stats::setNames(url_extract, string_extract)
         class(y) <- "hyperlink"
         
-        rm(x, md_rx, md_match, md_extract, url_rx, url_match, url_extract, string_rx, string_match, string_extract)
+        rm(x, md_rx, md_match, md_extract, url_rx, url_match, url_extract, string_rx, string_match, 
+           string_extract)
         
       } else {
         
@@ -2727,7 +3032,9 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     if (is.null(additstartpos)) {
       
-      additlinkstart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + length(extrafields) + length(extrafieldsb) + 1
+      additlinkstart <- length(title) + length(intro) + intro2 + length(about) + about2 + 
+        length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + 
+        length(blank) + blank2 + length(extrafields) + length(extrafieldsb) + 1
       
     } else if (!is.null(additstartpos)) {
       
@@ -2748,7 +3055,10 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     if (is.null(namesstartpos)) {
       
-      namesstart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + length(extrafields) + length(extrafieldsb) + additlinks2 + length(additlinks) + 1
+      namesstart <- length(title) + length(intro) + intro2 + length(about) + about2 + 
+        length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + 
+        length(blank) + blank2 + length(extrafields) + length(extrafieldsb) + additlinks2 + 
+        length(additlinks) + 1
       
     } else if (!is.null(namesstartpos)) {
       
@@ -2762,9 +3072,12 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   }
   
   normalformat <- openxlsx::createStyle(valign = "top", wrapText = TRUE)
-  subtitleformat <- openxlsx::createStyle(fontSize = fontszst, valign = "bottom", wrapText = TRUE, textDecoration = "bold")
-  titleformat <- openxlsx::createStyle(fontSize = fontszt, valign = "bottom", wrapText = TRUE, textDecoration = "bold")
-  linkformat <- openxlsx::createStyle(fontColour = "blue", valign = "top", wrapText = TRUE, textDecoration = "underline")
+  subtitleformat <- openxlsx::createStyle(fontSize = fontszst, valign = "bottom", wrapText = TRUE, 
+                                          textDecoration = "bold")
+  titleformat <- openxlsx::createStyle(fontSize = fontszt, valign = "bottom", wrapText = TRUE, 
+                                       textDecoration = "bold")
+  linkformat <- openxlsx::createStyle(fontColour = "blue", valign = "top", wrapText = TRUE, 
+                                      textDecoration = "underline")
   
   if (is.null(colwid_spec) | !is.numeric(colwid_spec) | length(colwid_spec) > 1) {
     
@@ -2772,11 +3085,13 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     if (!is.null(colwid_spec) & !is.numeric(colwid_spec)) {
       
-      warning("colwid_spec has not been provided as a numeric value and so the default width of 100 has been used")
+      warning(strwrap("colwid_spec has not been provided as a numeric value and so the default width 
+              of 100 has been used", prefix = " ", initial = ""))
       
     } else if (!is.null(colwid_spec) & length(colwid_spec) > 1) {
       
-      warning("colwid_spec has been provided as a vector with more than one element and so the default width of 100 has been used")
+      warning(strwrap("colwid_spec has been provided as a vector with more than one element and so 
+              the default width of 100 has been used", prefix = " ", initial = ""))
       
     }
     
@@ -2793,7 +3108,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     openxlsx::setRowHeights(wb, "Cover", introstart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = introstart, cols = 1)
     
-    if (intro_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = introstart + 1, cols = 1)}
+    if (intro_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = introstart + 1, 
+                                              cols = 1)}
     
   }
   
@@ -2802,7 +3118,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     openxlsx::setRowHeights(wb, "Cover", aboutstart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = aboutstart, cols = 1)
     
-    if (about_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = aboutstart + 1, cols = 1)}
+    if (about_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = aboutstart + 1, 
+                                              cols = 1)}
     
   }
   
@@ -2811,7 +3128,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     openxlsx::setRowHeights(wb, "Cover", sourcestart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = sourcestart, cols = 1)
     
-    if (source_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = sourcestart + 1, cols = 1)}
+    if (source_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = sourcestart + 1, 
+                                               cols = 1)}
     
   }
   
@@ -2819,7 +3137,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     openxlsx::setRowHeights(wb, "Cover", relatedstart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = relatedstart, cols = 1)
-    openxlsx::addStyle(wb, "Cover", linkformat, rows = (relatedstart + 1):(relatedstart + length(relatedlink)), cols = 1)
+    openxlsx::addStyle(wb, "Cover", linkformat, 
+                       rows = (relatedstart + 1):(relatedstart + length(relatedlink)), cols = 1)
     
   }
   
@@ -2837,7 +3156,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     openxlsx::setRowHeights(wb, "Cover", blankstart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = blankstart, cols = 1)
     
-    if (blank_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = blankstart + 1, cols = 1)}
+    if (blank_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = blankstart + 1, 
+                                              cols = 1)}
     
   }
   
@@ -2847,7 +3167,9 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
       if (is.null(extrastartpos)) {
         
-        extrastart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + 1 + (2 * i) - 2
+        extrastart <- length(title) + length(intro) + intro2 + length(about) + about2 + 
+          length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + 
+          length(blank) + blank2 + 1 + (2 * i) - 2
         
       } else if (!is.null(extrastartpos)) {
         
@@ -2872,7 +3194,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     openxlsx::setRowHeights(wb, "Cover", additlinkstart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = additlinkstart, cols = 1)
-    openxlsx::addStyle(wb, "Cover", linkformat, rows = (additlinkstart + 1):(additlinkstart + length(additlinks)), cols = 1)
+    openxlsx::addStyle(wb, "Cover", linkformat, 
+                       rows = (additlinkstart + 1):(additlinkstart + length(additlinks)), cols = 1)
     
   }
   
@@ -2881,7 +3204,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     openxlsx::setRowHeights(wb, "Cover", namesstart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = namesstart, cols = 1)
     
-    if (names_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = namesstart + 1, cols = 1)}
+    if (names_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = namesstart + 1, 
+                                              cols = 1)}
     
   }
   
@@ -2899,7 +3223,10 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     if (is.null(emailstartpos)) {
       
-      emailstart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + length(extrafields) + length(extrafieldsb) + additlinks2 + length(additlinks) + length(names) + names2 + 1
+      emailstart <- length(title) + length(intro) + intro2 + length(about) + about2 + 
+        length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + 
+        length(blank) + blank2 + length(extrafields) + length(extrafieldsb) + additlinks2 + 
+        length(additlinks) + length(names) + names2 + 1
       
     } else if (!is.null(emailstartpos)) {
       
@@ -2911,7 +3238,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     openxlsx::addStyle(wb, "Cover", linkformat, rows = emailstart, cols = 1)
     
-    emailformat <- openxlsx::createStyle(fontColour = "blue", valign = "bottom", textDecoration = "underline", wrapText = TRUE)
+    emailformat <- openxlsx::createStyle(fontColour = "blue", valign = "bottom", 
+                                         textDecoration = "underline", wrapText = TRUE)
     
     if (emailstart == 2) {openxlsx::addStyle(wb, "Cover", emailformat, rows = 2, cols = 1)}
     
@@ -2921,7 +3249,10 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     if (is.null(phonestartpos)) {
       
-      phonestart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + length(extrafields) + length(extrafieldsb) + additlinks2 + length(additlinks) + length(names) + names2 + length(email) + 1
+      phonestart <- length(title) + length(intro) + intro2 + length(about) + about2 + 
+        length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + 
+        length(blank) + blank2 + length(extrafields) + length(extrafieldsb) + additlinks2 + 
+        length(additlinks) + length(names) + names2 + length(email) + 1
       
     } else if (!is.null(phonestartpos)) {
       
@@ -2933,9 +3264,11 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     phoneformat <- openxlsx::createStyle(valign = "bottom")
     
-    if (phone_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = phonestart, cols = 1, stack = TRUE)}
+    if (phone_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = phonestart, cols = 1, 
+                                              stack = TRUE)}
     
-    if (phonestart == 2) {openxlsx::addStyle(wb, "Cover", phoneformat, rows = 2, cols = 1, stack = TRUE)}
+    if (phonestart == 2) {openxlsx::addStyle(wb, "Cover", phoneformat, rows = 2, cols = 1, 
+                                             stack = TRUE)}
     
   }
   
@@ -2959,21 +3292,31 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
       orgwording <- paste0("the ", govdept, " - Source: ", govdept)
       
-    } else if (!is.null(govdept) & (tolower(govdept) == "ons" | tolower(govdept) == "office for national statistics")) {
+    } else if (!is.null(govdept) & (tolower(govdept) == "ons" | 
+                                    tolower(govdept) == "office for national statistics")) {
       
       orgwording <- "the Office for National Statistics - Source: Office for National Statistics"
       
     }
     
-    reuse1 <- paste0("You may re-use this publication (not including logos) free of charge in any format or medium, under the terms of the Open Government Licence. Users should include a source accreditation to ", orgwording, " licensed under the Open Government Licence.")
-    reuse2 <- "Alternatively you can write to: Information Policy Team, The National Archives, Kew, Richmond, Surrey, TW9 4DU; or email: psi@nationalarchives.gov.uk"
-    reuse3 <- "Where we have identified any third party copyright information you will need to obtain permission from the copyright holders concerned."
+    reuse1 <- paste0("You may re-use this publication (not including logos) free of charge in any ",
+                     "format or medium, under the terms of the Open Government Licence. Users ",
+                     "should include a source accreditation to ", orgwording, " licensed under ",
+                     "the Open Government Licence.")
+    reuse2 <- paste0("Alternatively you can write to: Information Policy Team, The National ",
+                     "Archives, Kew, Richmond, Surrey, TW9 4DU; or ",
+                     "email: psi@nationalarchives.gov.uk")
+    reuse3 <- paste0("Where we have identified any third party copyright information you will ",
+                     "need to obtain permission from the copyright holders concerned.")
     licencelink <- "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
     licencetext <- "View the Open Government Licence"
     
     if (is.null(reusestartpos)) {
       
-      reusestart <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + length(extrafields) + length(extrafieldsb) + additlinks2 + length(additlinks) + length(names) + names2 + length(email) + length(phone) + 1
+      reusestart <- length(title) + length(intro) + intro2 + length(about) + about2 + 
+        length(source) + source2 + length(relatedlink) + related2 + length(dop) + dop2 + 
+        length(blank) + blank2 + length(extrafields) + length(extrafieldsb) + additlinks2 + 
+        length(additlinks) + length(names) + names2 + length(email) + length(phone) + 1
       
     } else if (!is.null(reusestartpos)) {
       
@@ -2981,7 +3324,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
     }  
     
-    openxlsx::writeData(wb, "Cover", "Reusing this publication", startRow = reusestart, startCol = 1)
+    openxlsx::writeData(wb, "Cover", "Reusing this publication", startRow = reusestart, 
+                        startCol = 1)
     openxlsx::writeData(wb, "Cover", reuse1, startRow = reusestart + 1, startCol = 1)
     
     reuselink <- licencelink
@@ -3008,8 +3352,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   
 }
 
-###################################################################################################################
-###################################################################################################################
+###################################################################################################
+###################################################################################################
 # NOTES
 
 #' @title accessibletablesR::addnote
@@ -3017,13 +3361,17 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
 #' @description Add a note to a particular table or tables
 #' 
 #' @details 
-#' addnote function will add a note and its description to the workbook, specifically in the notes worksheet.
+#' addnote function will add a note and its description to the workbook, specifically in the notes 
+#' worksheet.
 #' Add notes if wanted, if not then do not run the addnote function.
 #' A link can be provided with each note as well a list of tables that the note applies to.
 #' notenumber and notetext are the only compulsory parameters.
-#' All other parameters are optional and preset to NULL, so only need to be defined if they are wanted.
-#' applictabtext should be set to a vector of sheet names if a column is wanted which lists which worksheets a note is applicable to.
-#' linktext1 and linktext2: linktext1 should be the text you want to appear and linktext2 should be the underlying link to a website, file etc.
+#' All other parameters are optional and preset to NULL, so only need to be defined if they are 
+#' wanted.
+#' applictabtext should be set to a vector of sheet names if a column is wanted which lists which 
+#' worksheets a note is applicable to.
+#' linktext1 and linktext2: linktext1 should be the text you want to appear and linktext2 should be 
+#' the underlying link to a website, file etc.
 #' 
 #' @param notenumber Note number
 #' @param notetext Note description
@@ -3034,60 +3382,74 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
 #' @returns A dataframe containing all information associated to notes
 #' 
 #' @examples 
-#' accessibletablesR::workbook(covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes",
-#'                             autonotes = "Yes", title = "Fuel consumption and aspects of car design and performance for various cars",
-#'                             creator = "An organisation")
+#' accessibletablesR::workbook(
+#'    covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes", 
+#'    autonotes = "Yes", 
+#'    title = "Fuel consumption and aspects of car design and performance for various cars",
+#'    creator = "An organisation")
 #'                             
-#' accessibletablesR::creatingtables(title = "Fuel consumption and aspects of car design and performance for various cars C",
-#'                                   subtitle = "Cars",
-#'                                   extraline1 = "Link to contents",
-#'                                   extraline2 = "Link to notes",
-#'                                   extraline3 = "Link to definitions",
-#'                                   sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
-#'                                   numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
-#'                                   othdatacols = c(9,10), columnwidths = "specified",
-#'                                   colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
+#' accessibletablesR::creatingtables(
+#'    title = "Fuel consumption and aspects of car design and performance for various cars C",
+#'    subtitle = "Cars",
+#'    extraline1 = "Link to contents",
+#'    extraline2 = "Link to notes",
+#'    extraline3 = "Link to definitions",
+#'    sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
+#'    numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
+#'    othdatacols = c(9,10), columnwidths = "specified",
+#'    colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
 #'                                   
 #' accessibletablesR::contentstable()
 #' 
-#' accessibletablesR::addnote(notenumber = "note1", notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google", linktext2 = "https://www.ons.google.co.uk") 
+#' accessibletablesR::addnote(notenumber = "note1", 
+#'    notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google",
+#'                linktext2 = "https://www.ons.google.co.uk") 
 #' 
 #' accessibletablesR::notestab()
 #' 
-#' accessibletablesR::adddefinition(term = "Usual resident", definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and had stayed or intended to stay in the UK for a period of 12 months or more, or had a permanent UK address and was outside the UK and intended to be outside the UK for less than 12 months.")
+#' accessibletablesR::adddefinition(term = "Usual resident", 
+#'    definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and 
+#'                  had stayed or intended to stay in the UK for a period of 12 months or more, or 
+#'                  had a permanent UK address and was outside the UK and intended to be outside the
+#'                  UK for less than 12 months.")
 #'
 #' accessibletablesR::definitionstab()
 #' 
-#' accessibletablesR::coverpage(title = "Fuel consumption and aspects of car design and performance for various cars",
-#'                              intro = "Some made up data about cars",
-#'                              about = "The output of an example of how to use accessibletablesR",
-#'                              source = "R mtcars",
-#'                              relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
-#'                              relatedtext = "mtcars: Motor trend car road tests",
-#'                              dop = "26 October 2023",
-#'                              blank = "There should be no blank cells",
-#'                              names = "Your name",
-#'                              email = "yourname@emailprovider.com",
-#'                              phone = "01111 1111111111111",
-#'                              reuse = "Yes", govdept = NULL)
+#' accessibletablesR::coverpage(
+#'   title = "Fuel consumption and aspects of car design and performance for various cars",
+#'   intro = "Some made up data about cars",
+#'   about = "The output of an example of how to use accessibletablesR",
+#'   source = "R mtcars",
+#'   relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+#'   relatedtext = "mtcars: Motor trend car road tests",
+#'   dop = "26 October 2023",
+#'   blank = "There should be no blank cells",
+#'   names = "Your name",
+#'   email = "yourname@emailprovider.com",
+#'   phone = "01111 1111111111111",
+#'   reuse = "Yes", govdept = NULL)
 #'                              
 #' accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 #' 
 #' @export
 
-addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL, linktext2 = NULL) {
+addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL, 
+                    linktext2 = NULL) {
   
   if (!("tidyverse" %in% utils::installed.packages())) {
     
-    stop("Not all required packages installed. Run the \"workbook\" function first to ensure packages are installed.")
+    stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
+         packages are installed.", prefix = " ", initial = ""))
     
   } else if (utils::packageVersion("tidyverse") < "2.0.0") {
     
-    stop("Older versions of packages detected. Run the \"workbook\" function first to ensure up to date packages are installed.")
+    stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
+         up to date packages are installed.", prefix = " ", initial = ""))
     
   }
   
-  # Checking that a notes page is wanted, based on whether a worksheet was created in the initial workbook
+  # Checking that a notes page is wanted, based on whether a worksheet was created in the ...
+  # ... initial workbook
   
   if (!("Notes" %in% names(wb))) {
     
@@ -3109,25 +3471,30 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
   
   if (length(notenumber) > 1 | length(notetext) > 1) {
     
-    stop("One or both of notenumber and notetext are not populated properly. They must be a single entity and not a vector.")
+    stop(strwrap("One or both of notenumber and notetext are not populated properly. They must be a 
+         single entity and not a vector.", prefix = " ", initial = ""))
     
   }
   
   if (!is.null(applictabtext) & !is.character(applictabtext)) {
     
-    stop("The parameter applictabtext is not populated properly. If it is not NULL then it has to be a string. If more than one element is needed then it should be expressed as a vector e.g., applictabtext = c(\"Table_1\", \"Table_2\")")
+    stop(strwrap("The parameter applictabtext is not populated properly. If it is not NULL then it 
+         has to be a string. If more than one element is needed then it should be expressed as a 
+         vector e.g., applictabtext = c(\"Table_1\", \"Table_2\")", prefix = " ", initial = ""))
     
   }
   
   if (is.null(applictabtext) & autonotes2 == "Yes") {
     
-    stop("Automatic listing of notes on tables has been selected but a note has no tables applicable to it")
+    stop(strwrap("Automatic listing of notes on tables has been selected but a note has no tables 
+         applicable to it", prefix = " ", initial = ""))
     
   }
   
   if (length(linktext1) > 1 | length(linktext2) > 1) {
     
-    stop("linktext1 and linktext2 can only be single entities and not vectors of length greater than one")
+    stop(strwrap("linktext1 and linktext2 can only be single entities and not vectors of length 
+         greater than one", prefix = " ", initial = ""))
     
   }
   
@@ -3153,7 +3520,8 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
   
   if (notetemp1 != "note" | !grepl("\\D", notetemp2, perl = TRUE) == FALSE) {
     
-    stop("The notenumber parameter is not properly populated. It should take the form of \"note\" followed by a number.")
+    stop(strwrap("The notenumber parameter is not properly populated. It should take the form of 
+         \"note\" followed by a number.", prefix = " ", initial = ""))
     
   }
   
@@ -3169,19 +3537,23 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
       
       if (length(applictabtext) > 1 & applictabtext[i] == "All") {
         
-        stop("The applictabtext parameter includes two or more elements but one of the elements is \"All\"")
+        stop(strwrap("The applictabtext parameter includes two or more elements but one of the 
+             elements is \"All\"", prefix = " ", initial = ""))
         
       }
       
       if (stringr::str_detect(applictabtext[i], " ") | stringr::str_detect(applictabtext[i], ",")) {
         
-        stop("The applictabtext contains whitespace or a comma. applictabtext should either be a single word (e.g., \"All\") or expressed as a vector (e.g., c(\"Table_1\", \"Table_2\"))")
+        stop(strwrap("The applictabtext contains whitespace or a comma. applictabtext should either 
+             be a single word (e.g., \"All\") or expressed as a vector (e.g., c(\"Table_1\", 
+             \"Table_2\"))", prefix = " ", initial = ""))
         
       }
       
       if (tolower(applictabtext[i]) == "none") {
         
-        stop("A note should be applicable to at least one of the tables. applictabtext should not be set to \"None\".")
+        stop(strwrap("A note should be applicable to at least one of the tables. applictabtext 
+             should not be set to \"None\".", prefix = " ", initial = ""))
         
       }
       
@@ -3196,7 +3568,8 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
     
     if (check == 1) {
       
-      stop("At least one of the tables mentioned in the applictabtext parameter is not in the table of contents")
+      stop(strwrap("At least one of the tables mentioned in the applictabtext parameter is not in 
+           the table of contents", prefix = " ", initial = ""))
       
     }
     
@@ -3247,11 +3620,14 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
   # Checking for any issues with duplication
   
   notesdfx <- notesdf %>%
-    dplyr::add_row("Note number" = notenumber, "Note text" = notetext, "Applicable tables" = applictabtext2, "Link1" = linktext1, "Link2" = linktext2) %>%
+    dplyr::add_row("Note number" = notenumber, "Note text" = notetext, 
+                   "Applicable tables" = applictabtext2, "Link1" = linktext1, 
+                   "Link2" = linktext2) %>%
     dplyr::mutate(Link2 = dplyr::case_when(Link1 == "No additional link" ~ "No additional link",
                                            TRUE ~ Link2)) %>%
-    dplyr::mutate(Link = dplyr::case_when(Link1 == "No additional link" ~ "No additional link",
-                                          TRUE ~ paste0("HYPERLINK(\"", Link2, "\", \"", Link1, "\")")))
+    dplyr::mutate(Link = 
+           dplyr::case_when(Link1 == "No additional link" ~ "No additional link",
+                            TRUE ~ paste0("HYPERLINK(\"", Link2, "\", \"", Link1, "\")")))
   
   notesdf2 <- notesdfx %>%
     dplyr::rename(note_number = "Note number") %>%
@@ -3271,7 +3647,8 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
     dplyr::group_by(Link1) %>%
     dplyr::summarise(count = n()) %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(count = dplyr::case_when(is.na(Link1) | Link1 == "" | Link1 == "No additional link" ~ 1,
+    dplyr::mutate(count = dplyr::case_when(is.na(Link1) | Link1 == "" | 
+                                           Link1 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
     dplyr::summarise(check = sum(as.numeric(count)) / n()) 
   
@@ -3279,7 +3656,8 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
     dplyr::group_by(Link2) %>%
     dplyr::summarise(count = n()) %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(count = dplyr::case_when(is.na(Link2) | Link2 == "" | Link2 == "No additional link" ~ 1,
+    dplyr::mutate(count = dplyr::case_when(is.na(Link2) | Link2 == "" | 
+                                           Link2 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
     dplyr::summarise(check = sum(as.numeric(count)) / n()) 
   
@@ -3320,11 +3698,15 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
 #' @description Create a notes page for the workbook.
 #' 
 #' @details 
-#' notestab function will create a notes worksheet in the workbook and includes notes added using the addnote function.
+#' notestab function will create a notes worksheet in the workbook and includes notes added using 
+#' the addnote function.
 #' If notes not wanted, then do not run the notestab function.
-#' There are three parameters and they are optional and preset. Change contentslink to "No" if you want a contents tab but do not want a link to it in the notes tab. Change gridlines to "No" if gridlines are not wanted.
+#' There are three parameters and they are optional and preset. Change contentslink to "No" if you 
+#' want a contents tab but do not want a link to it in the notes tab. Change gridlines to "No" if 
+#' gridlines are not wanted.
 #' Column widths are automatically set but the user can specify the required widths in colwid_spec.
-#' Extra columns can be added by setting extracols to "Yes" and creating a dataframe extracols_notes with the desired extra columns.
+#' Extra columns can be added by setting extracols to "Yes" and creating a dataframe 
+#' extracols_notes with the desired extra columns.
 #' 
 #' @param contentslink Define whether a link to the contents page is wanted (optional)
 #' @param gridlines Define whether gridlines are present (optional)
@@ -3334,42 +3716,52 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
 #' @returns A worksheet of the notes page for the workbook.
 #' 
 #' @examples 
-#' accessibletablesR::workbook(covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes",
-#'                             autonotes = "Yes", title = "Fuel consumption and aspects of car design and performance for various cars",
-#'                             creator = "An organisation")
+#' accessibletablesR::workbook(
+#'    covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes", 
+#'    autonotes = "Yes", 
+#'    title = "Fuel consumption and aspects of car design and performance for various cars",
+#'    creator = "An organisation")
 #'                             
-#' accessibletablesR::creatingtables(title = "Fuel consumption and aspects of car design and performance for various cars C",
-#'                                   subtitle = "Cars",
-#'                                   extraline1 = "Link to contents",
-#'                                   extraline2 = "Link to notes",
-#'                                   extraline3 = "Link to definitions",
-#'                                   sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
-#'                                   numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
-#'                                   othdatacols = c(9,10), columnwidths = "specified",
-#'                                   colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
+#' accessibletablesR::creatingtables(
+#'    title = "Fuel consumption and aspects of car design and performance for various cars C",
+#'    subtitle = "Cars",
+#'    extraline1 = "Link to contents",
+#'    extraline2 = "Link to notes",
+#'    extraline3 = "Link to definitions",
+#'    sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
+#'    numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
+#'    othdatacols = c(9,10), columnwidths = "specified",
+#'    colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
 #'                                   
 #' accessibletablesR::contentstable()
 #' 
-#' accessibletablesR::addnote(notenumber = "note1", notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google", linktext2 = "https://www.ons.google.co.uk") 
+#' accessibletablesR::addnote(notenumber = "note1", 
+#'    notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google",
+#'                linktext2 = "https://www.ons.google.co.uk") 
 #' 
 #' accessibletablesR::notestab()
 #' 
-#' accessibletablesR::adddefinition(term = "Usual resident", definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and had stayed or intended to stay in the UK for a period of 12 months or more, or had a permanent UK address and was outside the UK and intended to be outside the UK for less than 12 months.")
+#' accessibletablesR::adddefinition(term = "Usual resident", 
+#'    definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and 
+#'                  had stayed or intended to stay in the UK for a period of 12 months or more, or 
+#'                  had a permanent UK address and was outside the UK and intended to be outside the
+#'                  UK for less than 12 months.")
 #'
 #' accessibletablesR::definitionstab()
 #' 
-#' accessibletablesR::coverpage(title = "Fuel consumption and aspects of car design and performance for various cars",
-#'                              intro = "Some made up data about cars",
-#'                              about = "The output of an example of how to use accessibletablesR",
-#'                              source = "R mtcars",
-#'                              relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
-#'                              relatedtext = "mtcars: Motor trend car road tests",
-#'                              dop = "26 October 2023",
-#'                              blank = "There should be no blank cells",
-#'                              names = "Your name",
-#'                              email = "yourname@emailprovider.com",
-#'                              phone = "01111 1111111111111",
-#'                              reuse = "Yes", govdept = NULL)
+#' accessibletablesR::coverpage(
+#'   title = "Fuel consumption and aspects of car design and performance for various cars",
+#'   intro = "Some made up data about cars",
+#'   about = "The output of an example of how to use accessibletablesR",
+#'   source = "R mtcars",
+#'   relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+#'   relatedtext = "mtcars: Motor trend car road tests",
+#'   dop = "26 October 2023",
+#'   blank = "There should be no blank cells",
+#'   names = "Your name",
+#'   email = "yourname@emailprovider.com",
+#'   phone = "01111 1111111111111",
+#'   reuse = "Yes", govdept = NULL)
 #'                              
 #' accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 #' 
@@ -3377,17 +3769,22 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
 
 notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
   
-  if (!("tidyverse" %in% utils::installed.packages()) | !("openxlsx" %in% utils::installed.packages())) {
+  if (!("tidyverse" %in% utils::installed.packages()) | 
+      !("openxlsx" %in% utils::installed.packages())) {
     
-    stop("Not all required packages installed. Run the \"workbook\" function first to ensure packages are installed.")
+    stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
+         packages are installed.", prefix = " ", initial = ""))
     
-  } else if (utils::packageVersion("tidyverse") < "2.0.0" | utils::packageVersion("openxlsx") < "4.2.5.2") {
+  } else if (utils::packageVersion("tidyverse") < "2.0.0" | 
+             utils::packageVersion("openxlsx") < "4.2.5.2") {
     
-    stop("Older versions of packages detected. Run the \"workbook\" function first to ensure up to date packages are installed.")
+    stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
+         up to date packages are installed.", prefix = " ", initial = ""))
     
   }
   
-  # Check that a notes page is wanted, based on whether a worksheet was created in the initial workbook
+  # Check that a notes page is wanted, based on whether a worksheet was created in the initial ...
+  # ... workbook
   
   if (!("Notes" %in% names(wb))) {
     
@@ -3419,7 +3816,8 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   if (length(gridlines) > 1) {
     
-    stop("gridlines has not been populated properly. It must be a single word, either \"Yes\" or \"No\".")
+    stop(strwrap("gridlines has not been populated properly. It must be a single word, either 
+         \"Yes\" or \"No\".", prefix = " ", initial = ""))
     
   }
   
@@ -3445,7 +3843,8 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   if (length(extracols) > 1) {
     
-    stop("extracols has not been populated properly. It must be a single word, either \"Yes\" or \"No\".")
+    stop(strwrap("extracols has not been populated properly. It must be a single word, either 
+         \"Yes\" or \"No\".", prefix = " ", initial = ""))
     
   }
   
@@ -3465,7 +3864,8 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
   } else if (nrow(notesdf) > 0 & nrow(notesdf) != nrow(notesdfx)) {
     
-    stop("There may be a note without applicable tables allocated to it while other notes do have applicable tables allocated to them")
+    stop(strwrap("There may be a note without applicable tables allocated to it while other notes do 
+         have applicable tables allocated to them", prefix = " ", initial = ""))
     
   } else if (nrow(notesdf) == 0) {
     
@@ -3519,11 +3919,13 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   if (applictabs == "Yes" & autonotes2 != "Yes") {
     
-    warning("The applictabs parameter has been set to \"Yes\" but the automatic listing of notes on a worksheet has not been selected")
+    warning(strwrap("The applictabs parameter has been set to \"Yes\" but the automatic listing of 
+            notes on a worksheet has not been selected", prefix = " ", initial = ""))
     
   } else if (applictabs == "No" & autonotes2 == "Yes") {
     
-    stop("The applictabs parameter has been set to \"No\" but the automatic listing of notes on a worksheet has been selected")
+    stop(strwrap("The applictabs parameter has been set to \"No\" but the automatic listing of notes 
+         on a worksheet has been selected", prefix = " ", initial = ""))
     
   }
   
@@ -3617,7 +4019,8 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   if (links != "No" & links != "Yes") {
     
-    stop("links not set to \"Yes\" or \"No\". There must be an issue with link information provided with the notes.")
+    stop(strwrap("links not set to \"Yes\" or \"No\". There must be an issue with link information 
+         provided with the notes.", prefix = " ", initial = ""))
     
   }
   
@@ -3639,17 +4042,20 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
     if (nrow(extracols_notes) != nrow(notesdf)) {
       
-      stop("The number of rows in the notes table is not the same as in the dataframe of extra columns")
+      stop(strwrap("The number of rows in the notes table is not the same as in the dataframe of 
+           extra columns", prefix = " ", initial = ""))
       
     }
     
   } else if (extracols == "Yes" & !(exists("extracols_notes", envir = .GlobalEnv))) {
     
-    warning("extracols has been set to \"Yes\" but the extracols_notes dataframe does not exist. No extra columns will be added.")
+    warning(strwrap("extracols has been set to \"Yes\" but the extracols_notes dataframe does not 
+            exist. No extra columns will be added.", prefix = " ", initial = ""))
     
   } else if (extracols == "No" & exists("extracols_notes", envir = .GlobalEnv)) {
     
-    warning("extracols has been set to \"No\" but a dataframe extracols_notes exists. No extra columns have been added.")
+    warning(strwrap("extracols has been set to \"No\" but a dataframe extracols_notes exists. No 
+            extra columns have been added.", prefix = " ", initial = ""))
     
   }
   
@@ -3657,7 +4063,8 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
     notesdf <<- notesdf %>%
       dplyr::select("Note number", "Note text", "Applicable tables", "Link") %>%
-      {if (exists("extracols_notes", envir = .GlobalEnv)) dplyr::bind_cols(., extracols_notes) else .}
+      {if (exists("extracols_notes", envir = .GlobalEnv)) 
+        dplyr::bind_cols(., extracols_notes) else .}
     
     class(notesdf$Link) <- "formula"
     
@@ -3665,7 +4072,8 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
     notesdf <<- notesdf %>%
       dplyr::select("Note number", "Note text", "Link") %>%
-      {if (exists("extracols_notes", envir = .GlobalEnv)) dplyr::bind_cols(., extracols_notes) else .}
+      {if (exists("extracols_notes", envir = .GlobalEnv)) 
+        dplyr::bind_cols(., extracols_notes) else .}
     
     class(notesdf$Link) <- "formula"
     
@@ -3673,13 +4081,15 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
     notesdf <<- notesdf %>%
       dplyr::select("Note number", "Note text", "Applicable tables") %>%
-      {if (exists("extracols_notes", envir = .GlobalEnv)) dplyr::bind_cols(., extracols_notes) else .}
+      {if (exists("extracols_notes", envir = .GlobalEnv)) 
+        dplyr::bind_cols(., extracols_notes) else .}
     
   } else if (links == "No") {
     
     notesdf <<- notesdf %>%
       dplyr::select("Note number", "Note text") %>%
-      {if (exists("extracols_notes", envir = .GlobalEnv)) dplyr::bind_cols(., extracols_notes) else .}
+      {if (exists("extracols_notes", envir = .GlobalEnv)) 
+        dplyr::bind_cols(., extracols_notes) else .}
     
   }
   
@@ -3699,7 +4109,8 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
     if (any(duplicated(colnames(notesdf))) == TRUE) {
       
-      warning("There is at least one duplicate column name in the notes table and the extracols_notes dataframe")
+      warning(strwrap("There is at least one duplicate column name in the notes table and the 
+              extracols_notes dataframe", prefix = " ", initial = ""))
       
     }
     
@@ -3709,9 +4120,11 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   normalformat <- openxlsx::createStyle(valign = "top")
   topformat <- openxlsx::createStyle(valign = "bottom")
-  linkformat <- openxlsx::createStyle(fontColour = "blue", valign = "top", textDecoration = "underline")
+  linkformat <- openxlsx::createStyle(fontColour = "blue", valign = "top", 
+                                      textDecoration = "underline")
   
-  openxlsx::addStyle(wb, "Notes", normalformat, rows = 1:(nrow(notesdf) + 4), cols = 1:ncol(notesdf), gridExpand = TRUE)
+  openxlsx::addStyle(wb, "Notes", normalformat, rows = 1:(nrow(notesdf) + 4), 
+                     cols = 1:ncol(notesdf), gridExpand = TRUE)
   
   openxlsx::writeData(wb, "Notes", "Notes", startCol = 1, startRow = 1)
   
@@ -3726,7 +4139,9 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   if (contentstab == "Yes") {
     
-    openxlsx::writeFormula(wb, "Notes", startRow = 3, x = openxlsx::makeHyperlinkString("Contents", row = 1, col = 1, text = "Link to contents"))
+    openxlsx::writeFormula(wb, "Notes", startRow = 3, 
+                           x = openxlsx::makeHyperlinkString("Contents", row = 1, col = 1, 
+                                                             text = "Link to contents"))
     
     openxlsx::addStyle(wb, "Notes", linkformat, rows = 3, cols = 1)
     
@@ -3742,17 +4157,21 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   if (links == "Yes" & is.null(linkrange)) {
     
-    stop("Links are required in the notes tab but the row numbers where links should be have not been generated (i.e., linkrange not populated)")
+    stop(strwrap("Links are required in the notes tab but the row numbers where links should be have 
+         not been generated (i.e., linkrange not populated)", prefix = " ", initial = ""))
     
   } else if (links == "Yes" & !is.null(linkrange)) {
     
-    openxlsx::addStyle(wb, "Notes", linkformat, rows = linkrange + startingrow, cols = linkcolpos, gridExpand = TRUE)
+    openxlsx::addStyle(wb, "Notes", linkformat, rows = linkrange + startingrow, cols = linkcolpos, 
+                       gridExpand = TRUE)
     
   }
   
-  openxlsx::writeDataTable(wb, "Notes", notesdf, tableName = "notes", startRow = startingrow, startCol = 1, withFilter = FALSE, tableStyle = "none")
+  openxlsx::writeDataTable(wb, "Notes", notesdf, tableName = "notes", startRow = startingrow, 
+                           startCol = 1, withFilter = FALSE, tableStyle = "none")
   
-  # The if statement below is required so that "No additional link" appears as text only in the final spreadsheet, rather than as a hyperlink
+  # The if statement below is required so that "No additional link" appears as text only in the ...
+  # ... final spreadsheet, rather than as a hyperlink
   
   if ("Link" %in% colnames(notesdf)) {
     
@@ -3762,7 +4181,8 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
       
       if (noaddlinks[i] == "No additional link") {
         
-        openxlsx::writeData(wb, "Notes", "No additional link", startCol = linkcolpos, startRow = startingrow + i)
+        openxlsx::writeData(wb, "Notes", "No additional link", startCol = linkcolpos, 
+                            startRow = startingrow + i)
         
       } 
       
@@ -3770,19 +4190,25 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
   }
   
-  headingsformat <- openxlsx::createStyle(textDecoration = "bold", wrapText = TRUE, border = NULL, valign = "top")
+  headingsformat <- openxlsx::createStyle(textDecoration = "bold", wrapText = TRUE, border = NULL, 
+                                          valign = "top")
   
   openxlsx::addStyle(wb, "Notes", headingsformat, rows = startingrow, cols = 1:ncol(notesdf))
   
   extraformat2 <- openxlsx::createStyle(wrapText = TRUE)
   
-  openxlsx::addStyle(wb, "Notes", extraformat2, rows = (startingrow + 1):(nrow(notesdf) + startingrow + 1), cols = 1:ncol(notesdf), stack = TRUE, gridExpand = TRUE)
+  openxlsx::addStyle(wb, "Notes", extraformat2, 
+                     rows = (startingrow + 1):(nrow(notesdf) + startingrow + 1), 
+                     cols = 1:ncol(notesdf), stack = TRUE, gridExpand = TRUE)
   
   # Determining column widths
   
-  if ((!is.null(colwid_spec) & !is.numeric(colwid_spec)) | (!is.null(colwid_spec) & length(colwid_spec) != ncol(notesdf))) {
+  if ((!is.null(colwid_spec) & !is.numeric(colwid_spec)) | 
+      (!is.null(colwid_spec) & length(colwid_spec) != ncol(notesdf))) {
     
-    warning("colwid_spec is either a non-numeric value or a vector not of the same length as the number of columns desired in the notes tab. The widths will be determined automatically.")
+    warning(strwrap("colwid_spec is either a non-numeric value or a vector not of the same length as 
+            the number of columns desired in the notes tab. The widths will be determined 
+            automatically.", prefix = " ", initial = ""))
     colwid_spec <- NULL
     
   }
@@ -3791,21 +4217,26 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   if (links == "Yes" & applictabs == "No" & is.null(colwid_spec)) {
     
-    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3,4:max(ncol(notesdf),4)), widths = c(15, min(numchars, 100), 50, "auto"))
+    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3,4:max(ncol(notesdf),4)), 
+                           widths = c(15, min(numchars, 100), 50, "auto"))
     
   } else if (links == "Yes" & applictabs == "Yes" & is.null(colwid_spec)) {
     
-    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3,4,5:max(ncol(notesdf),5)), widths = c(15, min(numchars, 100), 20, 50, "auto"))
+    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3,4,5:max(ncol(notesdf),5)), 
+                           widths = c(15, min(numchars, 100), 20, 50, "auto"))
     
   } else if (links == "No" & applictabs == "Yes" & is.null(colwid_spec)) {
     
-    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3,4:max(ncol(notesdf),4)), widths = c(15, min(numchars, 100), 20, "auto"))
+    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3,4:max(ncol(notesdf),4)), 
+                           widths = c(15, min(numchars, 100), 20, "auto"))
     
   } else if (links == "No" & applictabs == "No" & is.null(colwid_spec)) {
     
-    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3:max(ncol(notesdf),3)), widths = c(15, min(numchars, 100), "auto"))
+    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3:max(ncol(notesdf),3)), 
+                           widths = c(15, min(numchars, 100), "auto"))
     
-  } else if (!is.null(colwid_spec) & is.numeric(colwid_spec) & length(colwid_spec) == ncol(notesdf)) {
+  } else if (!is.null(colwid_spec) & is.numeric(colwid_spec) & 
+             length(colwid_spec) == ncol(notesdf)) {
     
     openxlsx::setColWidths(wb, "Notes", cols = c(1:ncol(notesdf)), widths = colwid_spec)
     
@@ -3813,7 +4244,8 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   openxlsx::setRowHeights(wb, "Notes", startingrow - 1, fontsz * (25/12))
   
-  # Creating the text to be inserted in the main data tables regarding which notes are associated with which table
+  # Creating the text to be inserted in the main data tables regarding which notes are ...
+  # ... associated with which table
   
   if (applictabs == "Yes" & autonotes2 == "Yes") {
     
@@ -3826,8 +4258,9 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
       
       notesdf7 <- notesdf %>%
         dplyr::rename(applic_tab = "Applicable tables") %>%
-        dplyr::mutate(applic_tab = dplyr::case_when(applic_tab == "All" ~ paste(tablelist, collapse = ", "),
-                                                    TRUE ~ applic_tab)) %>%
+        dplyr::mutate(applic_tab = 
+                        dplyr::case_when(applic_tab == "All" ~ paste(tablelist, collapse = ", "),
+                                         TRUE ~ applic_tab)) %>%
         dplyr::filter(stringr::str_detect(applic_tab, tablelist[i]) == TRUE)
       
       notes <- paste0("[", notesdf7[[1]], "]")
@@ -3860,11 +4293,13 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
       if (nrow(notesdf7) == 0) {
         
         notes7 <- "This worksheet contains one table."
-        warning(paste0(tablelist[i], " has no notes associated with it. Check that this is intentional."))
+        warning(strwrap(paste0(tablelist[i], " has no notes associated with it. Check that this is 
+                intentional."), prefix = " ", initial = ""))
         
       } else {
         
-        notes7 <- paste0("This worksheet contains one table. For notes, see ", notes6, " on the notes worksheet.")
+        notes7 <- paste0("This worksheet contains one table. For notes, see ", notes6, 
+                         " on the notes worksheet.")
         
       }
       
@@ -3899,7 +4334,9 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
     if (notesdf8$applic_tab4 >= 1) {
       
-      warning("There is at least one occurrence where the list of applicable tables appears to be all of the tables. The list could read \"All\" instead.")
+      warning(strwrap("There is at least one occurrence where the list of applicable tables appears 
+              to be all of the tables. The list could read \"All\" instead.", prefix = " ",
+              initial = ""))
       
     }
     
@@ -3923,7 +4360,8 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
       
     }
     
-    rm(tablelist, tablelist2, notesdf8, tabcontents2, notesdf9, applictablist, applictablist2, applictablist3)
+    rm(tablelist, tablelist2, notesdf8, tabcontents2, notesdf9, applictablist, applictablist2, 
+       applictablist3)
     
   }
   
@@ -3941,8 +4379,8 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
 }
 
-###################################################################################################################
-###################################################################################################################
+###################################################################################################
+###################################################################################################
 # DEFINITIONS
 
 #' @title accessibletablesR::adddefinition
@@ -3950,11 +4388,13 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
 #' @description Add a definition of a term relevant to the workbook.
 #' 
 #' @details 
-#' adddefinition function will add a definition and its description to the workbook, specifically in the definitions worksheet.
+#' adddefinition function will add a definition and its description to the workbook, specifically 
+#' in the definitions worksheet.
 #' Add definitions if wanted, if not then do run the adddefinition function.
 #' term and definition are compulsory parameters.
 #' A link can be added with each definition.
-#' linktext1 and linktext2: linktext1 should be the text you want to appear and linktext2 should be the underlying link to a website, file etc.
+#' linktext1 and linktext2: linktext1 should be the text you want to appear and linktext2 should be 
+#' the underlying link to a website, file etc.
 #' 
 #' @param term Term to be defined
 #' @param definition Definition of term
@@ -3964,42 +4404,52 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
 #' @returns A dataframe containing all information associated to definitions.
 #' 
 #' @examples 
-#' accessibletablesR::workbook(covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes",
-#'                             autonotes = "Yes", title = "Fuel consumption and aspects of car design and performance for various cars",
-#'                             creator = "An organisation")
+#' accessibletablesR::workbook(
+#'    covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes", 
+#'    autonotes = "Yes", 
+#'    title = "Fuel consumption and aspects of car design and performance for various cars",
+#'    creator = "An organisation")
 #'                             
-#' accessibletablesR::creatingtables(title = "Fuel consumption and aspects of car design and performance for various cars C",
-#'                                   subtitle = "Cars",
-#'                                   extraline1 = "Link to contents",
-#'                                   extraline2 = "Link to notes",
-#'                                   extraline3 = "Link to definitions",
-#'                                   sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
-#'                                   numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
-#'                                   othdatacols = c(9,10), columnwidths = "specified",
-#'                                   colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
+#' accessibletablesR::creatingtables(
+#'    title = "Fuel consumption and aspects of car design and performance for various cars C",
+#'    subtitle = "Cars",
+#'    extraline1 = "Link to contents",
+#'    extraline2 = "Link to notes",
+#'    extraline3 = "Link to definitions",
+#'    sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
+#'    numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
+#'    othdatacols = c(9,10), columnwidths = "specified",
+#'    colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
 #'                                   
 #' accessibletablesR::contentstable()
 #' 
-#' accessibletablesR::addnote(notenumber = "note1", notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google", linktext2 = "https://www.ons.google.co.uk") 
+#' accessibletablesR::addnote(notenumber = "note1", 
+#'    notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google",
+#'                linktext2 = "https://www.ons.google.co.uk") 
 #' 
 #' accessibletablesR::notestab()
 #' 
-#' accessibletablesR::adddefinition(term = "Usual resident", definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and had stayed or intended to stay in the UK for a period of 12 months or more, or had a permanent UK address and was outside the UK and intended to be outside the UK for less than 12 months.")
+#' accessibletablesR::adddefinition(term = "Usual resident", 
+#'    definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and 
+#'                  had stayed or intended to stay in the UK for a period of 12 months or more, or 
+#'                  had a permanent UK address and was outside the UK and intended to be outside the
+#'                  UK for less than 12 months.")
 #'
 #' accessibletablesR::definitionstab()
 #' 
-#' accessibletablesR::coverpage(title = "Fuel consumption and aspects of car design and performance for various cars",
-#'                              intro = "Some made up data about cars",
-#'                              about = "The output of an example of how to use accessibletablesR",
-#'                              source = "R mtcars",
-#'                              relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
-#'                              relatedtext = "mtcars: Motor trend car road tests",
-#'                              dop = "26 October 2023",
-#'                              blank = "There should be no blank cells",
-#'                              names = "Your name",
-#'                              email = "yourname@emailprovider.com",
-#'                              phone = "01111 1111111111111",
-#'                              reuse = "Yes", govdept = NULL)
+#' accessibletablesR::coverpage(
+#'   title = "Fuel consumption and aspects of car design and performance for various cars",
+#'   intro = "Some made up data about cars",
+#'   about = "The output of an example of how to use accessibletablesR",
+#'   source = "R mtcars",
+#'   relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+#'   relatedtext = "mtcars: Motor trend car road tests",
+#'   dop = "26 October 2023",
+#'   blank = "There should be no blank cells",
+#'   names = "Your name",
+#'   email = "yourname@emailprovider.com",
+#'   phone = "01111 1111111111111",
+#'   reuse = "Yes", govdept = NULL)
 #'                              
 #' accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 #' 
@@ -4009,15 +4459,18 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
   
   if (!("tidyverse" %in% utils::installed.packages())) {
     
-    stop("Not all required packages installed. Run the \"workbook\" function first to ensure packages are installed.")
+    stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
+         packages are installed.", prefix = " ", initial = ""))
     
   } else if (utils::packageVersion("tidyverse") < "2.0.0") {
     
-    stop("Older versions of packages detected. Run the \"workbook\" function first to ensure up to date packages are installed.")
+    stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
+         up to date packages are installed.", prefix = " ", initial = ""))
     
   }
   
-  # Checking that a definitions page is wanted, based on whether a worksheet was created in the initial workbook
+  # Checking that a definitions page is wanted, based on whether a worksheet was created in the ...
+  # ... initial workbook
   
   if (!("Definitions" %in% names(wb))) {
     
@@ -4039,19 +4492,22 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
   
   if (!is.null(term) & !is.character(term)) {
     
-    stop("The parameter term is not populated properly. If it is not NULL then it has to be a string.")
+    stop(strwrap("The parameter term is not populated properly. If it is not NULL then it has to be 
+         a string.", prefix = " ", initial = ""))
     
   }
   
   if (!is.null(definition) & !is.character(definition)) {
     
-    stop("The parameter definition is not populated properly. If it is not NULL then it has to be a string.")
+    stop(strwrap("The parameter definition is not populated properly. If it is not NULL then it has 
+         to be a string.", prefix = " ", initial = ""))
     
   }
   
   if (length(linktext1) > 1 | length(linktext2) > 1) {
     
-    stop("linktext1 and linktext2 can only be single entities and not vectors of length greater than one")
+    stop(strwrap("linktext1 and linktext2 can only be single entities and not vectors of length 
+         greater than one", prefix = " ", initial = ""))
     
   }
   
@@ -4094,11 +4550,13 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
   # Check for any duplication of definitions
   
   definitionsdfx <- definitionsdf %>%
-    dplyr::add_row("Term" = term, "Definition" = definition, "Link1" = linktext1, "Link2" = linktext2) %>%
+    dplyr::add_row("Term" = term, "Definition" = definition, "Link1" = linktext1, 
+                   "Link2" = linktext2) %>%
     dplyr::mutate(Link2 = dplyr::case_when(Link1 == "No additional link" ~ "No additional link",
                                            TRUE ~ Link2)) %>%
-    dplyr::mutate(Link = dplyr::case_when(Link1 == "No additional link" ~ "No additional link",
-                                          TRUE ~ paste0("HYPERLINK(\"", Link2, "\", \"", Link1, "\")")))
+    dplyr::mutate(Link = 
+                    dplyr::case_when(Link1 == "No additional link" ~ "No additional link",
+                                     TRUE ~ paste0("HYPERLINK(\"", Link2, "\", \"", Link1, "\")")))
   
   definitionsdf2 <- definitionsdfx %>%
     dplyr::group_by(Term) %>%
@@ -4116,7 +4574,8 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
     dplyr::group_by(Link1) %>%
     dplyr::summarise(count = n()) %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(count = dplyr::case_when(is.na(Link1) | Link1 == "" | Link1 == "No additional link" ~ 1,
+    dplyr::mutate(count = dplyr::case_when(is.na(Link1) | Link1 == "" | 
+                                           Link1 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
     dplyr::summarise(check = sum(as.numeric(count)) / n()) 
   
@@ -4124,7 +4583,8 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
     dplyr::group_by(Link2) %>%
     dplyr::summarise(count = n()) %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(count = dplyr::case_when(is.na(Link2) | Link2 == "" | Link2 == "No additional link" ~ 1,
+    dplyr::mutate(count = dplyr::case_when(is.na(Link2) | Link2 == "" | 
+                                           Link2 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
     dplyr::summarise(check = sum(as.numeric(count)) / n()) 
   
@@ -4167,9 +4627,12 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
 #' @details 
 #' definitionstab creates the worksheet with information on definitions.
 #' If definitions not wanted, then do not run the definitionstab function.
-#' There are three parameters and they are optional and preset. Change contentslink to "No" if you want a contents tab but do not want a link to it in the definitions tab. Change gridlines to "No" if gridlines are not wanted.
+#' There are three parameters and they are optional and preset. Change contentslink to "No" if you 
+#' want a contents tab but do not want a link to it in the definitions tab. Change gridlines to 
+#' "No" if gridlines are not wanted.
 #' Column widths are automatically set but the user can specify the required widths in colwid_spec.
-#' Extra columns can be added by setting extracols to "Yes" and creating a dataframe extracols_definitions with the desired extra columns.
+#' Extra columns can be added by setting extracols to "Yes" and creating a dataframe 
+#' extracols_definitions with the desired extra columns.
 #' 
 #' @param contentslink Define whether a link to the contents page is wanted (optional)
 #' @param gridlines Define whether gridlines are present (optional)
@@ -4179,60 +4642,76 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
 #' @returns A worksheet of the definitions page for the workbook.
 #' 
 #' @examples 
-#' accessibletablesR::workbook(covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes",
-#'                             autonotes = "Yes", title = "Fuel consumption and aspects of car design and performance for various cars",
-#'                             creator = "An organisation")
+#' accessibletablesR::workbook(
+#'    covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes", 
+#'    autonotes = "Yes", 
+#'    title = "Fuel consumption and aspects of car design and performance for various cars",
+#'    creator = "An organisation")
 #'                             
-#' accessibletablesR::creatingtables(title = "Fuel consumption and aspects of car design and performance for various cars C",
-#'                                   subtitle = "Cars",
-#'                                   extraline1 = "Link to contents",
-#'                                   extraline2 = "Link to notes",
-#'                                   extraline3 = "Link to definitions",
-#'                                   sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
-#'                                   numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
-#'                                   othdatacols = c(9,10), columnwidths = "specified",
-#'                                   colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
+#' accessibletablesR::creatingtables(
+#'    title = "Fuel consumption and aspects of car design and performance for various cars C",
+#'    subtitle = "Cars",
+#'    extraline1 = "Link to contents",
+#'    extraline2 = "Link to notes",
+#'    extraline3 = "Link to definitions",
+#'    sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
+#'    numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
+#'    othdatacols = c(9,10), columnwidths = "specified",
+#'    colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
 #'                                   
 #' accessibletablesR::contentstable()
 #' 
-#' accessibletablesR::addnote(notenumber = "note1", notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google", linktext2 = "https://www.ons.google.co.uk") 
+#' accessibletablesR::addnote(notenumber = "note1", 
+#'    notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google",
+#'                linktext2 = "https://www.ons.google.co.uk") 
 #' 
 #' accessibletablesR::notestab()
 #' 
-#' accessibletablesR::adddefinition(term = "Usual resident", definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and had stayed or intended to stay in the UK for a period of 12 months or more, or had a permanent UK address and was outside the UK and intended to be outside the UK for less than 12 months.")
+#' accessibletablesR::adddefinition(term = "Usual resident", 
+#'    definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and 
+#'                  had stayed or intended to stay in the UK for a period of 12 months or more, or 
+#'                  had a permanent UK address and was outside the UK and intended to be outside the
+#'                  UK for less than 12 months.")
 #'
 #' accessibletablesR::definitionstab()
 #' 
-#' accessibletablesR::coverpage(title = "Fuel consumption and aspects of car design and performance for various cars",
-#'                              intro = "Some made up data about cars",
-#'                              about = "The output of an example of how to use accessibletablesR",
-#'                              source = "R mtcars",
-#'                              relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
-#'                              relatedtext = "mtcars: Motor trend car road tests",
-#'                              dop = "26 October 2023",
-#'                              blank = "There should be no blank cells",
-#'                              names = "Your name",
-#'                              email = "yourname@emailprovider.com",
-#'                              phone = "01111 1111111111111",
-#'                              reuse = "Yes", govdept = NULL)
+#' accessibletablesR::coverpage(
+#'   title = "Fuel consumption and aspects of car design and performance for various cars",
+#'   intro = "Some made up data about cars",
+#'   about = "The output of an example of how to use accessibletablesR",
+#'   source = "R mtcars",
+#'   relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+#'   relatedtext = "mtcars: Motor trend car road tests",
+#'   dop = "26 October 2023",
+#'   blank = "There should be no blank cells",
+#'   names = "Your name",
+#'   email = "yourname@emailprovider.com",
+#'   phone = "01111 1111111111111",
+#'   reuse = "Yes", govdept = NULL)
 #'                              
 #' accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 #' 
 #' @export
 
-definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
+definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, 
+                           extracols = NULL) {
   
-  if (!("tidyverse" %in% utils::installed.packages()) | !("openxlsx" %in% utils::installed.packages())) {
+  if (!("tidyverse" %in% utils::installed.packages()) | 
+      !("openxlsx" %in% utils::installed.packages())) {
     
-    stop("Not all required packages installed. Run the \"workbook\" function first to ensure packages are installed.")
+    stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
+         packages are installed.", prefix = " ", initial = ""))
     
-  } else if (utils::packageVersion("tidyverse") < "2.0.0" | utils::packageVersion("openxlsx") < "4.2.5.2") {
+  } else if (utils::packageVersion("tidyverse") < "2.0.0" | 
+             utils::packageVersion("openxlsx") < "4.2.5.2") {
     
-    stop("Older versions of packages detected. Run the \"workbook\" function first to ensure up to date packages are installed.")
+    stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
+         up to date packages are installed.", prefix = " ", initial = ""))
     
   }
   
-  # Checking that a definitions page is wanted, based on whether a worksheet was created in the initial workbook
+  # Checking that a definitions page is wanted, based on whether a worksheet was created in the ...
+  # ... initial workbook
   
   if (!("Definitions" %in% names(wb))) {
     
@@ -4264,7 +4743,8 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   if (length(gridlines) > 1) {
     
-    stop("gridlines has not been populated properly. It must be a single word, either \"Yes\" or \"No\".")
+    stop(strwrap("gridlines has not been populated properly. It must be a single word, either 
+         \"Yes\" or \"No\".", prefix = " ", initial = ""))
     
   }
   
@@ -4290,7 +4770,8 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   if (length(extracols) > 1) {
     
-    stop("extracols has not been populated properly. It must be a single word, either \"Yes\" or \"No\".")
+    stop(strwrap("extracols has not been populated properly. It must be a single word, either 
+         \"Yes\" or \"No\".", prefix = " ", initial = ""))
     
   }
   
@@ -4394,7 +4875,8 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   if (links != "No" & links != "Yes") {
     
-    stop("links not set to \"Yes\" or \"No\". There must be an issue with link information provided with the definitions.")
+    stop(strwrap("links not set to \"Yes\" or \"No\". There must be an issue with link information 
+         provided with the definitions.", prefix = " ", initial = ""))
     
   }
   
@@ -4402,7 +4884,8 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   if (length(contentslink) > 1) {
     
-    stop("contentslink is not populated properly. It should be a single entity, either \"Yes\" or \"No\".")
+    stop(strwrap("contentslink is not populated properly. It should be a single entity, either 
+         \"Yes\" or \"No\".", prefix = " ", initial = ""))
     
   }
   
@@ -4434,17 +4917,20 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
     
     if (nrow(extracols_definitions) != nrow(definitionsdf)) {
       
-      stop("The number of rows in the definitions table and the extracols_definitions dataframe is not the same")
+      stop(strwrap("The number of rows in the definitions table and the extracols_definitions 
+           dataframe is not the same", prefix = " ", initial = ""))
       
     }
     
   } else if (extracols == "No" & exists("extracols_definitions", envir = .GlobalEnv)) {
     
-    warning("extracols has been set to \"No\" but a dataframe extracols_definitions exists. No extra columns have been added.")
+    warning(strwrap("extracols has been set to \"No\" but a dataframe extracols_definitions exists. 
+            No extra columns have been added.", prefix = " ", initial = ""))
     
   } else if (extracols == "Yes" & !(exists("extracols_definitions", envir = .GlobalEnv))) {
     
-    warning("extracols has been set to \"Yes\" but a extracols_definitions dataframe does not exist. No extra columns will be added.")
+    warning(strwrap("extracols has been set to \"Yes\" but a extracols_definitions dataframe does 
+            not exist. No extra columns will be added.", prefix = " ", initial = ""))
     
   }
   
@@ -4452,7 +4938,8 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
     
     definitionsdf <<- definitionsdf %>%
       dplyr::select("Term", "Definition", "Link") %>%
-      {if (exists("extracols_definitions", envir = .GlobalEnv)) dplyr::bind_cols(., extracols_definitions) else .}
+      {if (exists("extracols_definitions", envir = .GlobalEnv)) 
+        dplyr::bind_cols(., extracols_definitions) else .}
     
     class(definitionsdf$Link) <- "formula"
     
@@ -4460,7 +4947,8 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
     
     definitionsdf <<- definitionsdf %>%
       dplyr::select("Term", "Definition") %>%
-      {if (exists("extracols_definitions", envir = .GlobalEnv)) dplyr::bind_cols(., extracols_definitions) else .}
+      {if (exists("extracols_definitions", envir = .GlobalEnv)) 
+        dplyr::bind_cols(., extracols_definitions) else .}
     
   }
   
@@ -4480,7 +4968,8 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
     
     if (any(duplicated(colnames(definitionsdf))) == TRUE) {
       
-      warning("There is at least one duplicate column name in the definitions table and the extracols_definitions dataframe")
+      warning(strwrap("There is at least one duplicate column name in the definitions table and the 
+              extracols_definitions dataframe", prefix = " ", initial = ""))
       
     }
     
@@ -4490,9 +4979,11 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   normalformat <- openxlsx::createStyle(valign = "top")
   topformat <- openxlsx::createStyle(valign = "bottom")
-  linkformat <- openxlsx::createStyle(fontColour = "blue", textDecoration = "underline", valign = "top")
+  linkformat <- openxlsx::createStyle(fontColour = "blue", textDecoration = "underline", 
+                                      valign = "top")
   
-  openxlsx::addStyle(wb, "Definitions", normalformat, rows = 1:(nrow(definitionsdf) + 4), cols = 1:ncol(definitionsdf), gridExpand = TRUE)
+  openxlsx::addStyle(wb, "Definitions", normalformat, rows = 1:(nrow(definitionsdf) + 4), 
+                     cols = 1:ncol(definitionsdf), gridExpand = TRUE)
   
   openxlsx::writeData(wb, "Definitions", "Definitions", startCol = 1, startRow = 1)
   
@@ -4500,7 +4991,8 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   openxlsx::addStyle(wb, "Definitions", titleformat, rows = 1, cols = 1)
   
-  openxlsx::writeData(wb, "Definitions", "This worksheet contains one table.", startCol = 1, startRow = 2)
+  openxlsx::writeData(wb, "Definitions", "This worksheet contains one table.", startCol = 1, 
+                      startRow = 2)
   openxlsx::addStyle(wb, "Definitions", topformat, rows = 2, cols = 1)
   
   extraformat <- openxlsx::createStyle(valign = "top")
@@ -4509,7 +5001,9 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
     
     openxlsx::addStyle(wb, "Definitions", linkformat, rows = 3, cols = 1)
     
-    openxlsx::writeFormula(wb, "Definitions", startRow = 3, x = openxlsx::makeHyperlinkString("Contents", row = 1, col = 1, text = "Link to contents"))
+    openxlsx::writeFormula(wb, "Definitions", startRow = 3, 
+                           x = openxlsx::makeHyperlinkString("Contents", row = 1, 
+                                                             col = 1, text = "Link to contents"))
     
     startingrow <- 4
     
@@ -4523,15 +5017,19 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   if (links == "Yes" & is.null(linkrange)) {
     
-    stop("Links are required in the definitions tab but the row numbers where links should be have not been generated (i.e., linkrange not populated)")
+    stop(strwrap("Links are required in the definitions tab but the row numbers where links should 
+         be have not been generated (i.e., linkrange not populated)", prefix = " ", initial = ""))
     
   } else if (links == "Yes" & !is.null(linkrange)) {
     
-    openxlsx::addStyle(wb, "Definitions", linkformat, rows = linkrange + startingrow, cols = linkcolpos, gridExpand = TRUE)
+    openxlsx::addStyle(wb, "Definitions", linkformat, rows = linkrange + startingrow, 
+                       cols = linkcolpos, gridExpand = TRUE)
     
   }
   
-  openxlsx::writeDataTable(wb, "Definitions", definitionsdf, tableName = "definitions", startRow = startingrow, startCol = 1, withFilter = FALSE, tableStyle = "none")
+  openxlsx::writeDataTable(wb, "Definitions", definitionsdf, tableName = "definitions", 
+                           startRow = startingrow, startCol = 1, withFilter = FALSE, 
+                           tableStyle = "none")
   
   if ("Link" %in% colnames(definitionsdf)) {
     
@@ -4541,7 +5039,8 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
       
       if (noaddlinks[i] == "No additional link") {
         
-        openxlsx::writeData(wb, "Definitions", "No additional link", startCol = linkcolpos, startRow = startingrow + i)
+        openxlsx::writeData(wb, "Definitions", "No additional link", startCol = linkcolpos, 
+                            startRow = startingrow + i)
         
       } 
       
@@ -4549,17 +5048,24 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
     
   }
   
-  headingsformat <- openxlsx::createStyle(textDecoration = "bold", wrapText = TRUE, border = NULL, valign = "top")
+  headingsformat <- openxlsx::createStyle(textDecoration = "bold", wrapText = TRUE, border = NULL, 
+                                          valign = "top")
   
-  openxlsx::addStyle(wb, "Definitions", headingsformat, rows = startingrow, cols = 1:ncol(definitionsdf))
+  openxlsx::addStyle(wb, "Definitions", headingsformat, rows = startingrow, 
+                     cols = 1:ncol(definitionsdf))
   
   extraformat2 <- openxlsx::createStyle(wrapText = TRUE)
   
-  openxlsx::addStyle(wb, "Definitions", extraformat2, rows = (startingrow + 1):(nrow(definitionsdf) + startingrow + 1), cols = 1:2, stack = TRUE, gridExpand = TRUE)
+  openxlsx::addStyle(wb, "Definitions", extraformat2, 
+                     rows = (startingrow + 1):(nrow(definitionsdf) + startingrow + 1), 
+                     cols = 1:2, stack = TRUE, gridExpand = TRUE)
   
-  if ((!is.null(colwid_spec) & !is.numeric(colwid_spec)) | (!is.null(colwid_spec) & length(colwid_spec) != ncol(definitionsdf))) {
+  if ((!is.null(colwid_spec) & !is.numeric(colwid_spec)) | 
+      (!is.null(colwid_spec) & length(colwid_spec) != ncol(definitionsdf))) {
     
-    warning("colwid_spec is either a non-numeric value or a vector not of the same length as the number of columns desired in the definitions tab. The widths will be determined automatically.")
+    warning(strwrap("colwid_spec is either a non-numeric value or a vector not of the same length as 
+            the number of columns desired in the definitions tab. The widths will be determined 
+            automatically.", prefix = " ", initial = ""))
     colwid_spec <- NULL
     
   }
@@ -4569,13 +5075,16 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   if (links == "Yes" & is.null(colwid_spec)) {
     
-    openxlsx::setColWidths(wb, "Definitions", cols = c(1,2,3,4:max(ncol(definitionsdf),4)), widths = c(min(numchars1, 30), min(numchars2, 75), "auto", "auto"))
+    openxlsx::setColWidths(wb, "Definitions", cols = c(1,2,3,4:max(ncol(definitionsdf),4)), 
+                           widths = c(min(numchars1, 30), min(numchars2, 75), "auto", "auto"))
     
   } else if (links == "No" & is.null(colwid_spec)) {
     
-    openxlsx::setColWidths(wb, "Definitions", cols = c(1,2,3:max(ncol(definitionsdf),3)), widths = c(min(numchars1, 30), min(numchars2, 75), "auto"))
+    openxlsx::setColWidths(wb, "Definitions", cols = c(1,2,3:max(ncol(definitionsdf),3)), 
+                           widths = c(min(numchars1, 30), min(numchars2, 75), "auto"))
     
-  } else if (!is.null(colwid_spec) & is.numeric(colwid_spec) & length(colwid_spec) == ncol(definitionsdf)) {
+  } else if (!is.null(colwid_spec) & is.numeric(colwid_spec) & 
+             length(colwid_spec) == ncol(definitionsdf)) {
     
     openxlsx::setColWidths(wb, "Definitions", cols = c(1:ncol(definitionsdf)), widths = colwid_spec)
     
@@ -4595,8 +5104,8 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
 }
 
-###################################################################################################################
-###################################################################################################################
+###################################################################################################
+###################################################################################################
 # SAVING THE FINAL SPREADSHEET
 
 #' @title accessibletablesR::savingtables
@@ -4604,11 +5113,13 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
 #' @description Saving the final output
 #' 
 #' @details 
-#' The savingtables function only requires that the location and name of the spreadsheet be specified.
+#' The savingtables function only requires that the location and name of the spreadsheet be 
+#' specified.
 #' A xls file can be saved but it is recommended to use a xlsx file instead.
 #' Cannot save directly to ods, instead first a xlsx file is saved and then converted.
 #' Default setting is not to create the ods file from the xlsx file.
-#' If only xlsx file is wanted keep odsfile = "No" but if both ods and xlsx file wanted set odsfile = "Yes" and deletexlsx = "No".
+#' If only xlsx file is wanted keep odsfile = "No" but if both ods and xlsx file wanted set 
+#' odsfile = "Yes" and deletexlsx = "No".
 #' If only the ods file wanted set odsfile = "Yes" and deletexlsx = "Yes".
 #' 
 #' @param filename File path and file name of final output, including file type
@@ -4618,42 +5129,52 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
 #' @returns A workbook saved to the network drive
 #' 
 #' @examples 
-#' accessibletablesR::workbook(covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes",
-#'                             autonotes = "Yes", title = "Fuel consumption and aspects of car design and performance for various cars",
-#'                             creator = "An organisation")
+#' accessibletablesR::workbook(
+#'    covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes", 
+#'    autonotes = "Yes", 
+#'    title = "Fuel consumption and aspects of car design and performance for various cars",
+#'    creator = "An organisation")
 #'                             
-#' accessibletablesR::creatingtables(title = "Fuel consumption and aspects of car design and performance for various cars C",
-#'                                   subtitle = "Cars",
-#'                                   extraline1 = "Link to contents",
-#'                                   extraline2 = "Link to notes",
-#'                                   extraline3 = "Link to definitions",
-#'                                   sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
-#'                                   numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
-#'                                   othdatacols = c(9,10), columnwidths = "specified",
-#'                                   colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
+#' accessibletablesR::creatingtables(
+#'    title = "Fuel consumption and aspects of car design and performance for various cars C",
+#'    subtitle = "Cars",
+#'    extraline1 = "Link to contents",
+#'    extraline2 = "Link to notes",
+#'    extraline3 = "Link to definitions",
+#'    sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
+#'    numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
+#'    othdatacols = c(9,10), columnwidths = "specified",
+#'    colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
 #'                                   
 #' accessibletablesR::contentstable()
 #' 
-#' accessibletablesR::addnote(notenumber = "note1", notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google", linktext2 = "https://www.ons.google.co.uk") 
+#' accessibletablesR::addnote(notenumber = "note1", 
+#'    notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google",
+#'                linktext2 = "https://www.ons.google.co.uk") 
 #' 
 #' accessibletablesR::notestab()
 #' 
-#' accessibletablesR::adddefinition(term = "Usual resident", definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and had stayed or intended to stay in the UK for a period of 12 months or more, or had a permanent UK address and was outside the UK and intended to be outside the UK for less than 12 months.")
+#' accessibletablesR::adddefinition(term = "Usual resident", 
+#'    definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and 
+#'                  had stayed or intended to stay in the UK for a period of 12 months or more, or 
+#'                  had a permanent UK address and was outside the UK and intended to be outside the
+#'                  UK for less than 12 months.")
 #'
 #' accessibletablesR::definitionstab()
 #' 
-#' accessibletablesR::coverpage(title = "Fuel consumption and aspects of car design and performance for various cars",
-#'                              intro = "Some made up data about cars",
-#'                              about = "The output of an example of how to use accessibletablesR",
-#'                              source = "R mtcars",
-#'                              relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
-#'                              relatedtext = "mtcars: Motor trend car road tests",
-#'                              dop = "26 October 2023",
-#'                              blank = "There should be no blank cells",
-#'                              names = "Your name",
-#'                              email = "yourname@emailprovider.com",
-#'                              phone = "01111 1111111111111",
-#'                              reuse = "Yes", govdept = NULL)
+#' accessibletablesR::coverpage(
+#'   title = "Fuel consumption and aspects of car design and performance for various cars",
+#'   intro = "Some made up data about cars",
+#'   about = "The output of an example of how to use accessibletablesR",
+#'   source = "R mtcars",
+#'   relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+#'   relatedtext = "mtcars: Motor trend car road tests",
+#'   dop = "26 October 2023",
+#'   blank = "There should be no blank cells",
+#'   names = "Your name",
+#'   email = "yourname@emailprovider.com",
+#'   phone = "01111 1111111111111",
+#'   reuse = "Yes", govdept = NULL)
 #'                              
 #' accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 #' 
@@ -4661,13 +5182,17 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
 
 savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
   
-  if (!("odsconvertr" %in% utils::installed.packages()) | !("openxlsx" %in% utils::installed.packages())) {
+  if (!("odsconvertr" %in% utils::installed.packages()) | 
+      !("openxlsx" %in% utils::installed.packages())) {
     
-    stop("Not all required packages installed. Run the \"workbook\" function first to ensure packages are installed.")
+    stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
+         packages are installed.", prefix = " ", initial = ""))
     
-  } else if (utils::packageVersion("odsconvertr") < "0.2.2" | utils::packageVersion("openxlsx") < "4.2.5.2") {
+  } else if (utils::packageVersion("odsconvertr") < "0.2.2" | 
+             utils::packageVersion("openxlsx") < "4.2.5.2") {
     
-    stop("Older versions of packages detected. Run the \"workbook\" function first to ensure up to date packages are installed.")
+    stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
+         up to date packages are installed.", prefix = " ", initial = ""))
     
   }
   
@@ -4677,7 +5202,8 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
     
   }
   
-  if (substr(filename, nchar(filename) - 4, nchar(filename)) != ".xlsx" & substr(filename, nchar(filename) - 3, nchar(filename)) != ".xls") {
+  if (substr(filename, nchar(filename) - 4, nchar(filename)) != ".xlsx" & 
+      substr(filename, nchar(filename) - 3, nchar(filename)) != ".xls") {
     
     stop("filename needs to end with \".xlsx\" or \".xls\"")
     
@@ -4685,13 +5211,15 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
   
   if (substr(filename, nchar(filename) - 3, nchar(filename)) == ".xls") {
     
-    warning("Ideally filename should end with \".xlsx\". Check if file extension can be changed to \".xlsx\".")
+    warning(strwrap("Ideally filename should end with \".xlsx\". Check if file extension can be 
+            changed to \".xlsx\".", prefix = " ", initial = ""))
     
   }
   
   if (stringr::str_detect(filename, " ")) {
     
-    warning("GSS guidance for spreadsheets includes not using spaces in file names, instead consider using dashes")
+    warning(strwrap("GSS guidance for spreadsheets includes not using spaces in file names, instead 
+            consider using dashes", prefix = " ", initial = ""))
     
   }
   
@@ -4827,7 +5355,10 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
   
   if (length(unique(tablestarts)) > 1) {
     
-    warning("The row number of the data table headings is not the same on all worksheets. This might be frustrating for anyone reading the tables into a programming language. Consider whether it would be possible to make the tables start on the same row of each worksheet.")
+    warning(strwrap("The row number of the data table headings is not the same on all worksheets. 
+            This might be frustrating for anyone reading the tables into a programming language. 
+            Consider whether it would be possible to make the tables start on the same row of each 
+            worksheet.", prefix = " ", initial = ""))
     
   }
   
@@ -4835,7 +5366,8 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
   
   openxlsx::saveWorkbook(wb, filename, overwrite = TRUE)
   
-  if (odsfile == "Yes" & deletexlsx == "Yes" & substr(filename, nchar(filename) - 4, nchar(filename)) == ".xlsx") {
+  if (odsfile == "Yes" & deletexlsx == "Yes" & 
+      substr(filename, nchar(filename) - 4, nchar(filename)) == ".xlsx") {
     
     if (file.exists(paste0(substr(filename, 1, nchar(filename) - 5), ".ods")) == TRUE) {
       
@@ -4847,7 +5379,8 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
     
     file.remove(filename)
     
-  } else if (odsfile == "Yes" & deletexlsx == "No" & substr(filename, nchar(filename) - 4, nchar(filename)) == ".xlsx") {
+  } else if (odsfile == "Yes" & deletexlsx == "No" & 
+             substr(filename, nchar(filename) - 4, nchar(filename)) == ".xlsx") {
     
     if (file.exists(paste0(substr(filename, 1, nchar(filename) - 5), ".ods")) == TRUE) {
       
@@ -4869,7 +5402,8 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
     
   }
   
-  # Remove data frames and variables from the global environment in case accessible tables needs to be run again
+  # Remove data frames and variables from the global environment in case accessible tables needs ...
+  # ... to be run again
   
   rm(wb, envir = .GlobalEnv)
   
@@ -4910,4 +5444,4 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
   
 }
 
-###################################################################################################################
+###################################################################################################

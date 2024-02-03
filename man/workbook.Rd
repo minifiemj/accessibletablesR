@@ -109,18 +109,18 @@ accessibletablesR::adddefinition(term = "Usual resident",
 accessibletablesR::definitionstab()
 
 accessibletablesR::coverpage(
-   title = "Fuel consumption and aspects of car design and performance for various cars",
-   intro = "Some made up data about cars",
-   about = "The output of an example of how to use accessibletablesR",
-   source = "R mtcars",
-   relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
-   relatedtext = "mtcars: Motor trend car road tests",
-   dop = "26 October 2023",
-   blank = "There should be no blank cells",
-   names = "Your name",
-   email = "yourname@emailprovider.com",
-   phone = "01111 1111111111111",
-   reuse = "Yes", govdept = NULL)
+  title = "Fuel consumption and aspects of car design and performance for various cars",
+  intro = "Some made up data about cars",
+  about = "The output of an example of how to use accessibletablesR",
+  source = "R mtcars",
+  relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+  relatedtext = "mtcars: Motor trend car road tests",
+  dop = "26 October 2023",
+  blank = "There should be no blank cells",
+  names = "Your name",
+  email = "yourname@emailprovider.com",
+  phone = "01111 1111111111111",
+  reuse = "Yes", govdept = NULL)
                              
 accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 

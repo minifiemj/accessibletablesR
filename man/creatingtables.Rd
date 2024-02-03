@@ -70,69 +70,98 @@ A worksheet with data formatted to meet accessibility criteria.
 Create a worksheet, formatted to meet accessibility criteria, containing data table.
 }
 \details{
-The creatingtables function will create a worksheet with all the data and annotations
-title, sheetname and table_data are the only compulsory parameters
-All other parameters are optional and most are preset to NULL, so only need to be defined if they are wanted
+The creatingtables function will create a worksheet with all the data and annotations.
+title, sheetname and table_data are the only compulsory parameters.
+All other parameters are optional and most are preset to NULL, so only need to be defined if 
+they are wanted.
 sheetname is what you want the sheet to be called in the published workbook
-table_data is the name of the R dataframe containing the data to be included in the published workbook
-headrowsize is the height of the row containing the table column names
-numdatacols is the column position(s) of columns containing number data values (character or numeric class) - it is useful for right aligning data columns and inserting thousand commas
-numdatacolsdp is the number of desired decimal places for columns with numbers (character or numeric class)
-othdatacols is the column position(s) of columns containing data values that are not numbers (e.g., text, dates) - it is useful for formatting (although at present it seems dates do not obey the given formatting)
-Character class data columns will have thousand commas inserted as long as the column position is identified in numdatacols
-Numeric class data columns will only have thousand commas inserted if numdatacolsdp is populated
-numdatacolsdp either should be one value which will be applied to all numdatacols columns or a vector the same length as numdatacols
-For character variables, the figure in Excel will only be the value rounded to the specified number of decimal places. For numeric variables, the figure in Excel will be maintained but the displayed figure will be the value rounded to the specified number of decimal places.
-Enter 0 in numdatacolsdp if no decimal places wanted. If an element in numdatacols represents a non-character and non-numeric class column, enter 0 in the corresponding position in numdatacolsdp
-tablename is the name of the table within the worksheet that a screen reader will detect. It is automatically selected to be the same as the sheetname unless tablename is populated.
-gridlines is preset to "Yes", change to "No" if gridlines are not wanted
-columnwidths is preset to "R_auto" which allows openxlsx to automatically determine column widths. If automatic width determination is not wanted, set to NULL.
-columnwidths can alternatively be set to "characters" which will base the column widths on the number of characters in a column cell.
-If columnwidths = "characters" then width_adj can be modified. width_adj adds an additional few spaces to the number of characters in a column cell.
-width_adj can either be one value which will be applied to all columns or a vector the same length as the number of columns in the table
-If you want to specify the exact width of each column, set columnwidths = "specified" and provide the widths in colwid_spec (e.g., colwid_spec = c(3,4,5))
-If a link to the contents page is required, set one of the extralines to "Link to contents"
-If a link to the notes page is required, set one of the extralines to "Link to notes"
-If a link to the definitions page is required, set one of the extralines to "Link to definitions"
-extralines1-6 can be set to hyperlinks - e.g., extraline5 = "[BBC](https://www.bbc.co.uk)"
+table_data is the name of the R dataframe containing the data to be included in the published 
+workbook.
+headrowsize is the height of the row containing the table column names.
+numdatacols is the column position(s) of columns containing number data values (character or 
+numeric class) - it is useful for right aligning data columns and inserting thousand commas.
+numdatacolsdp is the number of desired decimal places for columns with numbers (character or 
+numeric class).
+othdatacols is the column position(s) of columns containing data values that are not numbers 
+(e.g., text, dates) - it is useful for formatting (although at present it seems dates do not 
+obey the given formatting).
+Character class data columns will have thousand commas inserted as long as the column position 
+is identified in numdatacols.
+Numeric class data columns will only have thousand commas inserted if numdatacolsdp is populated.
+numdatacolsdp either should be one value which will be applied to all numdatacols columns or a 
+vector the same length as numdatacols.
+For character variables, the figure in Excel will only be the value rounded to the specified 
+number of decimal places. For numeric variables, the figure in Excel will be maintained but the 
+displayed figure will be the value rounded to the specified number of decimal places.
+Enter 0 in numdatacolsdp if no decimal places wanted. If an element in numdatacols represents a 
+non-character and non-numeric class column, enter 0 in the corresponding position in 
+numdatacolsdp.
+tablename is the name of the table within the worksheet that a screen reader will detect. It is 
+automatically selected to be the same as the sheetname unless tablename is populated.
+gridlines is preset to "Yes", change to "No" if gridlines are not wanted.
+columnwidths is preset to "R_auto" which allows openxlsx to automatically determine column 
+widths. If automatic width determination is not wanted, set to NULL.
+columnwidths can alternatively be set to "characters" which will base the column widths on the 
+number of characters in a column cell.
+If columnwidths = "characters" then width_adj can be modified. width_adj adds an additional few 
+spaces to the number of characters in a column cell.
+width_adj can either be one value which will be applied to all columns or a vector the same 
+length as the number of columns in the table.
+If you want to specify the exact width of each column, set columnwidths = "specified" and provide 
+the widths in colwid_spec (e.g., colwid_spec = c(3,4,5)).
+If a link to the contents page is required, set one of the extralines to "Link to contents".
+If a link to the notes page is required, set one of the extralines to "Link to notes".
+If a link to the definitions page is required, set one of the extralines to "Link to 
+definitions".
+extralines1-6 can be set to hyperlinks - e.g., extraline5 = "[BBC](https://www.bbc.co.uk)".
 }
 \examples{
-accessibletablesR::workbook(covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes",
-                            autonotes = "Yes", title = "Fuel consumption and aspects of car design and performance for various cars",
-                            creator = "An organisation")
+accessibletablesR::workbook(
+   covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes", 
+   autonotes = "Yes", 
+   title = "Fuel consumption and aspects of car design and performance for various cars",
+   creator = "An organisation")
                             
-accessibletablesR::creatingtables(title = "Fuel consumption and aspects of car design and performance for various cars C",
-                                  subtitle = "Cars",
-                                  extraline1 = "Link to contents",
-                                  extraline2 = "Link to notes",
-                                  extraline3 = "Link to definitions",
-                                  sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
-                                  numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
-                                  othdatacols = c(9,10), columnwidths = "specified",
-                                  colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
+accessibletablesR::creatingtables(
+   title = "Fuel consumption and aspects of car design and performance for various cars C",
+   subtitle = "Cars",
+   extraline1 = "Link to contents",
+   extraline2 = "Link to notes",
+   extraline3 = "Link to definitions",
+   sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
+   numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
+   othdatacols = c(9,10), columnwidths = "specified",
+   colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
                                   
 accessibletablesR::contentstable()
 
-accessibletablesR::addnote(notenumber = "note1", notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google", linktext2 = "https://www.ons.google.co.uk") 
+accessibletablesR::addnote(notenumber = "note1", 
+   notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google",
+               linktext2 = "https://www.ons.google.co.uk") 
 
 accessibletablesR::notestab()
 
-accessibletablesR::adddefinition(term = "Usual resident", definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and had stayed or intended to stay in the UK for a period of 12 months or more, or had a permanent UK address and was outside the UK and intended to be outside the UK for less than 12 months.")
+accessibletablesR::adddefinition(term = "Usual resident", 
+   definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and 
+                 had stayed or intended to stay in the UK for a period of 12 months or more, or 
+                 had a permanent UK address and was outside the UK and intended to be outside the
+                 UK for less than 12 months.")
 
 accessibletablesR::definitionstab()
 
-accessibletablesR::coverpage(title = "Fuel consumption and aspects of car design and performance for various cars",
-                             intro = "Some made up data about cars",
-                             about = "The output of an example of how to use accessibletablesR",
-                             source = "R mtcars",
-                             relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
-                             relatedtext = "mtcars: Motor trend car road tests",
-                             dop = "26 October 2023",
-                             blank = "There should be no blank cells",
-                             names = "Your name",
-                             email = "yourname@emailprovider.com",
-                             phone = "01111 1111111111111",
-                             reuse = "Yes", govdept = NULL)
+accessibletablesR::coverpage(
+  title = "Fuel consumption and aspects of car design and performance for various cars",
+  intro = "Some made up data about cars",
+  about = "The output of an example of how to use accessibletablesR",
+  source = "R mtcars",
+  relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+  relatedtext = "mtcars: Motor trend car road tests",
+  dop = "26 October 2023",
+  blank = "There should be no blank cells",
+  names = "Your name",
+  email = "yourname@emailprovider.com",
+  phone = "01111 1111111111111",
+  reuse = "Yes", govdept = NULL)
                              
 accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 
