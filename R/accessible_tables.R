@@ -101,8 +101,8 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   
   # Install the required packages if they are not already installed, then load the packages
   
-  listofpackages <- base::c("openxlsx", "conflicted", "tidyverse", "devtools")
-  packageversions <- base::c("4.2.5.2", "1.2.0", "2.0.0", "2.4.5")
+  listofpackages <- base::c("openxlsx", "conflicted", "devtools", "dplyr", "stringr", "purrr")
+  packageversions <- base::c("4.2.5.2", "1.2.0", "2.4.5", "1.1.2", "1.5.0", "1.0.1")
   
   for (i in base::seq_along(listofpackages)) {
     
@@ -128,21 +128,17 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     
     if (!(listofpackages2[i] %in% utils::installed.packages())) {
       
-      base::library("devtools")
       devtools::install_github(base::paste0(repogroupings[i], "/", listofpackages2[i]))
       
     } else if (listofpackages2[i] %in% utils::installed.packages() & 
                utils::packageVersion(listofpackages2[i]) < packageversions2[i]) {
       
       base::unloadNamespace(listofpackages2[i])
-      base::library("devtools")
       devtools::install_github(paste0(repogroupings[i], "/", listofpackages2[i]))
       
     } 
     
   }
-  
-  base::library("conflicted")
   
   # When functions are used in this script, the package from which the function comes from is... 
   # ...specified e.g., dplyr::filter
@@ -151,11 +147,7 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   # ...it so base is the package used unless otherwise specified
   
   conflicted::conflict_prefer_all("base", quiet = TRUE)
-  conflicted::conflict_prefer("%>%", "dplyr", quiet = TRUE)
-  
-  library("tidyverse")
-  library("openxlsx")
-  library("odsconvertr")
+  `%>%` <- dplyr::`%>%`
   
   # Cleaning some of the parameters to be either "Yes" or "No"
   
@@ -658,19 +650,27 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
                            tablename = NULL, gridlines = "Yes", columnwidths = "R_auto", 
                            width_adj = NULL, colwid_spec = NULL) {
   
-  if (!("tidyverse" %in% utils::installed.packages()) | 
-      !("openxlsx" %in% utils::installed.packages())) {
+  if (!("dplyr" %in% utils::installed.packages()) | 
+      !("conflicted" %in% utils::installed.packages()) | 
+      !("openxlsx" %in% utils::installed.packages()) | 
+      !("stringr" %in% utils::installed.packages()) | !("purrr" %in% utils::installed.packages())) {
     
     stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
          packages are installed.", prefix = " ", initial = ""))
     
-  } else if (utils::packageVersion("tidyverse") < "2.0.0" | 
-             utils::packageVersion("openxlsx") < "4.2.5.2") {
+  } else if (utils::packageVersion("dplyr") < "1.1.2" | 
+             utils::packageVersion("conflicted") < "1.2.0" |
+             utils::packageVersion("openxlsx") < "4.2.5.2" | 
+             utils::packageVersion("stringr") < "1.5.0" |
+             utils::packageVersion("purrr") < "1.0.1") {
     
     stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
          up to date packages are installed.", prefix = " ", initial = ""))
     
   }
+  
+  conflicted::conflict_prefer_all("base", quiet = TRUE)
+  `%>%` <- dplyr::`%>%`
   
   # Checking some of the parameters to ensure they are properly populated, if not the function...
   # ...will error or display a warning in the console
@@ -1627,16 +1627,16 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     tabcontents2 <- tabcontents %>%
       dplyr::rename(sheet_name = "Sheet name") %>%
       dplyr::group_by(sheet_name) %>%
-      dplyr::summarise(count = n()) %>%
+      dplyr::summarise(count = dplyr::n()) %>%
       dplyr::ungroup() %>%
-      dplyr::summarise(check = sum(count) / n())
+      dplyr::summarise(check = sum(count) / dplyr::n())
     
     tabcontents3 <- tabcontents %>%
       dplyr::rename(table_description = "Table description") %>%
       dplyr::group_by(table_description) %>%
-      dplyr::summarise(count = n()) %>%
+      dplyr::summarise(count = dplyr::n()) %>%
       dplyr::ungroup() %>%
-      dplyr::summarise(check = sum(count) / n())
+      dplyr::summarise(check = sum(count) / dplyr::n())
     
     if (tabcontents2$check > 1) {
       
@@ -1781,19 +1781,24 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
 
 contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
   
-  if (!("tidyverse" %in% utils::installed.packages()) | 
+  if (!("dplyr" %in% utils::installed.packages()) |
+      !("conflicted" %in% utils::installed.packages()) |
       !("openxlsx" %in% utils::installed.packages())) {
     
     stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
          packages are installed.", prefix = " ", initial = ""))
     
-  } else if (utils::packageVersion("tidyverse") < "2.0.0" | 
+  } else if (utils::packageVersion("dplyr") < "1.1.2" |
+             utils::packageVersion("conflicted") < "1.2.0" |
              utils::packageVersion("openxlsx") < "4.2.5.2") {
     
     stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
          up to date packages are installed.", prefix = " ", initial = ""))
     
   }
+  
+  conflicted::conflict_prefer_all("base", quiet = TRUE)
+  `%>%` <- dplyr::`%>%`
   
   # Check to see that a contents page is wanted, based on whether a worksheet was created in the ...
   # ... initial workbook
@@ -1962,16 +1967,16 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
   tabcontents2 <- tabcontents %>%
     dplyr::rename(sheet_name = "Sheet name") %>%
     dplyr::group_by(sheet_name) %>%
-    dplyr::summarise(count = n()) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / n())
+    dplyr::summarise(check = sum(count) / dplyr::n())
   
   tabcontents3 <- tabcontents %>%
     dplyr::rename(table_description = "Table description") %>%
     dplyr::group_by(table_description) %>%
-    dplyr::summarise(count = n()) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / n())
+    dplyr::summarise(check = sum(count) / dplyr::n())
   
   # Checks to make sure there is no duplication of tables in the contents
   
@@ -2183,17 +2188,23 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
                       extrafields = NULL, extrafieldsb = NULL, additlinks = NULL, addittext = NULL, 
                       colwid_spec = NULL, order = NULL) {
   
-  if (!("openxlsx" %in% utils::installed.packages())) {
+  if (!("openxlsx" %in% utils::installed.packages()) |
+      !("conflicted" %in% utils::installed.packages()) |
+      !("stringr" %in% utils::installed.packages())) {
     
-    stop(strwrao("Not all required packages installed. Run the \"workbook\" function first to ensure 
+    stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
          packages are installed.", prefix = " ", initial = ""))
     
-  } else if (utils::packageVersion("openxlsx") < "4.2.5.2") {
+  } else if (utils::packageVersion("openxlsx") < "4.2.5.2" | 
+             utils::packageVersion("conflicted") < "1.2.0" | 
+             utils::packageVersion("stringr") < "1.5.0") {
     
     stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
          up to date packages are installed.", prefix = " ", initial = ""))
     
   }
+  
+  conflicted::conflict_prefer_all("base", quiet = TRUE)
   
   # Check to see that a coverpage is wanted, based on whether a worksheet was created in the ...
   # ... initial workbook
@@ -3436,17 +3447,24 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
 addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL, 
                     linktext2 = NULL) {
   
-  if (!("tidyverse" %in% utils::installed.packages())) {
+  if (!("dplyr" %in% utils::installed.packages()) |
+      !("stringr" %in% utils::installed.packages()) |
+      !("conflicted" %in% utils::installed.packages())) {
     
     stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
          packages are installed.", prefix = " ", initial = ""))
     
-  } else if (utils::packageVersion("tidyverse") < "2.0.0") {
+  } else if (utils::packageVersion("dplyr") < "1.1.2" |
+             utils::packageVersion("stringr") < "1.5.0" |
+             utils::packageVersion("conflicted") < "1.2.0") {
     
     stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
          up to date packages are installed.", prefix = " ", initial = ""))
     
   }
+  
+  conflicted::conflict_prefer_all("base", quiet = TRUE)
+  `%>%` <- dplyr::`%>%`
   
   # Checking that a notes page is wanted, based on whether a worksheet was created in the ...
   # ... initial workbook
@@ -3632,34 +3650,34 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
   notesdf2 <- notesdfx %>%
     dplyr::rename(note_number = "Note number") %>%
     dplyr::group_by(note_number) %>%
-    dplyr::summarise(count = n()) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / n())
+    dplyr::summarise(check = sum(count) / dplyr::n())
   
   notesdf3 <- notesdfx %>%
     dplyr::rename(note_text = "Note text") %>%
     dplyr::group_by(note_text) %>%
-    dplyr::summarise(count = n()) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / n())
+    dplyr::summarise(check = sum(count) / dplyr::n())
   
   notesdf4 <- notesdfx %>%
     dplyr::group_by(Link1) %>%
-    dplyr::summarise(count = n()) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(count = dplyr::case_when(is.na(Link1) | Link1 == "" | 
                                            Link1 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
-    dplyr::summarise(check = sum(as.numeric(count)) / n()) 
+    dplyr::summarise(check = sum(as.numeric(count)) / dplyr::n()) 
   
   notesdf5 <- notesdfx %>%
     dplyr::group_by(Link2) %>%
-    dplyr::summarise(count = n()) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(count = dplyr::case_when(is.na(Link2) | Link2 == "" | 
                                            Link2 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
-    dplyr::summarise(check = sum(as.numeric(count)) / n()) 
+    dplyr::summarise(check = sum(as.numeric(count)) / dplyr::n()) 
   
   if (notesdf2$check > 1) {
     
@@ -3769,19 +3787,26 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
 
 notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
   
-  if (!("tidyverse" %in% utils::installed.packages()) | 
-      !("openxlsx" %in% utils::installed.packages())) {
+  if (!("dplyr" %in% utils::installed.packages()) | 
+      !("openxlsx" %in% utils::installed.packages()) |
+      !("conflicted" %in% utils::installed.packages()) |
+      !("stringr" %in% utils::installed.packages())) {
     
     stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
          packages are installed.", prefix = " ", initial = ""))
     
-  } else if (utils::packageVersion("tidyverse") < "2.0.0" | 
-             utils::packageVersion("openxlsx") < "4.2.5.2") {
+  } else if (utils::packageVersion("dplyr") < "1.1.2" | 
+             utils::packageVersion("openxlsx") < "4.2.5.2" |
+             utils::packageVersion("conflicted") < "1.2.0" |
+             utils::packageVersion("stringr") < "1.5.0") {
     
     stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
          up to date packages are installed.", prefix = " ", initial = ""))
     
   }
+  
+  conflicted::conflict_prefer_all("base", quiet = TRUE)
+  `%>%` <- dplyr::`%>%`
   
   # Check that a notes page is wanted, based on whether a worksheet was created in the initial ...
   # ... workbook
@@ -3960,32 +3985,32 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   notesdf2 <- notesdf %>%
     dplyr::rename(note_number = "Note number") %>%
     dplyr::group_by(note_number) %>%
-    dplyr::summarise(count = n()) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / n())
+    dplyr::summarise(check = sum(count) / dplyr::n())
   
   notesdf3 <- notesdf %>%
     dplyr::rename(note_text = "Note text") %>%
     dplyr::group_by(note_text) %>%
-    dplyr::summarise(count = n()) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / n())
+    dplyr::summarise(check = sum(count) / dplyr::n())
   
   notesdf4 <- notesdf %>%
     dplyr::group_by(Link1) %>%
-    dplyr::summarise(count = n()) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(count = dplyr::case_when(is.na(Link1) | Link1 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
-    dplyr::summarise(check = sum(as.numeric(count)) / n()) 
+    dplyr::summarise(check = sum(as.numeric(count)) / dplyr::n()) 
   
   notesdf5 <- notesdf %>%
     dplyr::group_by(Link2) %>%
-    dplyr::summarise(count = n()) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(count = dplyr::case_when(is.na(Link2) | Link2 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
-    dplyr::summarise(check = sum(as.numeric(count)) / n()) 
+    dplyr::summarise(check = sum(as.numeric(count)) / dplyr::n()) 
   
   notesdf6 <- notesdf %>%
     dplyr::rename(applictab = "Applicable tables") %>%
@@ -4457,17 +4482,22 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
 
 adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) {
   
-  if (!("tidyverse" %in% utils::installed.packages())) {
+  if (!("dplyr" %in% utils::installed.packages()) |
+      !("conflicted" %in% utils::installed.packages())) {
     
     stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
          packages are installed.", prefix = " ", initial = ""))
     
-  } else if (utils::packageVersion("tidyverse") < "2.0.0") {
+  } else if (utils::packageVersion("dplyr") < "1.1.2" |
+             utils::packageVersion("conflicted") < "1.2.0") {
     
     stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
          up to date packages are installed.", prefix = " ", initial = ""))
     
   }
+  
+  conflicted::conflict_prefer_all("base", quiet = TRUE)
+  `%>%` <- dplyr::`%>%`
   
   # Checking that a definitions page is wanted, based on whether a worksheet was created in the ...
   # ... initial workbook
@@ -4560,33 +4590,33 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
   
   definitionsdf2 <- definitionsdfx %>%
     dplyr::group_by(Term) %>%
-    dplyr::summarise(count = n()) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / n())
+    dplyr::summarise(check = sum(count) / dplyr::n())
   
   definitionsdf3 <- definitionsdfx %>%
     dplyr::group_by(Definition) %>%
-    dplyr::summarise(count = n()) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / n())
+    dplyr::summarise(check = sum(count) / dplyr::n())
   
   definitionsdf4 <- definitionsdfx %>%
     dplyr::group_by(Link1) %>%
-    dplyr::summarise(count = n()) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(count = dplyr::case_when(is.na(Link1) | Link1 == "" | 
                                            Link1 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
-    dplyr::summarise(check = sum(as.numeric(count)) / n()) 
+    dplyr::summarise(check = sum(as.numeric(count)) / dplyr::n()) 
   
   definitionsdf5 <- definitionsdfx %>%
     dplyr::group_by(Link2) %>%
-    dplyr::summarise(count = n()) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(count = dplyr::case_when(is.na(Link2) | Link2 == "" | 
                                            Link2 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
-    dplyr::summarise(check = sum(as.numeric(count)) / n()) 
+    dplyr::summarise(check = sum(as.numeric(count)) / dplyr::n()) 
   
   if (definitionsdf2$check > 1) {
     
@@ -4696,19 +4726,24 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
 definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, 
                            extracols = NULL) {
   
-  if (!("tidyverse" %in% utils::installed.packages()) | 
+  if (!("dplyr" %in% utils::installed.packages()) |
+      !("conflicted" %in% utils::installed.packages()) |
       !("openxlsx" %in% utils::installed.packages())) {
     
     stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
          packages are installed.", prefix = " ", initial = ""))
     
-  } else if (utils::packageVersion("tidyverse") < "2.0.0" | 
+  } else if (utils::packageVersion("dplyr") < "1.1.2" |
+             utils::packageVersion("conflicted") < "1.2.0" |
              utils::packageVersion("openxlsx") < "4.2.5.2") {
     
     stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
          up to date packages are installed.", prefix = " ", initial = ""))
     
   }
+  
+  conflicted::conflict_prefer_all("base", quiet = TRUE)
+  `%>%` <- dplyr::`%>%`
   
   # Checking that a definitions page is wanted, based on whether a worksheet was created in the ...
   # ... initial workbook
@@ -4821,31 +4856,31 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   definitionsdf2 <- definitionsdf %>%
     dplyr::group_by(Term) %>%
-    dplyr::summarise(count = n()) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / n())
+    dplyr::summarise(check = sum(count) / dplyr::n())
   
   definitionsdf3 <- definitionsdf %>%
     dplyr::group_by(Definition) %>%
-    dplyr::summarise(count = n()) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / n())
+    dplyr::summarise(check = sum(count) / dplyr::n())
   
   definitionsdf4 <- definitionsdf %>%
     dplyr::group_by(Link1) %>%
-    dplyr::summarise(count = n()) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(count = dplyr::case_when(is.na(Link1) | Link1 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
-    dplyr::summarise(check = sum(as.numeric(count)) / n()) 
+    dplyr::summarise(check = sum(as.numeric(count)) / dplyr::n()) 
   
   definitionsdf5 <- definitionsdf %>%
     dplyr::group_by(Link2) %>%
-    dplyr::summarise(count = n()) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(count = dplyr::case_when(is.na(Link2) | Link2 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
-    dplyr::summarise(check = sum(as.numeric(count)) / n()) 
+    dplyr::summarise(check = sum(as.numeric(count)) / dplyr::n()) 
   
   if (definitionsdf2$check > 1) {
     
@@ -5183,18 +5218,25 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
 savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
   
   if (!("odsconvertr" %in% utils::installed.packages()) | 
-      !("openxlsx" %in% utils::installed.packages())) {
+      !("openxlsx" %in% utils::installed.packages()) |
+      !("stringr" %in% utils::installed.packages()) |
+      !("conflicted" %in% utils::installed.packages())) {
     
     stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
          packages are installed.", prefix = " ", initial = ""))
     
   } else if (utils::packageVersion("odsconvertr") < "0.2.2" | 
-             utils::packageVersion("openxlsx") < "4.2.5.2") {
+             utils::packageVersion("openxlsx") < "4.2.5.2" |
+             utils::packageVersion("stringr") < "1.5.0" |
+             utils::packageVersion("conflicted") < "1.2.0") {
     
     stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
          up to date packages are installed.", prefix = " ", initial = ""))
     
   }
+  
+  conflicted::conflict_prefer_all("base", quiet = TRUE)
+  `%>%` <- dplyr::`%>%`
   
   if (length(filename) > 1) {
     
