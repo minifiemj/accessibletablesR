@@ -3,7 +3,7 @@
 
 # Install accessibletablesR from GitHub
 
-devtools::install_github("minifiemj/accessibletablesR")
+devtools::install_github("minifiemj/accessibletablesR", build_vignettes = TRUE)
 library("accessibletablesR")
 
 # If a firewall prevents install_github from working (a time out message may appear) then ...

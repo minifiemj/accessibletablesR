@@ -30,7 +30,7 @@ To install accessibletablesR:
 if (!("devtools" %in% utils::installed.packages())) 
   {utils::install.packages("devtools", dependencies = TRUE, type = "binary")}
 
-devtools::install_github("minifiemj/accessibletablesR")
+devtools::install_github("minifiemj/accessibletablesR", build_vignettes = TRUE)
 ```
 
 If a firewall prevents install_github from working (a time out message
