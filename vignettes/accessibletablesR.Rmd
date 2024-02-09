@@ -1,0 +1,369 @@
+---
+title: "accessibletablesR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{accessibletablesR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette is a demonstration of how to use accessibletablesR.  
+<br>
+accessibletablesR is designed to produce Excel workbooks that align as closely as possible to the UK Government Analysis Function recommendations for publishing statistics in spreadsheets.  
+<br>
+[Releasing statistics in spreadsheets](https://analysisfunction.civilservice.gov.uk/policy-store/releasing-statistics-in-spreadsheets/)  
+<br>
+accessibletablesR was developed using R 4.1.3, dplyr version 1.1.2, openxlsx version 4.2.5.2, conflicted version 1.2.0, devtools version 2.4.5, stringr version 1.5.0, purrr version 1.0.1 and odsconvertr version 0.2.2. It is unknown if the package will work with earlier versions of R, dplyr, openxlsx, conflicted, devtools, stringr, purrr and odsconvertr. accessibletablesR will install the latest versions of dplyr, openxlsx, conflicted, devtools, stringr, purrr and odsconvertr if these packages are not currently installed or if earlier versions of dplyr (<1.1.2), openxlsx (<4.2.5.2), conflicted (<1.2.0), devtools (<2.4.5), stringr (<1.5.0), purrr (<1.0.1) and odsconvertr (<0.2.2) 
+are currently installed.
+
+## Installation
+
+To install accessibletablesR:
+
+```{r, eval = FALSE}
+if (!("devtools" %in% utils::installed.packages())) 
+  {utils::install.packages("devtools", dependencies = TRUE, type = "binary")}
+
+devtools::install_github("minifiemj/accessibletablesR")
+```
+
+If a firewall prevents install_github from working (a time out message may appear) then install the package manually. On the GitHub repo, go to the green "Code" icon and choose "Download ZIP". Copy 
+the ZIP folder to a network drive. Use devtools::install_local(<link to the zipped folder>) to 
+install the package.  
+<br>
+odsconvertr is also installed from GitHub. If a similar issue prevents the automatic installation of odsconvertr, then install manually from "department-for-transport/odsconvertr".
+
+## Functions in the package
+
+```{r, eval = FALSE}
+workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, autonotes = NULL,
+                     definitionstab = NULL, fontnm = "Arial", fontcol = "black",
+                     fontsz = 12, fontszst = 14, fontszt = 16, title = NULL, creator = NULL,
+                     subject = NULL, category = NULL)
+  
+creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2 = NULL, 
+                           extraline3 = NULL, extraline4 = NULL, extraline5 = NULL, 
+                           extraline6 = NULL, sheetname, table_data, headrowsize = NULL, 
+                           numdatacols = NULL, numdatacolsdp = NULL, othdatacols = NULL, 
+                           tablename = NULL, gridlines = "Yes", columnwidths = "R_auto", 
+                           width_adj = NULL, colwid_spec = NULL)
+  
+contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NULL)
+  
+coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedlink = NULL, 
+                      relatedtext = NULL, dop = NULL, blank = NULL, names = NULL, email = NULL, 
+                      phone = NULL, reuse = NULL, govdept = NULL, gridlines = "Yes",
+                      extrafields = NULL, extrafieldsb = NULL, additlinks = NULL, addittext = NULL, 
+                      colwid_spec = NULL, order = NULL)
+  
+addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL, 
+                    linktext2 = NULL)
+  
+notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, extracols = NULL)
+  
+adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL)
+  
+definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, 
+                           extracols = NULL)
+  
+savingtables <- function(filename, odsfile = "No", deletexlsx = NULL)
+```
+
+## Before using accessibletablesR
+
+Prior to using accessitablesR to generate accessible spreadsheets, you must have the data tables of interest stored as dataframes in the global environment of R. accessibletablesR will only work
+where there is one table per worksheet required, it is not designed for multiple tables within a
+single worksheet. The columns in the R dataframes must be named as they are wanted in the final
+spreadsheet. The R dataframes should be sorted as they are wanted in the final spreadsheet.  
+<br>
+For this vignette, a dummy dataframe (dummydf) will be used. This dataframe has been generated from
+mtcars and will be installed when accessibletablesR is installed.
+
+## Creating a workbook
+
+The first function to run is named "workbook". If this function is not run first, then the other
+functions will not run, unless a workbook is manually created within R.  
+<br>
+The code below demonstrates how to create a workbook with a cover page, contents page, notes page
+and definitions page. The automatic annotation of tables with information on associated notes has
+been selected. A title and a creator have been set for within the "Info" section of a spreadsheet.
+
+```{r, eval = FALSE}
+accessibletablesR::workbook(
+  covertab = "Yes", contentstab = "Yes", notestab = "Yes", 
+  definitionstab = "Yes", autonotes = "Yes", 
+  title = "Fuel consumption and aspects of car design and performance for various cars",
+  creator = "An organisation")
+```
+
+All arguments within the "workbook" function are optional. The default setting for most of the
+arguments is NULL (e.g., no cover page will be created). The "workbook" function will create a
+workbook named wb in the R global environment. The arguments "subject" and "category" are not used
+in the example code above. These are related to fields within the "Info" section of a spreadsheet.
+It is possible for the font, font colour and font sizes (different sizes can be specified for
+subtitles, titles and the rest of the spreadsheet) to be amended. The default colour is black, the
+default font is Arial and the default font sizes are 16 for titles, 14 for subtitles and 12 for the
+rest of the spreadsheet.
+
+## Inserting data tables as worksheets
+
+After the workbook has been created, you can start inserting data tables (stored within the R global
+environment as dataframes). Each data table will form a separate worksheet in the final spreadsheet.  
+<br>
+The code below is creating three worksheets. For the purposes of this example, each spreadsheet will
+have the same data. In reality, different dataframes will likely be used for different worksheets.  
+<br>
+Links to the contents, notes and definitions pages can be generated by setting one of the extralines
+arguments to "Link to contents" or "Link to notes" or "Link to definitions". Although there are six
+extralines arguments, each one can be a vector and there is no limit to how many rows can appear
+above the main data (except the limit of rows that Excel can cope with).  
+<br>
+The example code will create three worksheets which are identical with the exception of column
+widths. Table 1 has its column widths determined automatically by the openxlsx package. The column
+widths for Table 2 are determined automatically within the "creatingtables" function by counting
+the number of characters within columns plus the value of width_adj. The column widths in Table 3
+are specified in the call of the function (colwid_spec).  
+<br>
+Specifying the position of columns containing data as numbers (numdatacols) enables 
+accessibletablesR to format the columns correctly (e.g., right aligning, thousand commas). To
+specify the desired number of decimal places for each number data column, populate numdatacolsdp. 
+To format columns containing non-number data, populate othdatacols with the column positions. At
+present there is an issue formatting dates, so if any data in the form of dates are present, these
+may need to be formatted manually.  
+
+```{r, eval = FALSE}
+accessibletablesR::creatingtables(
+  title = "Fuel consumption and aspects of car design and performance for various cars A",
+  subtitle = "Cars",
+  extraline1 = "Link to contents",
+  extraline2 = "Link to notes",
+  extraline3 = "Link to definitions",
+  sheetname = "Table_1", table_data = dummydf, headrowsize = 40,
+  numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,3,2,0,0,1),
+  othdatacols = c(9,10))
+
+accessibletablesR::creatingtables(
+  title = "Fuel consumption and aspects of car design and performance for various cars B",
+  subtitle = "Cars",
+  extraline1 = "Link to contents",
+  extraline2 = "Link to notes",
+  extraline3 = "Link to definitions",
+  sheetname = "Table_2", table_data = dummydf, headrowsize = 40,
+  numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,1,0,1,0,0,0),
+  othdatacols = c(9,10), columnwidths = "characters", width_adj = 1)
+
+accessibletablesR::creatingtables(
+  title = "Fuel consumption and aspects of car design and performance for various cars C",
+  subtitle = "Cars",
+  extraline1 = "Link to contents",
+  extraline2 = "Link to notes",
+  extraline3 = "Link to definitions",
+  sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
+  numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
+  othdatacols = c(9,10), columnwidths = "specified",
+  colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
+```
+
+headrowsize adjusts the height of the row containing the table column names. If the user wants to 
+give a name to a table in the final Excel workbook which is different to the tab name (sheetname) 
+then populate tablename. If the gridlines are not desired in the final workbook, set 
+gridlines = "No". extralines1-6 can be set to hyperlinks if desired. An example of how to do this 
+is: 
+
+```{r, eval = FALSE}
+extraline5 = "[BBC](https://www.bbc.co.uk)"
+```
+
+## Creating a contents page
+
+If a contents page is desired, the contentstab argument in the "workbook" function must have been
+set to "Yes". Run the "contentstable" function after all of the data tables have been converted to
+worksheets (i.e., run through the "creatingtables" function). All the arguments in the 
+"contentstable" function are optional. 
+
+```{r, eval = FALSE}
+accessibletablesR::contentstable()
+```
+
+If no gridlines are wanted in the contents page in the final workbook set gridlines = "No". Column widths are determined automatically but the user can specify the widths by populating colwid_spec. Extra columns can be provided. To do so, set extracols = "Yes" and create a dataframe called extracols_contents in the global environment before running the "contentstable" function. The extracols_contents dataframe must contain the desired extra columns and have the same number of rows as the contents table.
+
+## Adding notes
+
+Notes can be provided in a dedicated notes page. Run the "addnote" function for as many notes as are needed. The function will create a row in the notes page for each note. notenumber is the number of 
+the note and should be written as "note" followed by a number (e.g., note1). notetext is the description associated with the note.  
+<br>
+notenumber and notetext are the only compulsory arguments. If an additional column is wanted to specify which table (sheet name) a note applies to then populate applictabtext (e.g., 
+applictabtext = c("Table_1", "Table_2")).  
+<br>
+An optional column can be included that provides a link to a piece of information. To do so, 
+populate linktext1 and linktext2. For example, set linktext1 = "BBC" and set linktext2 to the 
+relevant URL address ("https\://www.bbc.co.uk").  
+<br>
+To automatically annotate each table with the notes that are applicable to it, ensure that the
+autonotes argument in the "workbook" function has been set to "Yes" and that the applictabtext
+argument in the "addnote" function is populated.
+
+```{r, eval = FALSE}
+accessibletablesR::addnote(notenumber = "note1", notetext = "Whatever you want note1 to be.", 
+                           applictabtext = c("Table_1", "Table_2"), 
+                           linktext1 = "No additional link", linktext2 = NULL) 
+accessibletablesR::addnote(notenumber = "note2", notetext = "Whatever you want note2 to be", 
+                           applictabtext = "Table_1", linktext1 = "No additional link", 
+                           linktext2 = NULL) 
+accessibletablesR::addnote(notenumber = "note3", notetext = "Whatever you want note3 to be", 
+                           applictabtext = "Table_2", linktext1 = "No additional link", 
+                           linktext2 = NULL) 
+accessibletablesR::addnote(notenumber = "note4", notetext = "Google is an internet search engine", 
+                           applictabtext = "All", linktext1 = "Google", 
+                           linktext2 = "https://www.ons.google.co.uk") 
+```
+
+## Creating a notes page
+
+Once all the notes have been added, the notes page can be created by running the "notestab" 
+function. Run the function after all the data tables have been processed using the "creatingtables" function and after all the notes have been added using the "addnote" function. Ensure that the
+notestab argument in the "workbook" function has been set to "Yes".
+
+```{r, eval = FALSE}
+accessibletablesR::notestab()
+```
+
+The arguments are optional. If a link to the contents page is not wanted on the notes page set contentslink = "No". If no gridlines are wanted on the notes page then set gridlines = "No". Column widths are determined automatically but can be altered to specific widths by the user in 
+colwid_spec. Extra columns can be provided. To do so, set extracols = "Yes" and create a dataframe called extracols_notes in the global environment before running the "notestab" function. The extracols_notes dataframe must contain the desired extra columns and have the same number of rows as the notes table.  
+<br>
+Example code of how to add an extra column to the notes page is below.
+
+```{r, eval = FALSE}
+extracols_notes <- data.frame() %>%
+  dplyr::mutate(col1 = "") %>%
+  dplyr::add_row(col1 = "Whatever you want1") %>%
+  dplyr::add_row(col1 = "Whatever you want2") %>%
+  dplyr::add_row(col1 = "Whatever you want3") %>%
+  dplyr::add_row(col1 = "Whatever you want4") %>%
+  dplyr::rename("Extra column name" = col1)
+
+accessibletablesR::notestab(extracols = "Yes")
+```
+
+## Adding definitions
+
+Definitions of terms can be provided in a dedicated definitions page. Run the "adddefinition"
+function for as many definitions as are needed. term is the item that needs defining and definition
+is the definition of the item. An optional column can be included that provides a link to a piece of information. To do so, populate linktext1 and linktext2. For example, set linktext1 = "BBC" and set linktext2 to the relevant URL address ("https\://www.bbc.co.uk"). 
+
+```{r, eval = FALSE}
+accessibletablesR::adddefinition(
+  term = "Usual resident", 
+  definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK ....")
+```
+
+## Creating a definitions page
+
+Run the "definitionstab" function if a definitions page is wanted. Run the function after all the definitions have been added using the "adddefinition" function. Ensure that the definitionstab 
+argument in the "workbook" function has been set to "Yes".
+
+```{r, eval = FALSE}
+accessibletablesR::definitionstab()
+```
+
+The arguments are optional. If a link to the contents page is not wanted on the definitions page set contentslink = "No". If no gridlines are wanted on the definitions page then set gridlines = "No". Column widths are set automatically but can be altered using colwid_spec. Extra columns can be provided. To do so, set extracols = "Yes" and create a dataframe called extracols_definitions in the global environment before running the "definitionstab" function. The extracols_definitions dataframe must contain the desired extra columns and have the same number of rows as the definitions table.
+
+## Creating a cover page
+
+To create a cover page for the spreadsheet, run the "coverpage" function. Ensure that the covertab
+argument in the "workbook" function has been set to "Yes".  
+<br>
+title is the only compulsory argument. It is the title to be displayed on the cover sheet. Other optional sections of a cover page that can be populated are "Introductory information" (info), 
+"About these data" (about), "Source" (source), "Related publications" (relatedlink, relatedtext), "Date of publication" (dop), "Blank cells" (blank), "Contact" (names, email, phone), "Additional links" (additlinks) and "Reusing this publication" (reuse, govdept). Extra fields can be added using extrafields. One row is allowed for each extra field. The text to populate the extra fields can be provided in extrafieldsb. If no gridlines are wanted on the cover page in the final workbook set gridlines = "No". The column width is automatically set but can be altered by using colwid_spec.  
+<br>
+The ordering of the fields can be amended by populating order. order can be set to a vector where 
+the field names are provided in speech marks.  
+<br>
+The "Reusing this publication" section has been designed for UK government departments and will not apply for other organisations. If a user is from the Office for National Statistics (ONS) and wants 
+a "Reusing this publication" section then set reuse = "Yes" and govdept to "ONS" or "Office for
+National Statistics". If a user is from a UK government department but not the Office for National Statistics (ONS) set reuse = "Yes" and govdept = "name of organisation".  
+<br>
+The example code below is a simple use of the "coverpage" function.
+
+```{r, eval = FALSE}
+accessibletablesR::coverpage(
+  title = "Fuel consumption and aspects of car design and performance for various cars",
+  intro = "Some made up data about cars",
+  about = "The output of an example of how to use accessibletablesR",
+  source = "R mtcars",
+  relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+  relatedtext = "mtcars: Motor trend car road tests",
+  dop = "26 October 2023",
+  blank = "There should be no blank cells",
+  names = "Your name",
+  email = "yourname@emailprovider.com",
+  phone = "01111 1111111111111",
+  reuse = "Yes", govdept = NULL)
+```
+
+The example code below is a more complex use of the "coverpage" function. Three extra fields have 
+been added (see the arguments extrafields and extrafieldsb). Additional links have been provided 
+(see the arguments additlinks and addittext). The width of the column has been set to a specific
+value (see the colwid_spec argument). The ordering of the fields on the cover page has been
+altered (see the argument order). The argument source has been set to a hyperlink (the text 
+"R mtcars" will appear and when clicked on will take the user to the website specified).
+
+```{r, eval = FALSE}
+accessibletablesR::coverpage(
+  title = "Fuel consumption and aspects of car design and performance for various cars",
+  intro = "Some made up data about cars",
+  about = "The output of an example of how to use accessibletablesR",
+  source = 
+     "[R mtcars](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+  relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+  relatedtext = "mtcars: Motor trend car road tests",
+  dop = "26 October 2023",
+  blank = "There should be no blank cells",
+  names = "Your name",
+  email = "yourname@emailprovider.com",
+  phone = "01111 1111111111111",
+  reuse = "Yes", govdept = NULL,
+  extrafields = c("Extra heading 1", "Extra heading2", "Extra heading3"),
+  extrafieldsb = c("Another line", "Another line", "Another line"),
+  additlinks = c("https://www.bbc.co.uk", "https://google.co.uk"),
+  addittext = c("BBC", "Google"),
+  colwid_spec = 85,
+  order = c("intro", "about", "source", "relatedlink", "names", "email", "phone",
+            "blank", "extrafields", "additlinks", "reuse"))
+```
+
+## Saving the final spreadsheet
+
+To save the final spreadsheet, run the "savingtables" function. This function should be run last
+after all other functions have been run. A xlsx or xls spreadsheet will be saved. It is advisable
+to not save as a xls file. Ideally, an ods file should be produced. The default setting of the
+function is to only save the xlsx or xls file. This is only due to the time it may take to save both
+a xlsx file and an ods file (at present the only way to produce an ods file is to save a xlsx file,
+read it back in to R, convert to ods and save the ods file).  
+<br>
+filename is the location and name of the final workbook.  
+<br>
+To save just a xlsx file, see the example code below.
+
+```{r, eval = FALSE}
+accessibletablesR::savingtables("D:/mtcarsexample.xlsx")
+```
+
+To save and keep only an ods file, see the example code below.
+
+```{r, eval = FALSE}
+accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes")
+```
+
+To save and keep both a xlsx file and an ods file, see the example code below.
+
+```{r, eval = FALSE}
+accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
+```

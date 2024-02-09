@@ -17,8 +17,8 @@ coverpage(
   email = NULL,
   phone = NULL,
   reuse = NULL,
+  govdept = NULL,
   gridlines = "Yes",
-  govdept = "ONS",
   extrafields = NULL,
   extrafieldsb = NULL,
   additlinks = NULL,
@@ -52,9 +52,9 @@ coverpage(
 
 \item{reuse}{Define whether want to use default text on reuse of publication (optional)}
 
-\item{gridlines}{Define whether gridlines are present (optional)}
-
 \item{govdept}{UK Government department name (optional)}
+
+\item{gridlines}{Define whether gridlines are present (optional)}
 
 \item{extrafields}{Additional fields for the cover page (optional)}
 

@@ -655,8 +655,8 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       !("openxlsx" %in% utils::installed.packages()) | 
       !("stringr" %in% utils::installed.packages()) | !("purrr" %in% utils::installed.packages())) {
     
-    stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
-         packages are installed.", prefix = " ", initial = ""))
+    stop(base::strwrap("Not all required packages installed. Run the \"workbook\" function first to 
+         ensure packages are installed.", prefix = " ", initial = ""))
     
   } else if (utils::packageVersion("dplyr") < "1.1.2" | 
              utils::packageVersion("conflicted") < "1.2.0" |
@@ -664,8 +664,8 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
              utils::packageVersion("stringr") < "1.5.0" |
              utils::packageVersion("purrr") < "1.0.1") {
     
-    stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
-         up to date packages are installed.", prefix = " ", initial = ""))
+    stop(base::strwrap("Older versions of packages detected. Run the \"workbook\" function first to 
+         ensure up to date packages are installed.", prefix = " ", initial = ""))
     
   }
   
@@ -1785,15 +1785,15 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
       !("conflicted" %in% utils::installed.packages()) |
       !("openxlsx" %in% utils::installed.packages())) {
     
-    stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
-         packages are installed.", prefix = " ", initial = ""))
+    stop(base::strwrap("Not all required packages installed. Run the \"workbook\" function first to 
+         ensure packages are installed.", prefix = " ", initial = ""))
     
   } else if (utils::packageVersion("dplyr") < "1.1.2" |
              utils::packageVersion("conflicted") < "1.2.0" |
              utils::packageVersion("openxlsx") < "4.2.5.2") {
     
-    stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
-         up to date packages are installed.", prefix = " ", initial = ""))
+    stop(base::strwrap("Older versions of packages detected. Run the \"workbook\" function first to 
+         ensure up to date packages are installed.", prefix = " ", initial = ""))
     
   }
   
@@ -2184,7 +2184,7 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
 
 coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedlink = NULL, 
                       relatedtext = NULL, dop = NULL, blank = NULL, names = NULL, email = NULL, 
-                      phone = NULL, reuse = NULL, gridlines = "Yes", govdept = "ONS", 
+                      phone = NULL, reuse = NULL, govdept = NULL, gridlines = "Yes",
                       extrafields = NULL, extrafieldsb = NULL, additlinks = NULL, addittext = NULL, 
                       colwid_spec = NULL, order = NULL) {
   
@@ -2192,15 +2192,15 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       !("conflicted" %in% utils::installed.packages()) |
       !("stringr" %in% utils::installed.packages())) {
     
-    stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
-         packages are installed.", prefix = " ", initial = ""))
+    stop(base::strwrap("Not all required packages installed. Run the \"workbook\" function first to 
+         ensure packages are installed.", prefix = " ", initial = ""))
     
   } else if (utils::packageVersion("openxlsx") < "4.2.5.2" | 
              utils::packageVersion("conflicted") < "1.2.0" | 
              utils::packageVersion("stringr") < "1.5.0") {
     
-    stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
-         up to date packages are installed.", prefix = " ", initial = ""))
+    stop(base::strwrap("Older versions of packages detected. Run the \"workbook\" function first to 
+         ensure up to date packages are installed.", prefix = " ", initial = ""))
     
   }
   
@@ -3303,8 +3303,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
       orgwording <- paste0("the ", govdept, " - Source: ", govdept)
       
-    } else if (!is.null(govdept) & (tolower(govdept) == "ons" | 
-                                    tolower(govdept) == "office for national statistics")) {
+    } else if (tolower(govdept) == "ons" | tolower(govdept) == "office for national statistics") {
       
       orgwording <- "the Office for National Statistics - Source: Office for National Statistics"
       
@@ -3451,15 +3450,15 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
       !("stringr" %in% utils::installed.packages()) |
       !("conflicted" %in% utils::installed.packages())) {
     
-    stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
-         packages are installed.", prefix = " ", initial = ""))
+    stop(base::strwrap("Not all required packages installed. Run the \"workbook\" function first to 
+         ensure packages are installed.", prefix = " ", initial = ""))
     
   } else if (utils::packageVersion("dplyr") < "1.1.2" |
              utils::packageVersion("stringr") < "1.5.0" |
              utils::packageVersion("conflicted") < "1.2.0") {
     
-    stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
-         up to date packages are installed.", prefix = " ", initial = ""))
+    stop(base::strwrap("Older versions of packages detected. Run the \"workbook\" function first to 
+         ensure up to date packages are installed.", prefix = " ", initial = ""))
     
   }
   
@@ -3792,16 +3791,16 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
       !("conflicted" %in% utils::installed.packages()) |
       !("stringr" %in% utils::installed.packages())) {
     
-    stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
-         packages are installed.", prefix = " ", initial = ""))
+    stop(base::strwrap("Not all required packages installed. Run the \"workbook\" function first to 
+         ensure packages are installed.", prefix = " ", initial = ""))
     
   } else if (utils::packageVersion("dplyr") < "1.1.2" | 
              utils::packageVersion("openxlsx") < "4.2.5.2" |
              utils::packageVersion("conflicted") < "1.2.0" |
              utils::packageVersion("stringr") < "1.5.0") {
     
-    stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
-         up to date packages are installed.", prefix = " ", initial = ""))
+    stop(base::strwrap("Older versions of packages detected. Run the \"workbook\" function first to 
+         ensure up to date packages are installed.", prefix = " ", initial = ""))
     
   }
   
@@ -4485,14 +4484,14 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
   if (!("dplyr" %in% utils::installed.packages()) |
       !("conflicted" %in% utils::installed.packages())) {
     
-    stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
-         packages are installed.", prefix = " ", initial = ""))
+    stop(base::strwrap("Not all required packages installed. Run the \"workbook\" function first to 
+         ensure packages are installed.", prefix = " ", initial = ""))
     
   } else if (utils::packageVersion("dplyr") < "1.1.2" |
              utils::packageVersion("conflicted") < "1.2.0") {
     
-    stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
-         up to date packages are installed.", prefix = " ", initial = ""))
+    stop(base::strwrap("Older versions of packages detected. Run the \"workbook\" function first to 
+         ensure up to date packages are installed.", prefix = " ", initial = ""))
     
   }
   
@@ -4730,15 +4729,15 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
       !("conflicted" %in% utils::installed.packages()) |
       !("openxlsx" %in% utils::installed.packages())) {
     
-    stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
-         packages are installed.", prefix = " ", initial = ""))
+    stop(base::strwrap("Not all required packages installed. Run the \"workbook\" function first to 
+         ensure packages are installed.", prefix = " ", initial = ""))
     
   } else if (utils::packageVersion("dplyr") < "1.1.2" |
              utils::packageVersion("conflicted") < "1.2.0" |
              utils::packageVersion("openxlsx") < "4.2.5.2") {
     
-    stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
-         up to date packages are installed.", prefix = " ", initial = ""))
+    stop(base::strwrap("Older versions of packages detected. Run the \"workbook\" function first to 
+         ensure up to date packages are installed.", prefix = " ", initial = ""))
     
   }
   
@@ -5222,16 +5221,16 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
       !("stringr" %in% utils::installed.packages()) |
       !("conflicted" %in% utils::installed.packages())) {
     
-    stop(strwrap("Not all required packages installed. Run the \"workbook\" function first to ensure 
-         packages are installed.", prefix = " ", initial = ""))
+    stop(base::strwrap("Not all required packages installed. Run the \"workbook\" function first to 
+         ensure packages are installed.", prefix = " ", initial = ""))
     
   } else if (utils::packageVersion("odsconvertr") < "0.2.2" | 
              utils::packageVersion("openxlsx") < "4.2.5.2" |
              utils::packageVersion("stringr") < "1.5.0" |
              utils::packageVersion("conflicted") < "1.2.0") {
     
-    stop(strwrap("Older versions of packages detected. Run the \"workbook\" function first to ensure 
-         up to date packages are installed.", prefix = " ", initial = ""))
+    stop(base::strwrap("Older versions of packages detected. Run the \"workbook\" function first to 
+         ensure up to date packages are installed.", prefix = " ", initial = ""))
     
   }
   

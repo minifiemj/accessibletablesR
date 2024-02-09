@@ -109,7 +109,7 @@ accessibletablesR::notestab()
 
 accessibletablesR::adddefinition(
   term = "Usual resident", 
-  definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and had stayed or intended to stay in the UK for a period of 12 months or more, or had a permanent UK address and was outside the UK and intended to be outside the UK for less than 12 months.")
+  definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK ....")
 
 # To create a definitions page, run the definitionstab function
 # gridlines can be amended from default setting if desired (default setting is to have gridlines)
@@ -147,7 +147,8 @@ accessibletablesR::coverpage(
 #  title = "Fuel consumption and aspects of car design and performance for various cars",
 #  intro = "Some made up data about cars",
 #  about = "The output of an example of how to use accessibletablesR",
-#  source = "[R mtcars](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+#  source = 
+#     "[R mtcars](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
 #  relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
 #  relatedtext = "mtcars: Motor trend car road tests",
 #  dop = "26 October 2023",

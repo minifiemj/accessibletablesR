@@ -12,9 +12,9 @@ spreadsheets](https://analysisfunction.civilservice.gov.uk/policy-store/releasin
 
 accessibletablesR was developed using R 4.1.3, dplyr version 1.1.2,
 openxlsx version 4.2.5.2, conflicted version 1.2.0, devtools version
-2.4.5, stringr version 1.5.0, purrr version 1.01 and odsconvertr version
-0.2.2. It is unknown if the package will work with earlier versions of
-R, dplyr, openxlsx, conflicted, devtools, stringr, purrr and
+2.4.5, stringr version 1.5.0, purrr version 1.0.1 and odsconvertr
+version 0.2.2. It is unknown if the package will work with earlier
+versions of R, dplyr, openxlsx, conflicted, devtools, stringr, purrr and
 odsconvertr. accessibletablesR will install the latest versions of
 dplyr, openxlsx, conflicted, devtools, stringr, purrr and odsconvertr if
 these packages are not currently installed or if earlier versions of
@@ -27,18 +27,18 @@ are currently installed.
 To install accessibletablesR:
 
 ``` r
-if (!("devtools" %in% utils::installed.packages())) {utils::install.packages("devtools", dependencies = TRUE, type = "binary")}
-
-library("devtools")
+if (!("devtools" %in% utils::installed.packages())) 
+  {utils::install.packages("devtools", dependencies = TRUE, type = "binary")}
 
 devtools::install_github("minifiemj/accessibletablesR")
 ```
 
 If a firewall prevents install_github from working (a time out message
 may appear) then install the package manually. On the GitHub repo, go to
-the green Code icon and choose “Download ZIP”. Copy the ZIP folder to a
-network drive. Use devtools::install_local(<link to the zipped folder>)
-to install the package.
+the green “Code” icon and choose “Download ZIP”. Copy the ZIP folder to
+a network drive. Use
+devtools::install_local(<link to the zipped folder>) to install the
+package.
 
 odsconvertr is also installed from GitHub. If a similar issue prevents
 the automatic installation of odsconvertr, then install manually from
@@ -97,7 +97,12 @@ subject or category.
 ## creatingtables
 
 ``` r
-creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2 = NULL, extraline3 = NULL, extraline4 = NULL, extraline5 = NULL, extraline6 = NULL, sheetname, table_data, headrowsize = NULL, numdatacols = NULL, numdatacolsdp = NULL, othdatacols = NULL, tablename = NULL, gridlines = "Yes", columnwidths = "R_auto", width_adj = NULL, colwid_spec = NULL)
+creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2 = NULL, 
+                           extraline3 = NULL, extraline4 = NULL, extraline5 = NULL, 
+                           extraline6 = NULL, sheetname, table_data, headrowsize = NULL, 
+                           numdatacols = NULL, numdatacolsdp = NULL, othdatacols = NULL, 
+                           tablename = NULL, gridlines = "Yes", columnwidths = "R_auto", 
+                           width_adj = NULL, colwid_spec = NULL)
 ```
 
 This function takes the raw data and transfers them into an accessible
@@ -194,11 +199,12 @@ have the same number of rows as the contents table.
 ## coverpage
 
 ``` r
-coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedlink = NULL, relatedtext = NULL, dop = NULL, blank = NULL, names = NULL, email = NULL, phone = NULL, reuse = NULL, gridlines = "Yes", govdept = "ONS", extrafields = NULL, extrafieldsb = NULL, additlinks = NULL, addittext = NULL, colwid_spec = NULL, order = NULL)
+coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedlink = NULL,
+                      relatedtext = NULL, dop = NULL, blank = NULL, names = NULL, email = NULL, 
+                      phone = NULL, reuse = NULL, govdept = NULL, gridlines = "Yes",
+                      extrafields = NULL, extrafieldsb = NULL, additlinks = NULL, addittext = NULL,
+                      colwid_spec = NULL, order = NULL)
 ```
-
-Run the function after all the data tables have been processed using the
-creatingtables function.
 
 title is the only compulsory argument. It is the title to be displayed
 on the cover sheet. Other optional sections of a cover page that can be
@@ -221,8 +227,7 @@ government departments and will not apply for other organisations. If a
 user is from the Office for National Statistics (ONS) and wants a
 “Reusing this publication” section then set reuse = “Yes”. If a user is
 from a UK government department but not the Office for National
-Statistics (ONS) set reuse = “Yes” and govdept =
-“<name of organisation>”.
+Statistics (ONS) set reuse = “Yes” and govdept = “name of organisation”.
 
 intro, about, source, dop, blank, names and phone can be set to
 hyperlinks if desired. An example of how to do so is:
@@ -320,7 +325,9 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL)
 ```
 
 This function should be run last and will output the final xlsx workbook
-and/or ods workbook.
+and/or ods workbook. Note that it is possible to save as a xls workbook,
+but this is not advised. Initially saving as a xls file will also not
+allow for an ods workbook to be created.
 
 filename is the location and name of the final workbook.
 

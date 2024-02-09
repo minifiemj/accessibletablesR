@@ -14,6 +14,7 @@ Creates Excel spreadsheets which align as closely as possible to UK Government S
 Useful links:
 \itemize{
   \item \url{https://github.com/minifiemj/accessibletablesR}
+  \item \url{https://minifiemj.github.io/accessibletablesR/}
 }
 
 }
