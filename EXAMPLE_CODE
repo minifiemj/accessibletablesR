@@ -28,7 +28,8 @@ accessibletablesR::workbook(
   creator = "An organisation")
 
 # After workbook function, run the creatingtables function as many times as needed
-# Unused optional arguments in this example are extraline4, extraline5 and extraline6
+# Unused optional arguments in this example are extraline4, extraline5, extraline6, tablename ...
+# ... and gridlines
 # gridlines can be amended from default setting if desired (default setting is to have gridlines)
 
 accessibletablesR::creatingtables(
@@ -37,7 +38,7 @@ accessibletablesR::creatingtables(
   extraline1 = "Link to contents",
   extraline2 = "Link to notes",
   extraline3 = "Link to definitions",
-  sheetname = "Table_1", table_data = dummydf, headrowsize = 40,
+  sheetname = "Table_1", table_data = accessibletablesR::dummydf, headrowsize = 40,
   numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,3,2,0,0,1),
   othdatacols = c(9,10))
 
@@ -47,7 +48,7 @@ accessibletablesR::creatingtables(
   extraline1 = "Link to contents",
   extraline2 = "Link to notes",
   extraline3 = "Link to definitions",
-  sheetname = "Table_2", table_data = dummydf, headrowsize = 40,
+  sheetname = "Table_2", table_data = accessibletablesR::dummydf, headrowsize = 40,
   numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,1,0,1,0,0,0),
   othdatacols = c(9,10), columnwidths = "characters", width_adj = 1)
 
@@ -57,7 +58,7 @@ accessibletablesR::creatingtables(
   extraline1 = "Link to contents",
   extraline2 = "Link to notes",
   extraline3 = "Link to definitions",
-  sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
+  sheetname = "Table_3", table_data = accessibletablesR::dummydf, headrowsize = 40,
   numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
   othdatacols = c(9,10), columnwidths = "specified",
   colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
@@ -179,3 +180,4 @@ accessibletablesR::coverpage(
 accessibletablesR::savingtables("D:/mtcarsexample.xlsx")
 #accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes")
 #accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
+

@@ -32,6 +32,9 @@ if (!("devtools" %in% utils::installed.packages()))
   {utils::install.packages("devtools", dependencies = TRUE, type = "binary")}
 
 devtools::install_github("minifiemj/accessibletablesR", build_vignettes = TRUE)
+
+# Optional - attach package
+library("accessibletablesR")
 ```
 
 If a firewall prevents install_github from working (a time out message may appear) then install the package manually. On the GitHub repo, go to the green "Code" icon and choose "Download ZIP". Copy 
@@ -145,7 +148,7 @@ accessibletablesR::creatingtables(
   extraline1 = "Link to contents",
   extraline2 = "Link to notes",
   extraline3 = "Link to definitions",
-  sheetname = "Table_1", table_data = dummydf, headrowsize = 40,
+  sheetname = "Table_1", table_data = accessibletablesR::dummydf, headrowsize = 40,
   numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,3,2,0,0,1),
   othdatacols = c(9,10))
 
@@ -155,7 +158,7 @@ accessibletablesR::creatingtables(
   extraline1 = "Link to contents",
   extraline2 = "Link to notes",
   extraline3 = "Link to definitions",
-  sheetname = "Table_2", table_data = dummydf, headrowsize = 40,
+  sheetname = "Table_2", table_data = accessibletablesR::dummydf, headrowsize = 40,
   numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,1,0,1,0,0,0),
   othdatacols = c(9,10), columnwidths = "characters", width_adj = 1)
 
@@ -165,7 +168,7 @@ accessibletablesR::creatingtables(
   extraline1 = "Link to contents",
   extraline2 = "Link to notes",
   extraline3 = "Link to definitions",
-  sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
+  sheetname = "Table_3", table_data = accessibletablesR::dummydf, headrowsize = 40,
   numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
   othdatacols = c(9,10), columnwidths = "specified",
   colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
