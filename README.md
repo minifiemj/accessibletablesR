@@ -334,3 +334,9 @@ filename is the location and name of the final workbook.
 The default setting is to keep the xlsx workbook. If an ods file is
 wanted, set odsfile = “Yes”. If both the ods and xlsx files are wanted,
 set odsfile = “Yes” and deletexlsx = “No”.
+
+## Contact
+
+Please submit any suggestions or report bugs:
+<https://github.com/minifiemj/accessibletablesR/issues>  
+Or email me: <minifiemj@gmail.com>

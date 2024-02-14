@@ -134,7 +134,7 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
                utils::packageVersion(listofpackages2[i]) < packageversions2[i]) {
       
       base::unloadNamespace(listofpackages2[i])
-      devtools::install_github(paste0(repogroupings[i], "/", listofpackages2[i]))
+      devtools::install_github(base::paste0(repogroupings[i], "/", listofpackages2[i]))
       
     } 
     

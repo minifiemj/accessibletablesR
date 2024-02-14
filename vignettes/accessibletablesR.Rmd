@@ -367,3 +367,8 @@ To save and keep both a xlsx file and an ods file, see the example code below.
 ```{r, eval = FALSE}
 accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 ```
+
+## Contact
+
+Please submit any suggestions or report bugs: https://github.com/minifiemj/accessibletablesR/issues  
+Or email me: minifiemj@gmail.com
