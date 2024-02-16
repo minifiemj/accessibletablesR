@@ -11,6 +11,7 @@ Description: Creates Excel spreadsheets which align as closely as possible to UK
     Alternative options include the R package 'a11ytables' and the Python package 'gptables'.
 URL: https://github.com/minifiemj/accessibletablesR,
     https://minifiemj.github.io/accessibletablesR/
+BugReports: https://github.com/minifiemj/accessibletablesR/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

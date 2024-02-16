@@ -8,8 +8,6 @@
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://cran.r-project.org/web/licenses/MIT)
 [![](https://img.shields.io/github/last-commit/minifiemj/accessibletablesR.svg)](https://github.com/minifiemj/accessibletablesR/commits/main)
-[![R build
-status](https://github.com/minifiemj/accessibletablesR/workflows/R-CMD-check/badge.svg)](https://github.com/minifiemj/accessibletablesR/actions)
 
 accessibletablesR is designed to produce Excel workbooks that align as
 closely as possible to the UK Government Analysis Function
