@@ -1,7 +1,15 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# accessibletablesR
+# accessibletablesR <a href="https://minifiemj.github.io/accessibletablesR/"><img src="man/figures/logo.png" align="right" height="139"/></a>
+
+[![](https://img.shields.io/badge/devel%20version-0.1.0-green.svg)](https://github.com/minifiemj/accessibletablesR)
+[![](https://www.r-pkg.org/badges/version/accessibletablesR?color=orange)](https://cran.r-project.org/package=accessibletablesR)
+[![License:
+MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://cran.r-project.org/web/licenses/MIT)
+[![](https://img.shields.io/github/last-commit/minifiemj/accessibletablesR.svg)](https://github.com/minifiemj/accessibletablesR/commits/main)
+[![R build
+status](https://github.com/minifiemj/accessibletablesR/workflows/R-CMD-check/badge.svg)](https://github.com/minifiemj/accessibletablesR/actions)
 
 accessibletablesR is designed to produce Excel workbooks that align as
 closely as possible to the UK Government Analysis Function

@@ -13,7 +13,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-# accessibletablesR
+# accessibletablesR <a href="https://minifiemj.github.io/accessibletablesR/"><img src="man/figures/logo.png" align="right" height="139"/></a>
+
+`r badger::badge_github_version("minifiemj/accessibletablesR", "green")`
+`r badger::badge_cran_release("accessibletablesR", "orange")`
+`r badger::badge_license("MIT")`
+`r badger::badge_last_commit("minifiemj/accessibletablesR")`
+`r badger::badge_github_actions("minifiemj/accessibletablesR")`
 
 accessibletablesR is designed to produce Excel workbooks that align as closely as possible to the UK Government Analysis Function recommendations for publishing statistics in spreadsheets. 
 
