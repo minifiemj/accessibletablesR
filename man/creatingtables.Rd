@@ -39,7 +39,9 @@ creatingtables(
 
 \item{extraline4}{Fourth extra line above main data (optional)}
 
-\item{extraline5}{Sixth extra line above main data (optional)}
+\item{extraline5}{Fifth extra line above main data (optional)}
+
+\item{extraline6}{Sixth extra line above main data (optional)}
 
 \item{sheetname}{Tab name}
 
