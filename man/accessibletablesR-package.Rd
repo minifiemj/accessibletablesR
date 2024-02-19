@@ -15,6 +15,7 @@ Useful links:
 \itemize{
   \item \url{https://github.com/minifiemj/accessibletablesR}
   \item \url{https://minifiemj.github.io/accessibletablesR/}
+  \item Report bugs at \url{https://github.com/minifiemj/accessibletablesR/issues}
 }
 
 }

@@ -576,7 +576,7 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
 #' @param extraline3 Third extra line above main data (optional)
 #' @param extraline4 Fourth extra line above main data (optional)
 #' @param extraline5 Fifth extra line above main data (optional)
-#' @param extraline5 Sixth extra line above main data (optional)
+#' @param extraline6 Sixth extra line above main data (optional)
 #' @param sheetname Tab name
 #' @param table_data Name of table within R global environment
 #' @param headrowsize Height of row containing column headings (optional)
@@ -671,6 +671,12 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   conflicted::conflict_prefer_all("base", quiet = TRUE)
   `%>%` <- dplyr::`%>%`
+  
+  if (!(exists("wb", envir = .GlobalEnv))) {
+    
+    stop("Run the \"workbook\" function first to ensure that a workbook named wb exists")
+    
+  }
   
   # Checking some of the parameters to ensure they are properly populated, if not the function...
   # ...will error or display a warning in the console
@@ -1800,6 +1806,12 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
   conflicted::conflict_prefer_all("base", quiet = TRUE)
   `%>%` <- dplyr::`%>%`
   
+  if (!(exists("wb", envir = .GlobalEnv))) {
+    
+    stop("Run the \"workbook\" function first to ensure that a workbook named wb exists")
+    
+  }
+  
   # Check to see that a contents page is wanted, based on whether a worksheet was created in the ...
   # ... initial workbook
   
@@ -2205,6 +2217,12 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   }
   
   conflicted::conflict_prefer_all("base", quiet = TRUE)
+  
+  if (!(exists("wb", envir = .GlobalEnv))) {
+    
+    stop("Run the \"workbook\" function first to ensure that a workbook named wb exists")
+    
+  }
   
   # Check to see that a coverpage is wanted, based on whether a worksheet was created in the ...
   # ... initial workbook
@@ -3465,6 +3483,12 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
   conflicted::conflict_prefer_all("base", quiet = TRUE)
   `%>%` <- dplyr::`%>%`
   
+  if (!(exists("wb", envir = .GlobalEnv))) {
+    
+    stop("Run the \"workbook\" function first to ensure that a workbook named wb exists")
+    
+  }
+  
   # Checking that a notes page is wanted, based on whether a worksheet was created in the ...
   # ... initial workbook
   
@@ -3806,6 +3830,12 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   conflicted::conflict_prefer_all("base", quiet = TRUE)
   `%>%` <- dplyr::`%>%`
+  
+  if (!(exists("wb", envir = .GlobalEnv))) {
+    
+    stop("Run the \"workbook\" function first to ensure that a workbook named wb exists")
+    
+  }
   
   # Check that a notes page is wanted, based on whether a worksheet was created in the initial ...
   # ... workbook
@@ -4498,6 +4528,12 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
   conflicted::conflict_prefer_all("base", quiet = TRUE)
   `%>%` <- dplyr::`%>%`
   
+  if (!(exists("wb", envir = .GlobalEnv))) {
+    
+    stop("Run the \"workbook\" function first to ensure that a workbook named wb exists")
+    
+  }
+  
   # Checking that a definitions page is wanted, based on whether a worksheet was created in the ...
   # ... initial workbook
   
@@ -4743,6 +4779,12 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   conflicted::conflict_prefer_all("base", quiet = TRUE)
   `%>%` <- dplyr::`%>%`
+  
+  if (!(exists("wb", envir = .GlobalEnv))) {
+    
+    stop("Run the \"workbook\" function first to ensure that a workbook named wb exists")
+    
+  }
   
   # Checking that a definitions page is wanted, based on whether a worksheet was created in the ...
   # ... initial workbook
@@ -5236,6 +5278,12 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
   
   conflicted::conflict_prefer_all("base", quiet = TRUE)
   `%>%` <- dplyr::`%>%`
+  
+  if (!(exists("wb", envir = .GlobalEnv))) {
+    
+    stop("Run the \"workbook\" function first to ensure that a workbook named wb exists")
+    
+  }
   
   if (length(filename) > 1) {
     

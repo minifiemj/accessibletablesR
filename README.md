@@ -3,6 +3,9 @@
 
 # accessibletablesR <a href="https://minifiemj.github.io/accessibletablesR/"><img src="man/figures/logo.png" align="right" height="139"/></a>
 
+[![Project Status: Active - The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![](https://img.shields.io/badge/devel%20version-0.1.0-green.svg)](https://github.com/minifiemj/accessibletablesR)
 [![](https://www.r-pkg.org/badges/version/accessibletablesR?color=orange)](https://cran.r-project.org/package=accessibletablesR)
 [![License:
