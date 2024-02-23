@@ -78,11 +78,11 @@ adddefinition, definitionstab and savingtables.
 workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, autonotes = NULL,
                      definitionstab = NULL, fontnm = "Arial", fontcol = "black",
                      fontsz = 12, fontszst = 14, fontszt = 16, title = NULL, creator = NULL,
-                     subject = NULL, category = NULL)
+                     subject = NULL, category = NULL, autodel = NULL)
 ```
 
 This function needs to be run first. It creates the workbook within the
-R environment. All arguments are optional. The user can specify whether
+R environment. All parameters are optional. The user can specify whether
 they want a cover page, table of contents, a notes page and a
 definitions page. The font name, colour and sizes can be modified if
 desired. Information regarding the final spreadsheet (File \> Info \>
@@ -124,7 +124,7 @@ The creatingtables function needs to be run after the workbook function
 and run as many times as there are tables which are to be put in tabs in
 the final workbook.
 
-Three of the arguments (title, sheetname, table_data) are compulsory,
+Three of the parameters (title, sheetname, table_data) are compulsory,
 the others are optional. title is the title of the table that will be
 displayed in the Excel workbook tab. sheetname is the name of the tab
 wanted for the Excel workbook. table_data is the dataframe in the R
@@ -132,13 +132,13 @@ global environment to be outputted.
 
 As well as a title, it is possible to include a subtitle and six
 additional lines above the table in the final Excel workbook tab.
-Populate the arguments subtitle, extraline1, extraline2, extraline3,
+Populate the parameters subtitle, extraline1, extraline2, extraline3,
 extraline4, extraline5 and extraline6 if a subtitle and/or extra lines
 are wanted. If a link to the contents page or notes page or definitions
-page is desired, then set one of the extraline arguments to “Link to
+page is desired, then set one of the extraline parameters to “Link to
 contents” or “Link to notes” or “Link to definitions”. The extraline
-arguments can be supplied as vectors and so there is no maximum limit to
-the number of rows that can come before the main data other than the
+parameters can be supplied as vectors and so there is no maximum limit
+to the number of rows that can come before the main data other than the
 limit of rows in an Excel spreadsheet.
 
 headrowsize adjusts the height of the row containing the table column
@@ -196,7 +196,7 @@ If a contents page is wanted then run contentstable(). Run the function
 after all the data tables have been processed using the creatingtables
 function.
 
-The arguments are optional. If no gridlines are wanted in the contents
+The parameters are optional. If no gridlines are wanted in the contents
 page in the final workbook set gridlines = “No”. Column widths are
 determined automatically but the user can specify the widths by
 populating colwid_spec. Extra columns can be provided. To do so, set
@@ -215,7 +215,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
                       colwid_spec = NULL, order = NULL)
 ```
 
-title is the only compulsory argument. It is the title to be displayed
+title is the only compulsory parameter. It is the title to be displayed
 on the cover sheet. Other optional sections of a cover page that can be
 populated are “Introductory information” (info), “About these data”
 (about), “Source” (source), “Related publications” (relatedlink,
@@ -258,7 +258,7 @@ followed by a number (e.g., note1).
 
 notetext is the description associated with the note.
 
-notenumber and notetext are the only compulsory arguments. If an
+notenumber and notetext are the only compulsory parameters. If an
 additional column is wanted to specify which table (sheet name) a note
 applies to then populate applictabtext (e.g., applictabtext =
 c(“Table_1”, “Table_2”)).
@@ -280,15 +280,15 @@ Run the function after all the data tables have been processed using the
 creatingtables function and after all the notes have been added using
 the addnote function.
 
-The arguments are optional. If a link to the contents page is not wanted
-on the notes page set contentslink = “No”. If no gridlines are wanted on
-the notes page then set gridlines = “No”. Column widths are determined
-automatically but can be altered to specific widths by the user in
-colwid_spec. Extra columns can be provided. To do so, set extracols =
-“Yes” and create a dataframe called extracols_notes in the global
-environment before running the notestab function. The extracols_notes
-dataframe must contain the desired extra columns and have the same
-number of rows as the notes table.
+The parameters are optional. If a link to the contents page is not
+wanted on the notes page set contentslink = “No”. If no gridlines are
+wanted on the notes page then set gridlines = “No”. Column widths are
+determined automatically but can be altered to specific widths by the
+user in colwid_spec. Extra columns can be provided. To do so, set
+extracols = “Yes” and create a dataframe called extracols_notes in the
+global environment before running the notestab function. The
+extracols_notes dataframe must contain the desired extra columns and
+have the same number of rows as the notes table.
 
 ## adddefinition
 
@@ -317,10 +317,10 @@ Run this function if a definitions page is wanted.
 Run the function after all the definitions have been added using the
 adddefinition function.
 
-The arguments are optional. If a link to the contents page is not wanted
-on the definitions page set contentslink = “No”. If no gridlines are
-wanted on the definitions page then set gridlines = “No”. Column widths
-are set automatically but can be altered using colwid_spec. Extra
+The parameters are optional. If a link to the contents page is not
+wanted on the definitions page set contentslink = “No”. If no gridlines
+are wanted on the definitions page then set gridlines = “No”. Column
+widths are set automatically but can be altered using colwid_spec. Extra
 columns can be provided. To do so, set extracols = “Yes” and create a
 dataframe called extracols_definitions in the global environment before
 running the definitionstab function. The extracols_definitions dataframe

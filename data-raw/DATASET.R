@@ -6,7 +6,8 @@ library("tidyverse")
 
 dummydf <- mtcars %>% 
   tibble::rownames_to_column("Car") %>%
-  dplyr::rename("Miles per US gallon" = mpg, "Number of cylinders" = cyl, "Displacement\n(cubic inch)" = disp,
+  dplyr::rename("Miles per US gallon" = mpg, "Number of cylinders" = cyl, 
+                "Displacement\n(cubic inch)" = disp,
                 "Gross horsepower" = hp, "Rear axle ratio" = drat, "Weight\n(1000 lbs)" = wt,
                 "Quarter mile time" = qsec, "Engine" = vs, "Transmission" = am,
                 "Number of forward gears" = gear, "Number of carburettors" = carb) %>%

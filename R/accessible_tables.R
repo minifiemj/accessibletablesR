@@ -37,9 +37,12 @@
 #'                (optional)
 #' @param category Define the category to go into the document information in the final output  
 #'                 (optional)
+#' @param autodel Define whether to automatically delete any objects in the global environment
+#'                which are called the same as objects with the code needs to create (default is
+#'                set to no) (optional)
 #' 
 #' @returns 
-#' A workbook called wb will appear in the global environment. Necessary R packages will be
+#' A workbook called zzz_wb_zzz will appear in the global environment. Necessary R packages will be
 #' installed.
 #' 
 #' @examples 
@@ -97,7 +100,7 @@
 workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, autonotes = NULL,
                      definitionstab = NULL, fontnm = "Arial", fontcol = "black",
                      fontsz = 12, fontszst = 14, fontszt = 16, title = NULL, creator = NULL,
-                     subject = NULL, category = NULL) {
+                     subject = NULL, category = NULL, autodel = NULL) {
   
   # Install the required packages if they are not already installed, then load the packages
   
@@ -221,6 +224,34 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     
   }
   
+  if (is.null(autodel)) {
+    
+    autodel <- "No"
+    
+  } else if (length(autodel) > 1) {
+    
+    autodel <- "No"
+    warning(strwrap("autodel has been set to a vector of length more than 1. autodel should be set 
+            to either \"Yes\", \"No\" or NULL. It has been set back to the default of NULL.",
+            prefix = " ", initial = ""))
+    
+  } else if (tolower(autodel) == "no" | tolower(autodel) == "n") {
+    
+    autodel <- "No"
+    
+  } else if (tolower(autodel) == "yes" | tolower(autodel) == "y") {
+    
+    autodel <- "Yes"
+    
+  } else if (tolower(autodel) != "yes" & tolower(autodel) != "no") {
+    
+    autodel <- "No"
+    warning(strwrap("autodel has not been set to an expected value. autodel should be set to either 
+            \"Yes\", \"No\" or NULL. It has been set back to the default of NULL.",
+            prefix = " ", initial = ""))
+    
+  }
+  
   # Checking some of the parameters to ensure they are properly populated, if not the function...
   # ...will error
   
@@ -318,11 +349,15 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     
   }
   
-  if (exists("xxx_table_data2_xxx", envir = .GlobalEnv)) {
+  if (exists("zzz_table_data2_zzz", envir = .GlobalEnv) & autodel == "No") {
     
-    stop(strwrap("A data frame called xxx_table_data2_xxx exists in the global environment. This 
-         needs to be renamed. The code will overwrite any file named xxx_table_data2_xxx.",
-         prefix = " ", initial = ""))
+    stop(strwrap("An object called zzz_table_data2_zzz exists in the global environment. This 
+         needs to be renamed or removed. The code needs to create an object named 
+         zzz_table_data2_zzz.", prefix = " ", initial = ""))
+    
+  } else if (exists("zzz_table_data2_zzz", envir = .GlobalEnv) & autodel == "Yes") {
+    
+    rm(zzz_table_data2_zzz, envir = .Global)
     
   }
   
@@ -332,186 +367,212 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     
   }
   
-  # If workbook already exists, delete it and create a new, blank one
+  # If workbook already exists, delete it
   
-  if (exists("wb", envir = .GlobalEnv)) {
+  if (exists("zzz_wb_zzz", envir = .GlobalEnv) & autodel == "No") {
     
-    rm(wb, envir = .GlobalEnv)
-    warning(strwrap("wb has been removed from the global environment. If wb is a remnant from a 
-            previous run of the table code then it is not a problem. However, if wb is a data frame 
-            or variable that you have created then you will need to shut R down and start again but 
-            rename whatever you had called wb to something else.", prefix = " ", initial = ""))
+    stop(strwrap("An object called zzz_wb_zzz exists in the global environment. This needs to be 
+         renamed or removed. The code needs to create an object named zzz_wb_zzz.",
+         prefix = " ", initial = ""))
+    
+  } else if (exists("zzz_wb_zzz", envir = .GlobalEnv) & autodel == "Yes") {
+   
+    rm(zzz_wb_zzz, envir = .GlobalEnv) 
     
   }
-  
-  wb <<- openxlsx::createWorkbook(title = title, creator = creator, subject = subject,
-                                  category = category)
   
   # If old contents, notes and definitions data frames exist, delete them
   
-  if (exists("tabcontents", envir = .GlobalEnv)) {
+  if (exists("zzz_tabcontents_zzz", envir = .GlobalEnv) & autodel == "No") {
     
-    rm(tabcontents, envir = .GlobalEnv)
-    warning(strwrap("tabcontents has been removed from the global environment. If tabcontents is a 
-            remnant from a previous run of the table code then it is not a problem. However, if 
-            tabcontents is a data frame or variable that you have created then you will need to shut 
-            R down and start again but rename whatever you had called tabcontents to something 
-            else.", prefix = " ", initial = ""))
+    stop(strwrap("An object called zzz_tabcontents_zzz exists in the global environment. This needs 
+         to be renamed or removed. The code needs to create an object named zzz_tabcontents_zzz.",
+         prefix = " ", initial = ""))
     
-  }
-  
-  if (exists("notesdf", envir = .GlobalEnv)) {
+  } else if (exists("zzz_tabcontents_zzz", envir = .GlobalEnv) & autodel == "Yes") {
     
-    rm(notesdf, envir = .GlobalEnv)
-    warning(strwrap("notesdf has been removed from the global environment. If notesdf is a remnant 
-            from a previous run of the table code then it is not a problem. However, if notesdf is a 
-            data frame or variable that you have created then you will need to shut R down and start 
-            again but rename whatever you had called notesdf to something else.", prefix = " ",
-            initial = ""))
+    rm(zzz_tabcontents_zzz, envir = .GlobalEnv)
     
   }
   
-  if (exists("definitionsdf", envir = .GlobalEnv)) {
+  if (exists("zzz_notesdf_zzz", envir = .GlobalEnv) & autodel == "No") {
     
-    rm(definitionsdf, envir = .GlobalEnv)
-    warning(strwrap("definitionsdf has been removed from the global environment. If definitionsdf is 
-            a remnant from a previous run of the table code then it is not a problem. However, if 
-            definitionsdf is a data frame or variable that you have created then you will need to 
-            shut R down and start again but rename whatever you had called definitionsdf to 
-            something else.", prefix = " ", initial = ""))
+    stop(strwrap("An object called zzz_notesdf_zzz exists in the global environment. This needs 
+         to be renamed or removed. The code needs to create an object named zzz_notesdf_zzz.",
+         prefix = " ", initial = ""))
     
-  }
-  
-  if (exists("covernumrow", envir = .GlobalEnv)) {
+  } else if (exists("zzz_notesdf_zzz", envir = .GlobalEnv) & autodel == "Yes") {
     
-    rm(covernumrow, envir = .GlobalEnv)
-    warning(strwrap("covernumrow has been removed from the global environment. If covernumrow is a 
-            remnant from a previous run of the table code then it is not a problem. However, if 
-            covernumrow is a data frame or variable that you have created then you will need to shut 
-            R down and start again but rename whatever you had called covernumrow to something 
-            else.", prefix = " ", initial = ""))
+    rm(zzz_notesdf_zzz, envir = .GlobalEnv)
     
   }
   
-  if (length(ls(pattern = "_startrow", envir = .GlobalEnv)) > 0) {
+  if (exists("zzz_definitionsdf_zzz", envir = .GlobalEnv) & autodel == "No") {
     
-    rm(list = ls(pattern = "_startrow", envir = .GlobalEnv), envir = .GlobalEnv)
-    warning(strwrap("Strings containing \"_startrow\" have been removed from the global environment. 
-            If these are remnants from a previous run of the table code then it is not a problem. 
-            However, if they were data frames or variables that you have created then you will need 
-            to shut R down and start again but rename whatever you had called these objects to 
-            something else.", prefix = " ", initial = ""))
+    stop(strwrap("An object called zzz_definitionsdf_zzz exists in the global environment. This 
+         needs to be renamed or removed. The code needs to create an object named 
+         zzz_definitionsdf_zzz.", prefix = " ", initial = ""))
     
-  }
-  
-  if (length(ls(pattern = "_tablestart", envir = .GlobalEnv)) > 0) {
+  } else if (exists("zzz_definitionsdf_zzz", envir = .GlobalEnv) & autodel == "Yes") {
     
-    rm(list = ls(pattern = "_tablestart", envir = .GlobalEnv), envir = .GlobalEnv)
-    warning(strwrap("Strings containing \"_tablestart\" have been removed from the global 
-            environment. If these are remnants from a previous run of the table code then it is not 
-            a problem. However, if they were data frames or variables that you have created then you 
-            will need to shut R down and start again but rename whatever you had called these 
-            objects to something else.", prefix = " ", initial = ""))
+    rm(zzz_definitionsdf_zzz, envir = .GlobalEnv)
     
   }
   
+  if (exists("zzz_covernumrow_zzz", envir = .GlobalEnv) & autodel == "No") {
+    
+    stop(strwrap("An object called zzz_covernumrow_zzz exists in the global environment. This needs 
+         to be renamed or removed. The code needs to create an object named zzz_covernumrow_zzz.",
+         prefix = " ", initial = ""))
+    
+  } else if (exists("zzz_covernumrow_zzz", envir = .GlobalEnv) & autodel == "Yes") {
+    
+    rm(zzz_covernumrow_zzz, envir = .GlobalEnv)
+    
+  }
+  
+  if (length(ls(pattern = "_startrow_zzz", envir = .GlobalEnv)) > 0 & autodel == "No") {
+    
+    stop(strwrap("An object containing \"_startrow_zzz\" exists in the global environment. This 
+         needs to be renamed or removed. The code needs to create objects containing 
+         \"_startrow_zzz\".", prefix = " ", initial = ""))
+    
+  } else if (length(ls(pattern = "_startrow_zzz", envir = .GlobalEnv)) > 0 & autodel == "Yes") {
+    
+    rm(list = ls(pattern = "_startrow_zzz", envir = .GlobalEnv), envir = .GlobalEnv)
+    
+  }
+  
+  if (length(ls(pattern = "_tablestart_zzz", envir = .GlobalEnv)) > 0 & autodel == "No") {
+    
+    stop(strwrap("An object containing \"_tablestart_zzz\" exists in the global environment. This 
+         needs to be renamed or removed. The code needs to create objects containing 
+         \"_tablestart_zzz\".", prefix = " ", initial = ""))
+    
+  } else if (length(ls(pattern = "_tablestart_zzz", envir = .GlobalEnv)) > 0 & autodel == "Yes") {
+    
+    rm(list = ls(pattern = "_tablestart_zzz", envir = .GlobalEnv), envir = .GlobalEnv)
+    
+  }
+  
+  if (exists("zzz_autonotes2_zzz", envir = .GlobalEnv) & autodel == "No") {
+    
+    stop(strwrap("An object called zzz_autonotes2_zzz exists in the global environment. This needs 
+         to be renamed or removed. The code needs to create an object named zzz_autonotes2_zzz.",
+         prefix = " ", initial = ""))
+    
+  } else if (exists("zzz_autonotes2_zzz", envir = .GlobalEnv) & autodel == "Yes") {
+    
+    rm(zzz_autonotes2_zzz, envir = .GlobalEnv)
+    
+  }
+  
+  if (exists("zzz_fontsz_zzz", envir = .GlobalEnv) & autodel == "No") {
+    
+    stop(strwrap("An object called zzz_fontsz_zzz exists in the global environment. This needs 
+         to be renamed or removed. The code needs to create an object named zzz_fontsz_zzz.",
+         prefix = " ", initial = ""))
+    
+  } else if (exists("zzz_fontsz_zzz", envir = .GlobalEnv) & autodel == "Yes") {
+    
+    rm(zzz_fontsz_zzz, envir = .GlobalEnv)
+    
+  }
+  
+  if (exists("zzz_fontszst_zzz", envir = .GlobalEnv) & autodel == "No") {
+    
+    stop(strwrap("An object called zzz_fontszst_zzz exists in the global environment. This needs 
+         to be renamed or removed. The code needs to create an object named zzz_fontszst_zzz.",
+         prefix = " ", initial = ""))
+    
+  } else if (exists("zzz_fontszst_zzz", envir = .GlobalEnv) & autodel == "Yes") {
+    
+    rm(zzz_fontszst_zzz, envir = .GlobalEnv)
+    
+  }
+  
+  if (exists("zzz_fontszt_zzz", envir = .GlobalEnv) & autodel == "No") {
+    
+    stop(strwrap("An object called zzz_fontszt_zzz exists in the global environment. This needs 
+         to be renamed or removed. The code needs to create an object named zzz_fontszt_zzz.",
+         prefix = " ", initial = ""))
+    
+  } else if (exists("zzz_fontszt_zzz", envir = .GlobalEnv) & autodel == "Yes") {
+    
+    rm(zzz_fontszt_zzz, envir = .GlobalEnv)
+    
+  }
+  
+  # Create new workbook
+  
+  wb <- openxlsx::createWorkbook(title = title, creator = creator, subject = subject,
+                                 category = category)
+  
+  assign("zzz_wb_zzz", wb, envir = .GlobalEnv)
+  rm(wb)
+
   # Add required metadata worksheets to the workbook and create new notes and definitions data...
   # ...frames if wanted
   
   if (covertab == "Yes") {
     
-    openxlsx::addWorksheet(wb, "Cover")
+    openxlsx::addWorksheet(zzz_wb_zzz, "Cover")
     
   }
   
   if (contentstab == "Yes") {
     
-    openxlsx::addWorksheet(wb, "Contents")
-    
-  }
-  
-  if (exists("autonotes2", envir = .GlobalEnv)) {
-    
-    rm(autonotes2, envir = .GlobalEnv)
-    warning(strwrap("autonotes2 has been removed from the global environment. If autonotes2 is a 
-            remnant from a previous run of the table code then it is not a problem. However, if 
-            autonotes2 is a data frame or variable that you have created then you will need to shut 
-            R down and start again but rename whatever you had called autonotes2 to something 
-            else.", prefix = " ", initial = ""))
+    openxlsx::addWorksheet(zzz_wb_zzz, "Contents")
     
   }
   
   if (notestab == "Yes") {
     
-    openxlsx::addWorksheet(wb, "Notes")
+    openxlsx::addWorksheet(zzz_wb_zzz, "Notes")
     
-    notesdf <<- data.frame() %>%
+    notesdf <- data.frame() %>%
       dplyr::mutate("Note number" = "", "Note text" = "", "Applicable tables" = "", "Link1" = "", 
                     "Link2" = "")
+    
+    assign("zzz_notesdf_zzz", notesdf, envir = .GlobalEnv)
+    rm(notesdf)
     
   }
   
   if (definitionstab == "Yes") {
     
-    openxlsx::addWorksheet(wb, "Definitions")
+    openxlsx::addWorksheet(zzz_wb_zzz, "Definitions")
     
-    definitionsdf <<- data.frame() %>%
+    definitionsdf <- data.frame() %>%
       dplyr::mutate("Term" = "", "Definition" = "", "Link1" = "", "Link2" = "")
+    
+    assign("zzz_definitionsdf_zzz", definitionsdf, envir = .GlobalEnv)
+    rm(definitionsdf)
     
   }
   
-  # Create a variable autonotes2 in the global environment for later use
+  # Create a variable zzz_autonotes2_zzz in the global environment for later use
   
   if (autonotes == "Yes") {
     
-    autonotes2 <<- "Yes"
+    autonotes2 <- "Yes"
     
   } else {
     
-    autonotes2 <<- "No"
+    autonotes2 <- "No"
     
   }
+  
+  assign("zzz_autonotes2_zzz", autonotes2, envir = .GlobalEnv)
+  rm(autonotes2)
   
   # Create variables for font sizes in the global environment for later use
   
-  if (exists("fontsz", envir = .GlobalEnv)) {
-    
-    rm(fontsz, envir = .GlobalEnv)
-    warning(strwrap("fontsz has been removed from the global environment. If fontsz is a remnant 
-            from a previous run of the table code then it is not a problem. However, if fontsz is a 
-            data frame or variable that you have created then you will need to shut R down and start 
-            again but rename whatever you had called fontsz to something else.", prefix = " ",
-            initial = ""))
-    
-  }
+  assign("zzz_fontsz_zzz", fontsz, envir = .GlobalEnv)
+  assign("zzz_fontszst_zzz", fontszst, envir = .GlobalEnv)
+  assign("zzz_fontszt_zzz", fontszt, envir = .GlobalEnv)
   
-  if (exists("fontszst", envir = .GlobalEnv)) {
-    
-    rm(fontszst, envir = .GlobalEnv)
-    warning(strwrap("fontszst has been removed from the global environment. If fontszst is a remnant 
-            from a previous run of the table code then it is not a problem. However, if fontszst is 
-            a data frame or variable that you have created then you will need to shut R down and 
-            start again but rename whatever you had called fontszst to something else.", 
-            prefix= " ", initial = ""))
-    
-  }
-  
-  if (exists("fontszt", envir = .GlobalEnv)) {
-    
-    rm(fontszt, envir = .GlobalEnv)
-    warning(strwrap("fontszt has been removed from the global environment. If fontszt is a remnant 
-            from a previous run of the table code then it is not a problem. However, if fontszt is a 
-            data frame or variable that you have created then you will need to shut R down and start 
-            again but rename whatever you had called fontszt to something else.", prefix = " ",
-            initial = ""))
-    
-  }
-  
-  fontsz <<- fontsz
-  fontszst <<- fontszst
-  fontszt <<- fontszt
-  
-  openxlsx::modifyBaseFont(wb, fontSize = fontsz, fontColour = fontcol, fontName = fontnm)
+  openxlsx::modifyBaseFont(zzz_wb_zzz, fontSize = fontsz, fontColour = fontcol, fontName = fontnm)
   
 }
 
@@ -672,9 +733,9 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   conflicted::conflict_prefer_all("base", quiet = TRUE)
   `%>%` <- dplyr::`%>%`
   
-  if (!(exists("wb", envir = .GlobalEnv))) {
+  if (!(exists("zzz_wb_zzz", envir = .GlobalEnv))) {
     
-    stop("Run the \"workbook\" function first to ensure that a workbook named wb exists")
+    stop("Run the \"workbook\" function first to ensure that a workbook named zzz_wb_zzz exists")
     
   }
   
@@ -789,25 +850,25 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
   }
   
-  if ("Cover" %in% names(wb) & (tolower(sheetname) == "cover")) {
+  if ("Cover" %in% names(zzz_wb_zzz) & (tolower(sheetname) == "cover")) {
     
     stop("sheetname cannot be set to \"Cover\" if a cover page is desired")
     
   }
   
-  if ("Contents" %in% names(wb) & (tolower(sheetname) == "contents")) {
+  if ("Contents" %in% names(zzz_wb_zzz) & (tolower(sheetname) == "contents")) {
     
     stop("sheetname cannot be set to \"Contents\" if a contents page is desired")
     
   }
   
-  if ("Notes" %in% names(wb) & (tolower(sheetname) == "notes")) {
+  if ("Notes" %in% names(zzz_wb_zzz) & (tolower(sheetname) == "notes")) {
     
     stop("sheetname cannot be set to \"Notes\" if a notes page is desired")
     
   }
   
-  if ("Definitions" %in% names(wb) & (tolower(sheetname) == "definitions")) {
+  if ("Definitions" %in% names(zzz_wb_zzz) & (tolower(sheetname) == "definitions")) {
     
     stop("sheetname cannot be set to \"Definitions\" if a definitions page is desired")
     
@@ -826,17 +887,17 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
   }
   
-  if (deparse(substitute(table_data)) == "xxx_table_data2_xxx") {
+  if (deparse(substitute(table_data)) == "zzz_table_data2_zzz") {
     
-    stop(strwrap("Data frame used as table_data needs to be renamed. The code will overwrite any 
-         file named xxx_table_data2_xxx.", prefix = " ", initial = ""))
+    stop(strwrap("Data frame used as table_data needs to be renamed. The code requires a 
+         file named zzz_table_data2_zzz.", prefix = " ", initial = ""))
     
   }
   
-  if ("xxx_temp_xxx" %in% colnames(table_data) | "xxx_temp_xxx2" %in% colnames(table_data) | 
-      "xxx_temp_xxx3" %in% colnames(table_data))  { 
+  if ("zzz_temp_zzz" %in% colnames(table_data) | "zzz_temp_zzz2" %in% colnames(table_data) | 
+      "zzz_temp_zzz3" %in% colnames(table_data))  { 
     
-    stop(strwrap("Temporary variables (xxx_temp_xxx or xxx_temp_xxx2 or xxx_temp_xxx3) already exist 
+    stop(strwrap("Temporary variables (zzz_temp_zzz or zzz_temp_zzz2 or zzz_temp_zzz3) already exist 
          on the file", prefix = " ", initial = ""))
     
   }
@@ -1121,17 +1182,17 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   extralines1 <- c(extraline1, extraline2, extraline3, extraline4, extraline5, extraline6)
   
-  if ("Notes" %in% names(wb) & autonotes2 == "Yes") {
+  if ("Notes" %in% names(zzz_wb_zzz) & zzz_autonotes2_zzz == "Yes") {
     
     for (i in seq_along(extralines1)) {
       
       if (stringr::str_detect(extralines1[i], 
           "This worksheet contains one table|this worksheet contains one table|\\[note")) {
         
-        warning(strwrap("If autonotes2 is set to \"Yes\" then the information about the worksheet 
-                containing one table or the notes tab will automatically be inserted and so there is 
-                no need to have one of the extralines already stating this", prefix = " ", 
-                initial = ""))
+        warning(strwrap("If zzz_autonotes2_zzz is set to \"Yes\" then the information about the 
+                worksheet containing one table or the notes tab will automatically be inserted and 
+                so there is no need to have one of the extralines already stating this", 
+                prefix = " ", initial = ""))
         
       }
       
@@ -1164,10 +1225,10 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     extraline1 <- "Temporary holder"
     
     temp <- length(title) + length(subtitle) + 1
-    assign(paste0(sheetname, "_startrow"), temp, envir = .GlobalEnv)
+    assign(paste0("zzz_", sheetname, "_startrow_zzz"), temp, envir = .GlobalEnv)
     rm(temp)
     
-  } else if ("Notes" %in% names(wb) & autonotes2 == "No") {
+  } else if ("Notes" %in% names(zzz_wb_zzz) & zzz_autonotes2_zzz == "No") {
     
     onetablenote <- 0
     notescolumn <- 0
@@ -1211,9 +1272,15 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   # Remove a specific data frame if it already exists as a new one will be required
   
-  if (exists("xxx_table_data2_xxx", envir = .GlobalEnv)) {
+  if (exists("zzz_table_data2_zzz", envir = .GlobalEnv)) {
     
-    rm(xxx_table_data2_xxx, envir = .GlobalEnv)
+    warning(strwrap("An object named \"zzz_table_data2_zzz\" has been removed from the global 
+            environment. If this was a remnant from a previous run of the table code then it is
+            not a problem. However, if the object was something that you have created then you will 
+            need to shut R down and start again but rename whatever you had called 
+            \"zzz_table_data2_zzz\" to something else.", prefix = " ", initial = ""))
+    
+    rm(zzz_table_data2_zzz, envir = .GlobalEnv)
     
   }
   
@@ -1224,30 +1291,33 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   # Thousand commas will be inserted if necessary (e.g., 1,340)
   # Function will be called only when a specific number of decimal places is not given
   
-  xxx_table_data2_xxx <<- table_data
+  assign("zzz_table_data2_zzz", table_data, envir = .GlobalEnv)
   
   numcharvars <- function(numcharcols) {
     
-    dfx <- xxx_table_data2_xxx %>%
-      dplyr::mutate(xxx_temp_xxx = 
+    dfx <- zzz_table_data2_zzz %>%
+      dplyr::mutate(zzz_temp_zzz = 
              dplyr::case_when(.[[numcharcols]] %in% c("[b]", "[c]", "[e]", "[er]", "[f]",
                                                       "[low]", "[p]", "[r]", "[u]", "[w]",
                                                       "[x]", "[z]", "") ~ "0",
                                    is.na(.[[numcharcols]]) ~ "0",
                                    !is.na(.[[numcharcols]]) ~ gsub(",", "", .[[numcharcols]]))) %>%
-      dplyr::mutate(xxx_temp_xxx = as.numeric(xxx_temp_xxx)) %>%
-      dplyr::mutate(xxx_temp_xxx2 = format(xxx_temp_xxx, big.mark = ",", scientific = FALSE)) %>%
-      dplyr::mutate(xxx_temp_xxx3 = 
+      dplyr::mutate(zzz_temp_zzz = as.numeric(zzz_temp_zzz)) %>%
+      dplyr::mutate(zzz_temp_zzz2 = format(zzz_temp_zzz, big.mark = ",", scientific = FALSE)) %>%
+      dplyr::mutate(zzz_temp_zzz3 = 
         dplyr::case_when(.[[numcharcols]] %in% c("[b]", "[c]", "[e]", "[er]", "[f]",
                                                  "[low]", "[p]", "[r]", "[u]", "[w]",
                                                  "[x]", "[z]", "") ~ as.character(.[[numcharcols]]),
                                                  is.na(.[[numcharcols]]) ~ "",
-                                                 TRUE ~ as.character(xxx_temp_xxx2)))
+                                                 TRUE ~ as.character(zzz_temp_zzz2)))
     
-    dfx[[numcharcols]] <- dfx$xxx_temp_xxx3
+    dfx[[numcharcols]] <- dfx$zzz_temp_zzz3
     
-    xxx_table_data2_xxx <<- dfx %>%
-      dplyr::select(-xxx_temp_xxx, -xxx_temp_xxx2, -xxx_temp_xxx3)
+    dfx_temp <- dfx %>%
+      dplyr::select(-zzz_temp_zzz, -zzz_temp_zzz2, -zzz_temp_zzz3)
+    
+    assign("zzz_table_data2_zzz", dfx_temp, envir = .GlobalEnv)
+    rm(dfx_temp)
     
   }
   
@@ -1260,29 +1330,32 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   numcharvars2 <- function(numcharcols, numcharcolsdp) {
     
-    dfx <- xxx_table_data2_xxx %>%
-      dplyr::mutate(xxx_temp_xxx = 
+    dfx <- zzz_table_data2_zzz %>%
+      dplyr::mutate(zzz_temp_zzz = 
              dplyr::case_when(.[[numcharcols]] %in% c("[b]", "[c]", "[e]", "[er]", "[f]",
                                                      "[low]", "[p]", "[r]", "[u]", "[w]",
                                                      "[x]", "[z]", "") ~ "0",
                                    is.na(.[[numcharcols]]) ~ "0",
                                    !is.na(.[[numcharcols]]) ~ gsub(",", "", .[[numcharcols]]))) %>%
-      dplyr::mutate(xxx_temp_xxx = if (numcharcolsdp >= 2) as.numeric(xxx_temp_xxx) else 
-        round(as.numeric(xxx_temp_xxx), digits = numcharcolsdp)) %>%
-      dplyr::mutate(xxx_temp_xxx2 = if (numcharcolsdp >= 2) 
-        format(xxx_temp_xxx, big.mark = ",", scientific = FALSE, nsmall = numcharcolsdp) else 
-        format(xxx_temp_xxx, big.mark = ",", scientific = FALSE)) %>%
-      dplyr::mutate(xxx_temp_xxx3 = 
+      dplyr::mutate(zzz_temp_zzz = if (numcharcolsdp >= 2) as.numeric(zzz_temp_zzz) else 
+        round(as.numeric(zzz_temp_zzz), digits = numcharcolsdp)) %>%
+      dplyr::mutate(zzz_temp_zzz2 = if (numcharcolsdp >= 2) 
+        format(zzz_temp_zzz, big.mark = ",", scientific = FALSE, nsmall = numcharcolsdp) else 
+        format(zzz_temp_zzz, big.mark = ",", scientific = FALSE)) %>%
+      dplyr::mutate(zzz_temp_zzz3 = 
         dplyr::case_when(.[[numcharcols]] %in% c("[b]", "[c]", "[e]", "[er]", "[f]",
                                                  "[low]", "[p]", "[r]", "[u]", "[w]",
                                                  "[x]", "[z]", "") ~ as.character(.[[numcharcols]]),
                                                  is.na(.[[numcharcols]]) ~ "",
-                                                 TRUE ~ as.character(xxx_temp_xxx2)))
+                                                 TRUE ~ as.character(zzz_temp_zzz2)))
     
-    dfx[[numcharcols]] <- dfx$xxx_temp_xxx3
+    dfx[[numcharcols]] <- dfx$zzz_temp_zzz3
     
-    xxx_table_data2_xxx <<- dfx %>%
-      dplyr::select(-xxx_temp_xxx, -xxx_temp_xxx2, -xxx_temp_xxx3)
+    dfx_temp <- dfx %>%
+      dplyr::select(-zzz_temp_zzz, -zzz_temp_zzz2, -zzz_temp_zzz3)
+    
+    assign("zzz_table_data2_zzz", dfx_temp, envir = .GlobalEnv)
+    rm(dfx_temp)
     
   }
   
@@ -1302,21 +1375,21 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
   } else if (is.null(numcharcols)) {
     
-    xxx_table_data2_xxx <<- table_data
+    assign("zzz_table_data2_zzz", table_data, envir = .GlobalEnv)
     
   }
   
   # Add the worksheet to the workbook and define various formatting to be used at some point
   
-  openxlsx::addWorksheet(wb, sheetname)
+  openxlsx::addWorksheet(zzz_wb_zzz, sheetname)
   
   extralines2 <- c(extraline1, extraline2, extraline3, extraline4, extraline5, extraline6)
   
   tablestart <- (length(title) + length(subtitle) + length(extralines2) + 1)
-  assign(paste0(sheetname, "_tablestart"), tablestart, envir = .GlobalEnv)
+  assign(paste0("zzz_", sheetname, "_tablestart_zzz"), tablestart, envir = .GlobalEnv)
   
-  titleformat <- openxlsx::createStyle(fontSize = fontszt, textDecoration = "bold")
-  subtitleformat <- openxlsx::createStyle(fontSize = fontszst)
+  titleformat <- openxlsx::createStyle(fontSize = zzz_fontszt_zzz, textDecoration = "bold")
+  subtitleformat <- openxlsx::createStyle(fontSize = zzz_fontszst_zzz)
   normalformat <- openxlsx::createStyle(valign = "top")
   linkformat <- openxlsx::createStyle(fontColour = "blue", textDecoration = "underline")
   topformat <- openxlsx::createStyle(valign = "bottom")
@@ -1326,20 +1399,21 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
                                            valign = "top", halign = "right")
   dataformat <- openxlsx::createStyle(halign = "right", valign = "top")
   
-  openxlsx::addStyle(wb, sheetname, normalformat, rows = 1:(nrow(xxx_table_data2_xxx) + tablestart),
-                     cols = 1:ncol(xxx_table_data2_xxx), gridExpand = TRUE)
-  openxlsx::addStyle(wb, sheetname, topformat, 
+  openxlsx::addStyle(zzz_wb_zzz, sheetname, normalformat, 
+                     rows = 1:(nrow(zzz_table_data2_zzz) + tablestart),
+                     cols = 1:ncol(zzz_table_data2_zzz), gridExpand = TRUE)
+  openxlsx::addStyle(zzz_wb_zzz, sheetname, topformat, 
                      rows = 1:(length(title) + length(subtitle) + length(extralines2)), cols = 1, 
                      gridExpand = TRUE)
   
-  openxlsx::writeData(wb, sheetname, title, startCol = 1, startRow = 1)
+  openxlsx::writeData(zzz_wb_zzz, sheetname, title, startCol = 1, startRow = 1)
   
-  openxlsx::addStyle(wb, sheetname, titleformat, rows = 1, cols = 1)
+  openxlsx::addStyle(zzz_wb_zzz, sheetname, titleformat, rows = 1, cols = 1)
   
   if (!is.null(subtitle)) {
     
-    openxlsx::writeData(wb, sheetname, subtitle, startCol = 1, startRow = 2)
-    openxlsx::addStyle(wb, sheetname, subtitleformat, rows = 2, cols = 1)
+    openxlsx::writeData(zzz_wb_zzz, sheetname, subtitle, startCol = 1, startRow = 2)
+    openxlsx::addStyle(zzz_wb_zzz, sheetname, subtitleformat, rows = 2, cols = 1)
     
   }
   
@@ -1354,7 +1428,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       
     }
     
-    if (extralines2[i] == "Link to notes" & !("Notes" %in% names(wb))) {
+    if (extralines2[i] == "Link to notes" & !("Notes" %in% names(zzz_wb_zzz))) {
       
       stop(strwrap("Cannot put a link in to the notes tab unless notestab set to \"Yes\" in the 
            workbook function call", prefix = " ", initial = ""))
@@ -1367,7 +1441,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       
     }
     
-    if (extralines2[i] == "Link to contents" & !("Contents" %in% names(wb))) {
+    if (extralines2[i] == "Link to contents" & !("Contents" %in% names(zzz_wb_zzz))) {
       
       stop(strwrap("Cannot put a link in to the contents tab unless contentstab set to \"Yes\" in 
            the workbook function call", prefix = " ", initial = ""))
@@ -1381,7 +1455,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       
     }
     
-    if (extralines2[i] == "Link to definitions" & !("Definitions" %in% names(wb))) {
+    if (extralines2[i] == "Link to definitions" & !("Definitions" %in% names(zzz_wb_zzz))) {
       
       stop(strwrap("Cannot put a link in to the definitions tab unless definitionstab set to \"Yes\" 
            in the workbook function call", prefix = " ", initial = ""))
@@ -1390,27 +1464,27 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
     if (extralines2[i] == "Link to notes") {
       
-      openxlsx::writeFormula(wb, sheetname, startRow = length(title) + length(subtitle) + i, 
+      openxlsx::writeFormula(zzz_wb_zzz, sheetname, startRow = length(title) + length(subtitle) + i, 
                              x = openxlsx::makeHyperlinkString("Notes", row = 1, col = 1, 
                                                                text = "Link to notes"))
-      openxlsx::addStyle(wb, sheetname, linkformat, rows = length(title) + length(subtitle) + i, 
-                         cols = 1, stack = TRUE)
+      openxlsx::addStyle(zzz_wb_zzz, sheetname, linkformat, 
+                         rows = length(title) + length(subtitle) + i, cols = 1, stack = TRUE)
       
     } else if (extralines2[i] == "Link to contents") {
       
-      openxlsx::writeFormula(wb, sheetname, startRow = length(title) + length(subtitle) + i, 
+      openxlsx::writeFormula(zzz_wb_zzz, sheetname, startRow = length(title) + length(subtitle) + i, 
                              x = openxlsx::makeHyperlinkString("Contents", row = 1, col = 1, 
                                                                text = "Link to contents"))
-      openxlsx::addStyle(wb, sheetname, linkformat, rows = length(title) + length(subtitle) + i, 
-                         cols = 1, stack = TRUE)
+      openxlsx::addStyle(zzz_wb_zzz, sheetname, linkformat, 
+                         rows = length(title) + length(subtitle) + i, cols = 1, stack = TRUE)
       
     } else if (extralines2[i] == "Link to definitions") {
       
-      openxlsx::writeFormula(wb, sheetname, startRow = length(title) + length(subtitle) + i, 
+      openxlsx::writeFormula(zzz_wb_zzz, sheetname, startRow = length(title) + length(subtitle) + i, 
                              x = openxlsx::makeHyperlinkString("Definitions", row = 1, col = 1, 
                                                                text = "Link to definitions"))
-      openxlsx::addStyle(wb, sheetname, linkformat, rows = length(title) + length(subtitle) + i, 
-                         cols = 1, stack = TRUE)
+      openxlsx::addStyle(zzz_wb_zzz, sheetname, linkformat, 
+                         rows = length(title) + length(subtitle) + i, cols = 1, stack = TRUE)
       
     } else if (!is.null(extralines2[i])) {
       
@@ -1486,12 +1560,12 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
         
       }
       
-      openxlsx::writeData(wb, sheetname, y, startCol = 1, 
+      openxlsx::writeData(zzz_wb_zzz, sheetname, y, startCol = 1, 
                           startRow = length(title) + length(subtitle) + i)
       
       if (grepl(hyper_rx, extralines2[i]) == TRUE) {
         
-        openxlsx::addStyle(wb, sheetname, linkformat, 
+        openxlsx::addStyle(zzz_wb_zzz, sheetname, linkformat, 
                            rows = length(title) + length(subtitle) + i, cols = 1, stack = TRUE)
         
       }
@@ -1502,36 +1576,40 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
   }
   
-  openxlsx::addStyle(wb, sheetname, normalformat, rows = tablestart - 1, cols = 1, stack = TRUE)
+  openxlsx::addStyle(zzz_wb_zzz, sheetname, normalformat, rows = tablestart - 1, cols = 1, 
+                     stack = TRUE)
   
-  openxlsx::addStyle(wb, sheetname, headingsformat, rows = tablestart, 
-                     cols = 1:ncol(xxx_table_data2_xxx))
+  openxlsx::addStyle(zzz_wb_zzz, sheetname, headingsformat, rows = tablestart, 
+                     cols = 1:ncol(zzz_table_data2_zzz))
   
   # Applying specific formatting to data columns
   
   if (!is.null(numericcols)) {
     
-    openxlsx::addStyle(wb, sheetname, headingsformat2, rows = tablestart, cols = numericcols)
-    openxlsx::addStyle(wb, sheetname, dataformat, 
-                       rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), 
+    openxlsx::addStyle(zzz_wb_zzz, sheetname, headingsformat2, rows = tablestart, 
+                       cols = numericcols)
+    openxlsx::addStyle(zzz_wb_zzz, sheetname, dataformat, 
+                       rows = (tablestart + 1):(nrow(zzz_table_data2_zzz) + tablestart + 1), 
                        cols = numericcols, stack = TRUE, gridExpand = TRUE)
     
   }
   
   if (!is.null(numcharcols)) {
     
-    openxlsx::addStyle(wb, sheetname, headingsformat2, rows = tablestart, cols = numcharcols)
-    openxlsx::addStyle(wb, sheetname, dataformat, 
-                       rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), 
+    openxlsx::addStyle(zzz_wb_zzz, sheetname, headingsformat2, rows = tablestart, 
+                       cols = numcharcols)
+    openxlsx::addStyle(zzz_wb_zzz, sheetname, dataformat, 
+                       rows = (tablestart + 1):(nrow(zzz_table_data2_zzz) + tablestart + 1), 
                        cols = numcharcols, stack = TRUE, gridExpand = TRUE)
     
   }
   
   if (!is.null(othdatacols)) {
     
-    openxlsx::addStyle(wb, sheetname, headingsformat2, rows = tablestart, cols = othdatacols)
-    openxlsx::addStyle(wb, sheetname, dataformat, 
-                       rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), 
+    openxlsx::addStyle(zzz_wb_zzz, sheetname, headingsformat2, rows = tablestart, 
+                       cols = othdatacols)
+    openxlsx::addStyle(zzz_wb_zzz, sheetname, dataformat, 
+                       rows = (tablestart + 1):(nrow(zzz_table_data2_zzz) + tablestart + 1), 
                        cols = othdatacols, stack = TRUE, gridExpand = TRUE)
     
   }
@@ -1547,16 +1625,16 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
         
         fmta <- paste0("#,##0.", strrep("0", numericcolsdp[i]))
         fmt <- openxlsx::createStyle(numFmt = fmta)
-        openxlsx::addStyle(wb, sheetname, fmt, 
-                           rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), 
+        openxlsx::addStyle(zzz_wb_zzz, sheetname, fmt, 
+                           rows = (tablestart + 1):(nrow(zzz_table_data2_zzz) + tablestart + 1), 
                            cols = numericcols[i], stack = TRUE, gridExpand = TRUE)
         rm(fmta, fmt)
         
       } else if (numericcolsdp[i] == 0) {
         
         fmt <- openxlsx::createStyle(numFmt = "#,##0")
-        openxlsx::addStyle(wb, sheetname, fmt, 
-                           rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), 
+        openxlsx::addStyle(zzz_wb_zzz, sheetname, fmt, 
+                           rows = (tablestart + 1):(nrow(zzz_table_data2_zzz) + tablestart + 1), 
                            cols = numericcols[i], stack = TRUE, gridExpand = TRUE)
         rm(fmt)
         
@@ -1570,9 +1648,9 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   wrapformat <- openxlsx::createStyle(wrapText = TRUE)
   
-  openxlsx::addStyle(wb, sheetname, wrapformat, 
-                     rows = (tablestart + 1):(nrow(xxx_table_data2_xxx) + tablestart + 1), 
-                     cols = 1:ncol(xxx_table_data2_xxx), stack = TRUE, gridExpand = TRUE)
+  openxlsx::addStyle(zzz_wb_zzz, sheetname, wrapformat, 
+                     rows = (tablestart + 1):(nrow(zzz_table_data2_zzz) + tablestart + 1), 
+                     cols = 1:ncol(zzz_table_data2_zzz), stack = TRUE, gridExpand = TRUE)
   
   # tablename2 will be the name of the table accessible in Excel
   # If no specific name is given, then the name of the table will be the same as the sheetname
@@ -1589,55 +1667,61 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   # Setting some specific row heights based in part on the font size
   
-  openxlsx::writeDataTable(wb, sheetname, xxx_table_data2_xxx, tableName = tablename2, 
+  openxlsx::writeDataTable(zzz_wb_zzz, sheetname, zzz_table_data2_zzz, tableName = tablename2, 
                            startRow = tablestart, startCol = 1, withFilter = FALSE, 
                            tableStyle = "none")
   
   if (length(extralines2) > 0) {
     
-    openxlsx::setRowHeights(wb, sheetname, tablestart - 1, fontsz * (25/12))
+    openxlsx::setRowHeights(zzz_wb_zzz, sheetname, tablestart - 1, zzz_fontsz_zzz * (25/12))
     
   } else if (length(subtitle) == 1) {
     
-    openxlsx::setRowHeights(wb, sheetname, tablestart - 1, fontszst * (25/12))
+    openxlsx::setRowHeights(zzz_wb_zzz, sheetname, tablestart - 1, zzz_fontszst_zzz * (25/12))
     
   } else if (length(title) == 1) {
     
-    openxlsx::setRowHeights(wb, sheetname, tablestart - 1, fontszt * (25/12))
+    openxlsx::setRowHeights(zzz_wb_zzz, sheetname, tablestart - 1, zzz_fontszt_zzz * (25/12))
     
   }
   
   if (!is.null(headrowsize) & is.numeric(headrowsize)) {
     
-    openxlsx::setRowHeights(wb, sheetname, tablestart, headrowsize)
+    openxlsx::setRowHeights(zzz_wb_zzz, sheetname, tablestart, headrowsize)
     
   }
   
   # Updating the data frame to be used to create a table of contents
   
-  if (sheetname != "Contents" & exists("tabcontents", envir = .GlobalEnv)) {
+  if (sheetname != "Contents" & exists("zzz_tabcontents_zzz", envir = .GlobalEnv)) {
     
-    tabcontents <<- tabcontents %>%
+    df_temp <- zzz_tabcontents_zzz %>%
       dplyr::add_row("Sheet name" = sheetname, "Table description" = title)
     
-  } else if (sheetname != "Contents" & !exists("tabcontents", envir = .GlobalEnv)) {
+    assign("zzz_tabcontents_zzz", df_temp, envir = .GlobalEnv)
+    rm(df_temp)
     
-    tabcontents <<- data.frame() %>%
+  } else if (sheetname != "Contents" & !exists("zzz_tabcontents_zzz", envir = .GlobalEnv)) {
+    
+    df_temp <- data.frame() %>%
       dplyr::mutate("Sheet name" = "", "Table description" = "") %>%
       dplyr::add_row("Sheet name" = sheetname, "Table description" = title)
     
+    assign("zzz_tabcontents_zzz", df_temp, envir = .GlobalEnv)
+    rm(df_temp)
+    
   }
   
-  if (exists("tabcontents", envir = .GlobalEnv)) {
+  if (exists("zzz_tabcontents_zzz", envir = .GlobalEnv)) {
     
-    tabcontents2 <- tabcontents %>%
+    tabcontents2 <- zzz_tabcontents_zzz %>%
       dplyr::rename(sheet_name = "Sheet name") %>%
       dplyr::group_by(sheet_name) %>%
       dplyr::summarise(count = dplyr::n()) %>%
       dplyr::ungroup() %>%
       dplyr::summarise(check = sum(count) / dplyr::n())
     
-    tabcontents3 <- tabcontents %>%
+    tabcontents3 <- zzz_tabcontents_zzz %>%
       dplyr::rename(table_description = "Table description") %>%
       dplyr::group_by(table_description) %>%
       dplyr::summarise(count = dplyr::n()) %>%
@@ -1664,7 +1748,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   if (gridlines == "No") {
     
-    openxlsx::showGridLines(wb, sheetname, showGridLines = FALSE)
+    openxlsx::showGridLines(zzz_wb_zzz, sheetname, showGridLines = FALSE)
     
   }
   
@@ -1674,13 +1758,14 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   
   if (columnwidths == "R_auto") {
     
-    numchars <- max(nchar(as.character(xxx_table_data2_xxx[[1]]))) + 2
-    columns <- colnames(xxx_table_data2_xxx)
+    numchars <- max(nchar(as.character(zzz_table_data2_zzz[[1]]))) + 2
+    columns <- colnames(zzz_table_data2_zzz)
     col1name <- columns[1]
     col1chars <- nchar(col1name) + 2
     
-    openxlsx::setColWidths(wb, sheetname, cols = 1, widths = max(numchars, col1chars))
-    openxlsx::setColWidths(wb, sheetname, cols = 2:ncol(xxx_table_data2_xxx), widths = "auto")
+    openxlsx::setColWidths(zzz_wb_zzz, sheetname, cols = 1, widths = max(numchars, col1chars))
+    openxlsx::setColWidths(zzz_wb_zzz, sheetname, cols = 2:ncol(zzz_table_data2_zzz), 
+                           widths = "auto")
     
   } else if (columnwidths == "characters") {
     
@@ -1690,24 +1775,25 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       
     }
     
-    width_vec <- apply(xxx_table_data2_xxx, MARGIN = 2, 
+    width_vec <- apply(zzz_table_data2_zzz, MARGIN = 2, 
                        FUN = function(x) max(nchar(as.character(x)), na.rm = TRUE))
     width_vec <- width_vec + width_adj
     
-    width_vec_header <- nchar(colnames(xxx_table_data2_xxx)) + width_adj
+    width_vec_header <- nchar(colnames(zzz_table_data2_zzz)) + width_adj
     
     max_vec_header <- pmax(width_vec, width_vec_header)
     
-    openxlsx::setColWidths(wb, sheetname, cols = 1:ncol(xxx_table_data2_xxx), 
+    openxlsx::setColWidths(zzz_wb_zzz, sheetname, cols = 1:ncol(zzz_table_data2_zzz), 
                            widths = max_vec_header)
     
   } else if (columnwidths == "specified") {
     
-    openxlsx::setColWidths(wb, sheetname, cols = 1:ncol(xxx_table_data2_xxx), widths = colwid_spec)
+    openxlsx::setColWidths(zzz_wb_zzz, sheetname, cols = 1:ncol(zzz_table_data2_zzz), 
+                           widths = colwid_spec)
     
   }
   
-  rm(xxx_table_data2_xxx, envir = .GlobalEnv)
+  rm(zzz_table_data2_zzz, envir = .GlobalEnv)
   
 }
 
@@ -1806,16 +1892,16 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
   conflicted::conflict_prefer_all("base", quiet = TRUE)
   `%>%` <- dplyr::`%>%`
   
-  if (!(exists("wb", envir = .GlobalEnv))) {
+  if (!(exists("zzz_wb_zzz", envir = .GlobalEnv))) {
     
-    stop("Run the \"workbook\" function first to ensure that a workbook named wb exists")
+    stop("Run the \"workbook\" function first to ensure that a workbook named zzz_wb_zzz exists")
     
   }
   
   # Check to see that a contents page is wanted, based on whether a worksheet was created in the ...
   # ... initial workbook
   
-  if (!("Contents" %in% names(wb))) {
+  if (!("Contents" %in% names(zzz_wb_zzz))) {
     
     stop("contentstab cannot have been set to \"Yes\" in the workbook function call")
     
@@ -1880,7 +1966,7 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
   
   # Automatically detecting if notes and definitions tabs are required
   
-  if ("Notes" %in% names(wb)) {
+  if ("Notes" %in% names(zzz_wb_zzz)) {
     
     notestab <- "Yes"
     
@@ -1890,7 +1976,7 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
     
   }
   
-  if ("Definitions" %in% names(wb)) {
+  if ("Definitions" %in% names(zzz_wb_zzz)) {
     
     definitionstab <- "Yes"
     
@@ -1939,7 +2025,8 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
   
   if (extracols == "Yes" & exists("extracols_contents", envir = .GlobalEnv)) {
     
-    if ((nrow(tabcontents) + nrow(notesdf2a) + nrow(notesdf2b)) != nrow(extracols_contents)) {
+    if ((nrow(zzz_tabcontents_zzz) + nrow(notesdf2a) + 
+         nrow(notesdf2b)) != nrow(extracols_contents)) {
       
       stop(strwrap("The number of rows in the table of contents is not the same as in the dataframe 
            of extra columns", prefix = " ", initial = ""))
@@ -1954,12 +2041,18 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
       
     }
     
-    tabcontents <<- dplyr::bind_rows(notesdf2a, notesdf2b, tabcontents) %>%
+    df_temp <- dplyr::bind_rows(notesdf2a, notesdf2b, zzz_tabcontents_zzz) %>%
       dplyr::bind_cols(extracols_contents)
+    
+    assign("zzz_tabcontents_zzz", df_temp, envir = .GlobalEnv)
+    rm(df_temp)
     
   } else if (!(exists("extracols_contents", envir = .GlobalEnv))) {
     
-    tabcontents <<- dplyr::bind_rows(notesdf2a, notesdf2b, tabcontents)
+    df_temp <- dplyr::bind_rows(notesdf2a, notesdf2b, zzz_tabcontents_zzz)
+    
+    assign("zzz_tabcontents_zzz", df_temp, envir = .GlobalEnv)
+    rm(df_temp)
     
     if (extracols == "Yes") {
       
@@ -1976,14 +2069,14 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
     
   }
   
-  tabcontents2 <- tabcontents %>%
+  tabcontents2 <- zzz_tabcontents_zzz %>%
     dplyr::rename(sheet_name = "Sheet name") %>%
     dplyr::group_by(sheet_name) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::summarise(check = sum(count) / dplyr::n())
   
-  tabcontents3 <- tabcontents %>%
+  tabcontents3 <- zzz_tabcontents_zzz %>%
     dplyr::rename(table_description = "Table description") %>%
     dplyr::group_by(table_description) %>%
     dplyr::summarise(count = dplyr::n()) %>%
@@ -2008,7 +2101,7 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
   
   # Define some formatting to be used later
   
-  titleformat <- openxlsx::createStyle(fontSize = fontszt, textDecoration = "bold")
+  titleformat <- openxlsx::createStyle(fontSize = zzz_fontszt_zzz, textDecoration = "bold")
   extralineformat <- openxlsx::createStyle(wrapText = FALSE, valign = "top")
   normalformat <- openxlsx::createStyle(wrapText = TRUE, valign = "top")
   linkformat <- openxlsx::createStyle(fontColour = "blue", wrapText = TRUE, valign = "top", 
@@ -2016,61 +2109,67 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
   headingsformat <- openxlsx::createStyle(textDecoration = "bold", wrapText = TRUE, border = NULL, 
                                           valign = "top")
   
-  openxlsx::addStyle(wb, "Contents", normalformat, rows = 1:(nrow(tabcontents) + 3), 
-                     cols = 1:ncol(tabcontents), gridExpand = TRUE)
+  openxlsx::addStyle(zzz_wb_zzz, "Contents", normalformat, rows = 1:(nrow(zzz_tabcontents_zzz) + 3), 
+                     cols = 1:ncol(zzz_tabcontents_zzz), gridExpand = TRUE)
   
-  openxlsx::writeData(wb, "Contents", title, startCol = 1, startRow = 1)
+  openxlsx::writeData(zzz_wb_zzz, "Contents", title, startCol = 1, startRow = 1)
   
-  openxlsx::addStyle(wb, "Contents", titleformat, rows = 1, cols = 1)
+  openxlsx::addStyle(zzz_wb_zzz, "Contents", titleformat, rows = 1, cols = 1)
   
-  openxlsx::writeData(wb, "Contents", extraline1, startCol = 1, startRow = 2)
+  openxlsx::writeData(zzz_wb_zzz, "Contents", extraline1, startCol = 1, startRow = 2)
   
-  openxlsx::addStyle(wb, "Contents", extralineformat, rows = 2, cols = 1)
+  openxlsx::addStyle(zzz_wb_zzz, "Contents", extralineformat, rows = 2, cols = 1)
   
-  openxlsx::addStyle(wb, "Contents", headingsformat, rows = 3, cols = 1:ncol(tabcontents))
+  openxlsx::addStyle(zzz_wb_zzz, "Contents", headingsformat, rows = 3, 
+                     cols = 1:ncol(zzz_tabcontents_zzz))
   
-  openxlsx::writeDataTable(wb, "Contents", tabcontents, tableName = "contents_table", 
-                           startRow = 3, startCol = 1, withFilter = FALSE, tableStyle = "none")
+  openxlsx::writeDataTable(zzz_wb_zzz, "Contents", zzz_tabcontents_zzz, 
+                           tableName = "contents_table", startRow = 3, startCol = 1, 
+                           withFilter = FALSE, tableStyle = "none")
   
-  numchars <- max(nchar(tabcontents$"Sheet name"))
+  numchars <- max(nchar(zzz_tabcontents_zzz$"Sheet name"))
   
-  if (is.null(colwid_spec) & ncol(tabcontents) == 2) {
+  if (is.null(colwid_spec) & ncol(zzz_tabcontents_zzz) == 2) {
     
-    openxlsx::setColWidths(wb, "Contents", cols = c(1,2), widths = c(max(15, numchars + 3), 100))
+    openxlsx::setColWidths(zzz_wb_zzz, "Contents", cols = c(1,2), 
+                           widths = c(max(15, numchars + 3), 100))
     
-  } else if (is.null(colwid_spec) & ncol(tabcontents) > 2) {
+  } else if (is.null(colwid_spec) & ncol(zzz_tabcontents_zzz) > 2) {
     
-    openxlsx::setColWidths(wb, "Contents", cols = c(1,2,3:ncol(tabcontents)), 
+    openxlsx::setColWidths(zzz_wb_zzz, "Contents", cols = c(1,2,3:ncol(zzz_tabcontents_zzz)), 
                            widths = c(max(15, numchars + 3), 100, "auto"))
     
-  } else if (!is.numeric(colwid_spec) | length(colwid_spec) != ncol(tabcontents)) {
+  } else if (!is.numeric(colwid_spec) | length(colwid_spec) != ncol(zzz_tabcontents_zzz)) {
     
     warning(strwrap("colwid_spec has either been provided as non-numeric or a vector of length not 
-                    equal to the number of columns in tabcontents. The default column widths have 
-                    been used instead.", prefix = " ", initial = ""))
-    openxlsx::setColWidths(wb, "Contents", cols = c(1,2,3:max(ncol(tabcontents),3)), 
+                    equal to the number of columns in zzz_tabcontents_zzz. The default column widths 
+                    have been used instead.", prefix = " ", initial = ""))
+    
+    openxlsx::setColWidths(zzz_wb_zzz, "Contents", cols = c(1,2,3:max(ncol(zzz_tabcontents_zzz),3)), 
                            widths = c(max(15, numchars + 3), 100, "auto"))
     
   } else if (!is.null(colwid_spec) & is.numeric(colwid_spec) & 
-             length(colwid_spec) == ncol(tabcontents)) {  
+             length(colwid_spec) == ncol(zzz_tabcontents_zzz)) {  
     
-    openxlsx::setColWidths(wb, "Contents", cols = 1:ncol(tabcontents), widths = colwid_spec)            
+    openxlsx::setColWidths(zzz_wb_zzz, "Contents", cols = 1:ncol(zzz_tabcontents_zzz), 
+                           widths = colwid_spec)            
     
   }
   
-  openxlsx::setRowHeights(wb, "Contents", 2, fontsz * (25/12))
+  openxlsx::setRowHeights(zzz_wb_zzz, "Contents", 2, zzz_fontsz_zzz * (25/12))
   
-  contentrows <- nrow(tabcontents)
+  contentrows <- nrow(zzz_tabcontents_zzz)
   
   # Creating hyperlinks so user can quickly navigate through the spreadsheet
   
   for (i in c(4:(3 + contentrows))) {
     
-    openxlsx::writeFormula(wb, "Contents", startRow = i, 
-                           x = openxlsx::makeHyperlinkString(paste0(tabcontents[i-3, 1]), row = 1, 
-                                                             col = 1, 
-                                                             text = paste0(tabcontents[i-3, 1])))
-    openxlsx::addStyle(wb, "Contents", linkformat, rows = i, cols = 1)
+    openxlsx::writeFormula(zzz_wb_zzz, "Contents", startRow = i, 
+                           x = openxlsx::makeHyperlinkString(paste0(zzz_tabcontents_zzz[i-3, 1]), 
+                                                             row = 1, col = 1, 
+                                                             text = 
+                                                               paste0(zzz_tabcontents_zzz[i-3, 1])))
+    openxlsx::addStyle(zzz_wb_zzz, "Contents", linkformat, rows = i, cols = 1)
     
   }
   
@@ -2078,7 +2177,7 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
   
   if (gridlines == "No") {
     
-    openxlsx::showGridLines(wb, "Contents", showGridLines = FALSE)
+    openxlsx::showGridLines(zzz_wb_zzz, "Contents", showGridLines = FALSE)
     
   }
   
@@ -2218,16 +2317,16 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   
   conflicted::conflict_prefer_all("base", quiet = TRUE)
   
-  if (!(exists("wb", envir = .GlobalEnv))) {
+  if (!(exists("zzz_wb_zzz", envir = .GlobalEnv))) {
     
-    stop("Run the \"workbook\" function first to ensure that a workbook named wb exists")
+    stop("Run the \"workbook\" function first to ensure that a workbook named zzz_wb_zzz exists")
     
   }
   
   # Check to see that a coverpage is wanted, based on whether a worksheet was created in the ...
   # ... initial workbook
   
-  if (!("Cover" %in% names(wb))) {
+  if (!("Cover" %in% names(zzz_wb_zzz))) {
     
     stop("covertab has not been set to \"Yes\" in the workbook function call")
     
@@ -2369,15 +2468,15 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   # In case the function is run multiple times, removing previous row heights to ensure there ...
   # ... will be no strange looking rows
   
-  if (exists("covernumrow", envir = .GlobalEnv)) {
+  if (exists("zzz_covernumrow_zzz", envir = .GlobalEnv)) {
     
-    for (i in seq_along(1:covernumrow)) {
+    for (i in seq_along(1:zzz_covernumrow_zzz)) {
       
-      openxlsx::writeData(wb, "Cover", "", startCol = 1, startRow = i)
+      openxlsx::writeData(zzz_wb_zzz, "Cover", "", startCol = 1, startRow = i)
       
     }
     
-    openxlsx::removeRowHeights(wb, "Cover", 1:covernumrow)
+    openxlsx::removeRowHeights(zzz_wb_zzz, "Cover", 1:zzz_covernumrow_zzz)
     
   }
   
@@ -2392,14 +2491,17 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   if (!is.null(additlinks)) {additlinks2 <- 1} else if (is.null(additlinks)) {additlinks2 <- 0}
   if (!is.null(names)) {names2 <- 1} else if (is.null(names)) {names2 <- 0}
   
-  covernumrow <<- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + 
+  covernumrow <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + 
     source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + 
     length(extrafields) + length(extrafieldsb) + additlinks2 + length(additlinks) + length(names) + 
     names2 + length(email) + length(phone) + length(reuse) + 4
   
+  assign("zzz_covernumrow_zzz", covernumrow, envir = .GlobalEnv)
+  rm(covernumrow)
+  
   # Populating the cover page with the required text
   
-  openxlsx::writeData(wb, "Cover", title, startCol = 1, startRow = 1)
+  openxlsx::writeData(zzz_wb_zzz, "Cover", title, startCol = 1, startRow = 1)
   
   # Beginning of a long process to order the cover page as specified by the order argument
   
@@ -2892,9 +2994,9 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
     }
     
-    openxlsx::writeData(wb, "Cover", "Introductory information", startCol = 1, 
+    openxlsx::writeData(zzz_wb_zzz, "Cover", "Introductory information", startCol = 1, 
                         startRow = introstart)
-    openxlsx::writeData(wb, "Cover", intro, startCol = 1, startRow = introstart + 1)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", intro, startCol = 1, startRow = introstart + 1)
     
   }
   
@@ -2910,8 +3012,9 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
     }
     
-    openxlsx::writeData(wb, "Cover", "About these data", startCol = 1, startRow = aboutstart)
-    openxlsx::writeData(wb, "Cover", about, startCol = 1, startRow = aboutstart + 1)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", "About these data", startCol = 1, 
+                        startRow = aboutstart)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", about, startCol = 1, startRow = aboutstart + 1)
     
   }
   
@@ -2927,8 +3030,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
     }
     
-    openxlsx::writeData(wb, "Cover", "Source", startCol = 1, startRow = sourcestart)
-    openxlsx::writeData(wb, "Cover", source, startCol = 1, startRow = sourcestart + 1)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", "Source", startCol = 1, startRow = sourcestart)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", source, startCol = 1, startRow = sourcestart + 1)
     
   }
   
@@ -2949,8 +3052,9 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     names(relpub) <- relatedtext
     class(relpub) <- "hyperlink"
     
-    openxlsx::writeData(wb, "Cover", "Related publications", startCol = 1, startRow = relatedstart)
-    openxlsx::writeData(wb, "Cover", relpub, startCol = 1, startRow = relatedstart + 1)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", "Related publications", startCol = 1, 
+                        startRow = relatedstart)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", relpub, startCol = 1, startRow = relatedstart + 1)
     
   }
   
@@ -2967,8 +3071,9 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
     }  
     
-    openxlsx::writeData(wb, "Cover", "Date of publication", startCol = 1, startRow = dopstart)
-    openxlsx::writeData(wb, "Cover", dop, startCol = 1, startRow = dopstart + 1)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", "Date of publication", startCol = 1, 
+                        startRow = dopstart)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", dop, startCol = 1, startRow = dopstart + 1)
     
     
   }
@@ -2986,8 +3091,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
     }  
     
-    openxlsx::writeData(wb, "Cover", "Blank cells", startCol = 1, startRow = blankstart)
-    openxlsx::writeData(wb, "Cover", blank, startCol = 1, startRow = blankstart + 1)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", "Blank cells", startCol = 1, startRow = blankstart)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", blank, startCol = 1, startRow = blankstart + 1)
     
     
   }
@@ -3048,8 +3153,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
         
       }
       
-      openxlsx::writeData(wb, "Cover", extrafields[i], startCol = 1, startRow = extrastart)
-      openxlsx::writeData(wb, "Cover", y, startCol = 1, startRow = extrastart + 1)
+      openxlsx::writeData(zzz_wb_zzz, "Cover", extrafields[i], startCol = 1, startRow = extrastart)
+      openxlsx::writeData(zzz_wb_zzz, "Cover", y, startCol = 1, startRow = extrastart + 1)
       
       rm(y)
       
@@ -3075,8 +3180,10 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     names(additional) <- addittext
     class(additional) <- "hyperlink"
     
-    openxlsx::writeData(wb, "Cover", "Additional links", startCol = 1, startRow = additlinkstart)
-    openxlsx::writeData(wb, "Cover", additional, startCol = 1, startRow = additlinkstart + 1)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", "Additional links", startCol = 1, 
+                        startRow = additlinkstart)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", additional, startCol = 1, 
+                        startRow = additlinkstart + 1)
     
   }
   
@@ -3095,22 +3202,22 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
     }
     
-    openxlsx::writeData(wb, "Cover", "Contact", startCol = 1, startRow = namesstart)
-    openxlsx::writeData(wb, "Cover", names, startCol = 1, startRow = namesstart + 1)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", "Contact", startCol = 1, startRow = namesstart)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", names, startCol = 1, startRow = namesstart + 1)
     
   }
   
   normalformat <- openxlsx::createStyle(valign = "top", wrapText = TRUE)
-  subtitleformat <- openxlsx::createStyle(fontSize = fontszst, valign = "bottom", wrapText = TRUE, 
-                                          textDecoration = "bold")
-  titleformat <- openxlsx::createStyle(fontSize = fontszt, valign = "bottom", wrapText = TRUE, 
-                                       textDecoration = "bold")
+  subtitleformat <- openxlsx::createStyle(fontSize = zzz_fontszst_zzz, valign = "bottom", 
+                                          wrapText = TRUE, textDecoration = "bold")
+  titleformat <- openxlsx::createStyle(fontSize = zzz_fontszt_zzz, valign = "bottom", 
+                                       wrapText = TRUE, textDecoration = "bold")
   linkformat <- openxlsx::createStyle(fontColour = "blue", valign = "top", wrapText = TRUE, 
                                       textDecoration = "underline")
   
   if (is.null(colwid_spec) | !is.numeric(colwid_spec) | length(colwid_spec) > 1) {
     
-    openxlsx::setColWidths(wb, "Cover", cols = 1, widths = 100)
+    openxlsx::setColWidths(zzz_wb_zzz, "Cover", cols = 1, widths = 100)
     
     if (!is.null(colwid_spec) & !is.numeric(colwid_spec)) {
       
@@ -3126,67 +3233,68 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
   } else if (is.numeric(colwid_spec)) {
     
-    openxlsx::setColWidths(wb, "Cover", cols = 1, widths = colwid_spec)
+    openxlsx::setColWidths(zzz_wb_zzz, "Cover", cols = 1, widths = colwid_spec)
     
   }
   
-  openxlsx::addStyle(wb, "Cover", normalformat, rows = c(1:covernumrow), cols = 1)
+  openxlsx::addStyle(zzz_wb_zzz, "Cover", normalformat, rows = c(1:zzz_covernumrow_zzz), cols = 1)
   
   if (!is.null(intro)) {
     
-    openxlsx::setRowHeights(wb, "Cover", introstart, fontszst * (25/14))
-    openxlsx::addStyle(wb, "Cover", subtitleformat, rows = introstart, cols = 1)
+    openxlsx::setRowHeights(zzz_wb_zzz, "Cover", introstart, zzz_fontszst_zzz * (25/14))
+    openxlsx::addStyle(zzz_wb_zzz, "Cover", subtitleformat, rows = introstart, cols = 1)
     
-    if (intro_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = introstart + 1, 
-                                              cols = 1)}
+    if (intro_hyper == 1) {openxlsx::addStyle(zzz_wb_zzz, "Cover", linkformat, 
+                                              rows = introstart + 1, cols = 1)}
     
   }
   
   if (!is.null(about)) {
     
-    openxlsx::setRowHeights(wb, "Cover", aboutstart, fontszst * (25/14))
-    openxlsx::addStyle(wb, "Cover", subtitleformat, rows = aboutstart, cols = 1)
+    openxlsx::setRowHeights(zzz_wb_zzz, "Cover", aboutstart, zzz_fontszst_zzz * (25/14))
+    openxlsx::addStyle(zzz_wb_zzz, "Cover", subtitleformat, rows = aboutstart, cols = 1)
     
-    if (about_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = aboutstart + 1, 
-                                              cols = 1)}
+    if (about_hyper == 1) {openxlsx::addStyle(zzz_wb_zzz, "Cover", linkformat, 
+                                              rows = aboutstart + 1, cols = 1)}
     
   }
   
   if (!is.null(source)) {
     
-    openxlsx::setRowHeights(wb, "Cover", sourcestart, fontszst * (25/14))
-    openxlsx::addStyle(wb, "Cover", subtitleformat, rows = sourcestart, cols = 1)
+    openxlsx::setRowHeights(zzz_wb_zzz, "Cover", sourcestart, zzz_fontszst_zzz * (25/14))
+    openxlsx::addStyle(zzz_wb_zzz, "Cover", subtitleformat, rows = sourcestart, cols = 1)
     
-    if (source_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = sourcestart + 1, 
-                                               cols = 1)}
+    if (source_hyper == 1) {openxlsx::addStyle(zzz_wb_zzz, "Cover", linkformat, 
+                                               rows = sourcestart + 1, cols = 1)}
     
   }
   
   if (!is.null(relatedlink)) {
     
-    openxlsx::setRowHeights(wb, "Cover", relatedstart, fontszst * (25/14))
-    openxlsx::addStyle(wb, "Cover", subtitleformat, rows = relatedstart, cols = 1)
-    openxlsx::addStyle(wb, "Cover", linkformat, 
+    openxlsx::setRowHeights(zzz_wb_zzz, "Cover", relatedstart, zzz_fontszst_zzz * (25/14))
+    openxlsx::addStyle(zzz_wb_zzz, "Cover", subtitleformat, rows = relatedstart, cols = 1)
+    openxlsx::addStyle(zzz_wb_zzz, "Cover", linkformat, 
                        rows = (relatedstart + 1):(relatedstart + length(relatedlink)), cols = 1)
     
   }
   
   if (!is.null(dop)) {
     
-    openxlsx::setRowHeights(wb, "Cover", dopstart, fontszst * (25/14))
-    openxlsx::addStyle(wb, "Cover", subtitleformat, rows = dopstart, cols = 1)
+    openxlsx::setRowHeights(zzz_wb_zzz, "Cover", dopstart, zzz_fontszst_zzz * (25/14))
+    openxlsx::addStyle(zzz_wb_zzz, "Cover", subtitleformat, rows = dopstart, cols = 1)
     
-    if (dop_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = dopstart + 1, cols = 1)}
+    if (dop_hyper == 1) {openxlsx::addStyle(zzz_wb_zzz, "Cover", linkformat, rows = dopstart + 1, 
+                                            cols = 1)}
     
   }
   
   if (!is.null(blank)) {
     
-    openxlsx::setRowHeights(wb, "Cover", blankstart, fontszst * (25/14))
-    openxlsx::addStyle(wb, "Cover", subtitleformat, rows = blankstart, cols = 1)
+    openxlsx::setRowHeights(zzz_wb_zzz, "Cover", blankstart, zzz_fontszst_zzz * (25/14))
+    openxlsx::addStyle(zzz_wb_zzz, "Cover", subtitleformat, rows = blankstart, cols = 1)
     
-    if (blank_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = blankstart + 1, 
-                                              cols = 1)}
+    if (blank_hyper == 1) {openxlsx::addStyle(zzz_wb_zzz, "Cover", linkformat, 
+                                              rows = blankstart + 1, cols = 1)}
     
   }
   
@@ -3206,12 +3314,12 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
         
       }
       
-      openxlsx::setRowHeights(wb, "Cover", extrastart, fontszst * (25/14))
-      openxlsx::addStyle(wb, "Cover", subtitleformat, rows = extrastart, cols = 1)
+      openxlsx::setRowHeights(zzz_wb_zzz, "Cover", extrastart, zzz_fontszst_zzz * (25/14))
+      openxlsx::addStyle(zzz_wb_zzz, "Cover", subtitleformat, rows = extrastart, cols = 1)
       
       if (grepl(hyper_rx, extrafieldsb[i]) == TRUE) {
         
-        openxlsx::addStyle(wb, "Cover", linkformat, rows = extrastart + 1, cols = 1)
+        openxlsx::addStyle(zzz_wb_zzz, "Cover", linkformat, rows = extrastart + 1, cols = 1)
         
       }
       
@@ -3221,26 +3329,26 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   
   if (!is.null(additlinks)) {
     
-    openxlsx::setRowHeights(wb, "Cover", additlinkstart, fontszst * (25/14))
-    openxlsx::addStyle(wb, "Cover", subtitleformat, rows = additlinkstart, cols = 1)
-    openxlsx::addStyle(wb, "Cover", linkformat, 
+    openxlsx::setRowHeights(zzz_wb_zzz, "Cover", additlinkstart, zzz_fontszst_zzz * (25/14))
+    openxlsx::addStyle(zzz_wb_zzz, "Cover", subtitleformat, rows = additlinkstart, cols = 1)
+    openxlsx::addStyle(zzz_wb_zzz, "Cover", linkformat, 
                        rows = (additlinkstart + 1):(additlinkstart + length(additlinks)), cols = 1)
     
   }
   
   if (!is.null(names)) {
     
-    openxlsx::setRowHeights(wb, "Cover", namesstart, fontszst * (25/14))
-    openxlsx::addStyle(wb, "Cover", subtitleformat, rows = namesstart, cols = 1)
+    openxlsx::setRowHeights(zzz_wb_zzz, "Cover", namesstart, zzz_fontszst_zzz * (25/14))
+    openxlsx::addStyle(zzz_wb_zzz, "Cover", subtitleformat, rows = namesstart, cols = 1)
     
-    if (names_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = namesstart + 1, 
-                                              cols = 1)}
+    if (names_hyper == 1) {openxlsx::addStyle(zzz_wb_zzz, "Cover", linkformat, 
+                                              rows = namesstart + 1, cols = 1)}
     
   }
   
-  openxlsx::setRowHeights(wb, "Cover", 2, fontszst * (34/14))
+  openxlsx::setRowHeights(zzz_wb_zzz, "Cover", 2, zzz_fontszst_zzz * (34/14))
   
-  openxlsx::addStyle(wb, "Cover", titleformat, rows = 1, cols = 1)
+  openxlsx::addStyle(zzz_wb_zzz, "Cover", titleformat, rows = 1, cols = 1)
   
   # Create a hyperlink for any given email address
   
@@ -3263,14 +3371,14 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
     }
     
-    openxlsx::writeData(wb, "Cover", x, startCol = 1, startRow = emailstart)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", x, startCol = 1, startRow = emailstart)
     
-    openxlsx::addStyle(wb, "Cover", linkformat, rows = emailstart, cols = 1)
+    openxlsx::addStyle(zzz_wb_zzz, "Cover", linkformat, rows = emailstart, cols = 1)
     
     emailformat <- openxlsx::createStyle(fontColour = "blue", valign = "bottom", 
                                          textDecoration = "underline", wrapText = TRUE)
     
-    if (emailstart == 2) {openxlsx::addStyle(wb, "Cover", emailformat, rows = 2, cols = 1)}
+    if (emailstart == 2) {openxlsx::addStyle(zzz_wb_zzz, "Cover", emailformat, rows = 2, cols = 1)}
     
   }
   
@@ -3289,14 +3397,14 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
     }
     
-    openxlsx::writeData(wb, "Cover", phone, startCol = 1, startRow = phonestart)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", phone, startCol = 1, startRow = phonestart)
     
     phoneformat <- openxlsx::createStyle(valign = "bottom")
     
-    if (phone_hyper == 1) {openxlsx::addStyle(wb, "Cover", linkformat, rows = phonestart, cols = 1, 
-                                              stack = TRUE)}
+    if (phone_hyper == 1) {openxlsx::addStyle(zzz_wb_zzz, "Cover", linkformat, rows = phonestart, 
+                                              cols = 1, stack = TRUE)}
     
-    if (phonestart == 2) {openxlsx::addStyle(wb, "Cover", phoneformat, rows = 2, cols = 1, 
+    if (phonestart == 2) {openxlsx::addStyle(zzz_wb_zzz, "Cover", phoneformat, rows = 2, cols = 1, 
                                              stack = TRUE)}
     
   }
@@ -3352,21 +3460,21 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
       
     }  
     
-    openxlsx::writeData(wb, "Cover", "Reusing this publication", startRow = reusestart, 
+    openxlsx::writeData(zzz_wb_zzz, "Cover", "Reusing this publication", startRow = reusestart, 
                         startCol = 1)
-    openxlsx::writeData(wb, "Cover", reuse1, startRow = reusestart + 1, startCol = 1)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", reuse1, startRow = reusestart + 1, startCol = 1)
     
     reuselink <- licencelink
     names(reuselink) <- licencetext
     class(reuselink) <- "hyperlink"
     
-    openxlsx::writeData(wb, "Cover", reuselink, startRow = reusestart + 2, startCol = 1)
-    openxlsx::writeData(wb, "Cover", reuse2, startRow = reusestart + 3, startCol = 1)
-    openxlsx::writeData(wb, "Cover", reuse3, startRow = reusestart + 4, startCol = 1)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", reuselink, startRow = reusestart + 2, startCol = 1)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", reuse2, startRow = reusestart + 3, startCol = 1)
+    openxlsx::writeData(zzz_wb_zzz, "Cover", reuse3, startRow = reusestart + 4, startCol = 1)
     
-    openxlsx::setRowHeights(wb, "Cover", reusestart, fontszst * (25/14))
-    openxlsx::addStyle(wb, "Cover", subtitleformat, rows = reusestart, cols = 1)
-    openxlsx::addStyle(wb, "Cover", linkformat, rows = reusestart + 2, cols = 1)
+    openxlsx::setRowHeights(zzz_wb_zzz, "Cover", reusestart, zzz_fontszst_zzz * (25/14))
+    openxlsx::addStyle(zzz_wb_zzz, "Cover", subtitleformat, rows = reusestart, cols = 1)
+    openxlsx::addStyle(zzz_wb_zzz, "Cover", linkformat, rows = reusestart + 2, cols = 1)
     
   }
   
@@ -3374,7 +3482,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   
   if (gridlines == "No") {
     
-    openxlsx::showGridLines(wb, "Cover", showGridLines = FALSE)
+    openxlsx::showGridLines(zzz_wb_zzz, "Cover", showGridLines = FALSE)
     
   }
   
@@ -3483,16 +3591,16 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
   conflicted::conflict_prefer_all("base", quiet = TRUE)
   `%>%` <- dplyr::`%>%`
   
-  if (!(exists("wb", envir = .GlobalEnv))) {
+  if (!(exists("zzz_wb_zzz", envir = .GlobalEnv))) {
     
-    stop("Run the \"workbook\" function first to ensure that a workbook named wb exists")
+    stop("Run the \"workbook\" function first to ensure that a workbook named zzz_wb_zzz exists")
     
   }
   
   # Checking that a notes page is wanted, based on whether a worksheet was created in the ...
   # ... initial workbook
   
-  if (!("Notes" %in% names(wb))) {
+  if (!("Notes" %in% names(zzz_wb_zzz))) {
     
     stop("notestab has not been set to \"Yes\" in the workbook function call")
     
@@ -3525,7 +3633,7 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
     
   }
   
-  if (is.null(applictabtext) & autonotes2 == "Yes") {
+  if (is.null(applictabtext) & zzz_autonotes2_zzz == "Yes") {
     
     stop(strwrap("Automatic listing of notes on tables has been selected but a note has no tables 
          applicable to it", prefix = " ", initial = ""))
@@ -3598,7 +3706,7 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
         
       }
       
-      if (!(applictabtext[i] %in% tabcontents[[1]]) & applictabtext[i] != "All") {
+      if (!(applictabtext[i] %in% zzz_tabcontents_zzz[[1]]) & applictabtext[i] != "All") {
         
         print(paste0(applictabtext[i], " not in table of contents"))
         check <- 1
@@ -3660,7 +3768,7 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
   
   # Checking for any issues with duplication
   
-  notesdfx <- notesdf %>%
+  notesdfx <- zzz_notesdf_zzz %>%
     dplyr::add_row("Note number" = notenumber, "Note text" = notetext, 
                    "Applicable tables" = applictabtext2, "Link1" = linktext1, 
                    "Link2" = linktext2) %>%
@@ -3728,9 +3836,11 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
   
   # Create a notes data frame in the global environment
   
-  notesdf <<- notesdfx
+  notesdfx_temp <- notesdfx
   
-  rm(notesdf2, notesdf3, notesdf4, notesdf5, notesdfx)
+  assign("zzz_notesdf_zzz", notesdfx_temp, envir = .GlobalEnv)
+  
+  rm(notesdf2, notesdf3, notesdf4, notesdf5, notesdfx, notesdfx_temp)
   
 }
 
@@ -3831,16 +3941,16 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   conflicted::conflict_prefer_all("base", quiet = TRUE)
   `%>%` <- dplyr::`%>%`
   
-  if (!(exists("wb", envir = .GlobalEnv))) {
+  if (!(exists("zzz_wb_zzz", envir = .GlobalEnv))) {
     
-    stop("Run the \"workbook\" function first to ensure that a workbook named wb exists")
+    stop("Run the \"workbook\" function first to ensure that a workbook named zzz_wb_zzz exists")
     
   }
   
   # Check that a notes page is wanted, based on whether a worksheet was created in the initial ...
   # ... workbook
   
-  if (!("Notes" %in% names(wb))) {
+  if (!("Notes" %in% names(zzz_wb_zzz))) {
     
     stop("notestab has not been set to \"Yes\" in the workbook function call")
     
@@ -3904,26 +4014,26 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   # Automatically detecting if information of which tables notes apply to has been provided or not
   
-  notesdfx <- notesdf %>%
+  notesdfx <- zzz_notesdf_zzz %>%
     dplyr::rename(applictab = "Applicable tables") %>%
     dplyr::filter(applictab != "")
   
-  if (nrow(notesdf) > 0 & nrow(notesdf) == nrow(notesdfx)) {
+  if (nrow(zzz_notesdf_zzz) > 0 & nrow(zzz_notesdf_zzz) == nrow(notesdfx)) {
     
     applictabs <- "Yes"
     
-  } else if (nrow(notesdf) > 0 & nrow(notesdfx) == 0) {
+  } else if (nrow(zzz_notesdf_zzz) > 0 & nrow(notesdfx) == 0) {
     
     applictabs <- "No"
     
-  } else if (nrow(notesdf) > 0 & nrow(notesdf) != nrow(notesdfx)) {
+  } else if (nrow(zzz_notesdf_zzz) > 0 & nrow(zzz_notesdf_zzz) != nrow(notesdfx)) {
     
     stop(strwrap("There may be a note without applicable tables allocated to it while other notes do 
          have applicable tables allocated to them", prefix = " ", initial = ""))
     
-  } else if (nrow(notesdf) == 0) {
+  } else if (nrow(zzz_notesdf_zzz) == 0) {
     
-    stop("The notesdf dataframe contains no observations")
+    stop("The zzz_notesdf_zzz dataframe contains no observations")
     
   }
   
@@ -3931,20 +4041,20 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   # Automatically detecting if links have been provided or not
   
-  notesdfx <- notesdf %>%
+  notesdfx <- zzz_notesdf_zzz %>%
     dplyr::filter(!is.na(Link1) & Link1 != "No additional link")
   
   if (nrow(notesdfx) > 0) {
     
     links <- "Yes"
     
-  } else if (nrow(notesdf) > 0 & nrow(notesdfx) == 0) {
+  } else if (nrow(zzz_notesdf_zzz) > 0 & nrow(notesdfx) == 0) {
     
     links <- "No"
     
-  } else if (nrow(notesdf) == 0) {
+  } else if (nrow(zzz_notesdf_zzz) == 0) {
     
-    stop("The notesdf dataframe contains no observations")
+    stop("The zzz_notesdf_zzz dataframe contains no observations")
     
   }
   
@@ -3952,7 +4062,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   # Identifying the row number of notes which have a link associated to them
   
-  notesdfy <- notesdf %>%
+  notesdfy <- zzz_notesdf_zzz %>%
     dplyr::mutate(linkno = dplyr::case_when(is.na(Link1) | Link1 == "No additional link" ~ NA_real_,
                                             TRUE ~ dplyr::row_number())) %>%
     dplyr::filter(!is.na(linkno))
@@ -3971,12 +4081,12 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   # Checks associated with the automatic generation of note information for the main data tables
   
-  if (applictabs == "Yes" & autonotes2 != "Yes") {
+  if (applictabs == "Yes" & zzz_autonotes2_zzz != "Yes") {
     
     warning(strwrap("The applictabs parameter has been set to \"Yes\" but the automatic listing of 
             notes on a worksheet has not been selected", prefix = " ", initial = ""))
     
-  } else if (applictabs == "No" & autonotes2 == "Yes") {
+  } else if (applictabs == "No" & zzz_autonotes2_zzz == "Yes") {
     
     stop(strwrap("The applictabs parameter has been set to \"No\" but the automatic listing of notes 
          on a worksheet has been selected", prefix = " ", initial = ""))
@@ -3995,11 +4105,11 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
   }
   
-  if (contentslink == "No" | !("Contents" %in% names(wb))) {
+  if (contentslink == "No" | !("Contents" %in% names(zzz_wb_zzz))) {
     
     contentstab <- "No"
     
-  } else if ("Contents" %in% names(wb)) {
+  } else if ("Contents" %in% names(zzz_wb_zzz)) {
     
     contentstab <- "Yes"
     
@@ -4011,21 +4121,21 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   # Checking for any note information duplication
   
-  notesdf2 <- notesdf %>%
+  notesdf2 <- zzz_notesdf_zzz %>%
     dplyr::rename(note_number = "Note number") %>%
     dplyr::group_by(note_number) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::summarise(check = sum(count) / dplyr::n())
   
-  notesdf3 <- notesdf %>%
+  notesdf3 <- zzz_notesdf_zzz %>%
     dplyr::rename(note_text = "Note text") %>%
     dplyr::group_by(note_text) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::summarise(check = sum(count) / dplyr::n())
   
-  notesdf4 <- notesdf %>%
+  notesdf4 <- zzz_notesdf_zzz %>%
     dplyr::group_by(Link1) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
@@ -4033,7 +4143,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
                                            TRUE ~ count)) %>%
     dplyr::summarise(check = sum(as.numeric(count)) / dplyr::n()) 
   
-  notesdf5 <- notesdf %>%
+  notesdf5 <- zzz_notesdf_zzz %>%
     dplyr::group_by(Link2) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
@@ -4041,7 +4151,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
                                            TRUE ~ count)) %>%
     dplyr::summarise(check = sum(as.numeric(count)) / dplyr::n()) 
   
-  notesdf6 <- notesdf %>%
+  notesdf6 <- zzz_notesdf_zzz %>%
     dplyr::rename(applictab = "Applicable tables") %>%
     dplyr::filter(is.na(applictab))
   
@@ -4094,7 +4204,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   if (extracols == "Yes" & exists("extracols_notes", envir = .GlobalEnv)) {
     
-    if (nrow(extracols_notes) != nrow(notesdf)) {
+    if (nrow(extracols_notes) != nrow(zzz_notesdf_zzz)) {
       
       stop(strwrap("The number of rows in the notes table is not the same as in the dataframe of 
            extra columns", prefix = " ", initial = ""))
@@ -4115,41 +4225,53 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   if (links == "Yes" & applictabs == "Yes") {
     
-    notesdf <<- notesdf %>%
+    notesdf_temp <- zzz_notesdf_zzz %>%
       dplyr::select("Note number", "Note text", "Applicable tables", "Link") %>%
       {if (exists("extracols_notes", envir = .GlobalEnv)) 
         dplyr::bind_cols(., extracols_notes) else .}
     
-    class(notesdf$Link) <- "formula"
+    assign("zzz_notesdf_zzz", notesdf_temp, envir = .GlobalEnv)
+    rm(notesdf_temp)
+    
+    class(zzz_notesdf_zzz$Link) <- "formula"
     
   } else if (links == "Yes") {
     
-    notesdf <<- notesdf %>%
+    notesdf_temp <- zzz_notesdf_zzz %>%
       dplyr::select("Note number", "Note text", "Link") %>%
       {if (exists("extracols_notes", envir = .GlobalEnv)) 
         dplyr::bind_cols(., extracols_notes) else .}
     
-    class(notesdf$Link) <- "formula"
+    assign("zzz_notesdf_zzz", notesdf_temp, envir = .GlobalEnv)
+    rm(notesdf_temp)
+    
+    class(zzz_notesdf_zzz$Link) <- "formula"
     
   } else if (links == "No" & applictabs == "Yes") {
     
-    notesdf <<- notesdf %>%
+    notesdf_temp <- zzz_notesdf_zzz %>%
       dplyr::select("Note number", "Note text", "Applicable tables") %>%
       {if (exists("extracols_notes", envir = .GlobalEnv)) 
         dplyr::bind_cols(., extracols_notes) else .}
     
+    assign("zzz_notesdf_zzz", notesdf_temp, envir = .GlobalEnv)
+    rm(notesdf_temp)
+    
   } else if (links == "No") {
     
-    notesdf <<- notesdf %>%
+    notesdf_temp <- zzz_notesdf_zzz %>%
       dplyr::select("Note number", "Note text") %>%
       {if (exists("extracols_notes", envir = .GlobalEnv)) 
         dplyr::bind_cols(., extracols_notes) else .}
     
+    assign("zzz_notesdf_zzz", notesdf_temp, envir = .GlobalEnv)
+    rm(notesdf_temp)
+    
   }
   
-  if ("Link" %in% colnames(notesdf)) {
+  if ("Link" %in% colnames(zzz_notesdf_zzz)) {
     
-    notesdfcols <- colnames(notesdf)
+    notesdfcols <- colnames(zzz_notesdf_zzz)
     
     for (i in seq_along(notesdfcols)) {
       
@@ -4161,7 +4283,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   if (extracols == "Yes" & exists("extracols_notes", envir = .GlobalEnv)) {
     
-    if (any(duplicated(colnames(notesdf))) == TRUE) {
+    if (any(duplicated(colnames(zzz_notesdf_zzz))) == TRUE) {
       
       warning(strwrap("There is at least one duplicate column name in the notes table and the 
               extracols_notes dataframe", prefix = " ", initial = ""))
@@ -4177,27 +4299,29 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   linkformat <- openxlsx::createStyle(fontColour = "blue", valign = "top", 
                                       textDecoration = "underline")
   
-  openxlsx::addStyle(wb, "Notes", normalformat, rows = 1:(nrow(notesdf) + 4), 
-                     cols = 1:ncol(notesdf), gridExpand = TRUE)
+  openxlsx::addStyle(zzz_wb_zzz, "Notes", normalformat, rows = 1:(nrow(zzz_notesdf_zzz) + 4), 
+                     cols = 1:ncol(zzz_notesdf_zzz), gridExpand = TRUE)
   
-  openxlsx::writeData(wb, "Notes", "Notes", startCol = 1, startRow = 1)
+  openxlsx::writeData(zzz_wb_zzz, "Notes", "Notes", startCol = 1, startRow = 1)
   
-  titleformat <- openxlsx::createStyle(fontSize = fontszt, textDecoration = "bold")
+  titleformat <- openxlsx::createStyle(fontSize = zzz_fontszt_zzz, textDecoration = "bold")
   
-  openxlsx::addStyle(wb, "Notes", titleformat, rows = 1, cols = 1)
+  openxlsx::addStyle(zzz_wb_zzz, "Notes", titleformat, rows = 1, cols = 1)
   
-  openxlsx::writeData(wb, "Notes", "This worksheet contains one table.", startCol = 1, startRow = 2)
-  openxlsx::addStyle(wb, "Notes", topformat, rows = 2, cols = 1)
+  openxlsx::writeData(zzz_wb_zzz, "Notes", "This worksheet contains one table.", startCol = 1, 
+                      startRow = 2)
+  
+  openxlsx::addStyle(zzz_wb_zzz, "Notes", topformat, rows = 2, cols = 1)
   
   extraformat <- openxlsx::createStyle(valign = "top")
   
   if (contentstab == "Yes") {
     
-    openxlsx::writeFormula(wb, "Notes", startRow = 3, 
+    openxlsx::writeFormula(zzz_wb_zzz, "Notes", startRow = 3, 
                            x = openxlsx::makeHyperlinkString("Contents", row = 1, col = 1, 
                                                              text = "Link to contents"))
     
-    openxlsx::addStyle(wb, "Notes", linkformat, rows = 3, cols = 1)
+    openxlsx::addStyle(zzz_wb_zzz, "Notes", linkformat, rows = 3, cols = 1)
     
     startingrow <- 4
     
@@ -4205,7 +4329,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
     startingrow <- 3
     
-    openxlsx::addStyle(wb, "Notes", extraformat, rows = 2, cols = 1, stack = TRUE)
+    openxlsx::addStyle(zzz_wb_zzz, "Notes", extraformat, rows = 2, cols = 1, stack = TRUE)
     
   }
   
@@ -4216,26 +4340,27 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
   } else if (links == "Yes" & !is.null(linkrange)) {
     
-    openxlsx::addStyle(wb, "Notes", linkformat, rows = linkrange + startingrow, cols = linkcolpos, 
-                       gridExpand = TRUE)
+    openxlsx::addStyle(zzz_wb_zzz, "Notes", linkformat, rows = linkrange + startingrow, 
+                       cols = linkcolpos, gridExpand = TRUE)
     
   }
   
-  openxlsx::writeDataTable(wb, "Notes", notesdf, tableName = "notes", startRow = startingrow, 
-                           startCol = 1, withFilter = FALSE, tableStyle = "none")
+  openxlsx::writeDataTable(zzz_wb_zzz, "Notes", zzz_notesdf_zzz, tableName = "notes", 
+                           startRow = startingrow, startCol = 1, withFilter = FALSE, 
+                           tableStyle = "none")
   
   # The if statement below is required so that "No additional link" appears as text only in the ...
   # ... final spreadsheet, rather than as a hyperlink
   
-  if ("Link" %in% colnames(notesdf)) {
+  if ("Link" %in% colnames(zzz_notesdf_zzz)) {
     
-    noaddlinks <- notesdf[["Link"]]
+    noaddlinks <- zzz_notesdf_zzz[["Link"]]
     
     for (i in seq_along(noaddlinks)) {
       
       if (noaddlinks[i] == "No additional link") {
         
-        openxlsx::writeData(wb, "Notes", "No additional link", startCol = linkcolpos, 
+        openxlsx::writeData(zzz_wb_zzz, "Notes", "No additional link", startCol = linkcolpos, 
                             startRow = startingrow + i)
         
       } 
@@ -4247,18 +4372,19 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   headingsformat <- openxlsx::createStyle(textDecoration = "bold", wrapText = TRUE, border = NULL, 
                                           valign = "top")
   
-  openxlsx::addStyle(wb, "Notes", headingsformat, rows = startingrow, cols = 1:ncol(notesdf))
+  openxlsx::addStyle(zzz_wb_zzz, "Notes", headingsformat, rows = startingrow, 
+                     cols = 1:ncol(zzz_notesdf_zzz))
   
   extraformat2 <- openxlsx::createStyle(wrapText = TRUE)
   
-  openxlsx::addStyle(wb, "Notes", extraformat2, 
-                     rows = (startingrow + 1):(nrow(notesdf) + startingrow + 1), 
-                     cols = 1:ncol(notesdf), stack = TRUE, gridExpand = TRUE)
+  openxlsx::addStyle(zzz_wb_zzz, "Notes", extraformat2, 
+                     rows = (startingrow + 1):(nrow(zzz_notesdf_zzz) + startingrow + 1), 
+                     cols = 1:ncol(zzz_notesdf_zzz), stack = TRUE, gridExpand = TRUE)
   
   # Determining column widths
   
   if ((!is.null(colwid_spec) & !is.numeric(colwid_spec)) | 
-      (!is.null(colwid_spec) & length(colwid_spec) != ncol(notesdf))) {
+      (!is.null(colwid_spec) & length(colwid_spec) != ncol(zzz_notesdf_zzz))) {
     
     warning(strwrap("colwid_spec is either a non-numeric value or a vector not of the same length as 
             the number of columns desired in the notes tab. The widths will be determined 
@@ -4267,50 +4393,51 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
   }
   
-  numchars <- max(nchar(notesdf$"Note text")) + 10
+  numchars <- max(nchar(zzz_notesdf_zzz$"Note text")) + 10
   
   if (links == "Yes" & applictabs == "No" & is.null(colwid_spec)) {
     
-    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3,4:max(ncol(notesdf),4)), 
+    openxlsx::setColWidths(zzz_wb_zzz, "Notes", cols = c(1,2,3,4:max(ncol(zzz_notesdf_zzz),4)), 
                            widths = c(15, min(numchars, 100), 50, "auto"))
     
   } else if (links == "Yes" & applictabs == "Yes" & is.null(colwid_spec)) {
     
-    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3,4,5:max(ncol(notesdf),5)), 
+    openxlsx::setColWidths(zzz_wb_zzz, "Notes", cols = c(1,2,3,4,5:max(ncol(zzz_notesdf_zzz),5)), 
                            widths = c(15, min(numchars, 100), 20, 50, "auto"))
     
   } else if (links == "No" & applictabs == "Yes" & is.null(colwid_spec)) {
     
-    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3,4:max(ncol(notesdf),4)), 
+    openxlsx::setColWidths(zzz_wb_zzz, "Notes", cols = c(1,2,3,4:max(ncol(zzz_notesdf_zzz),4)), 
                            widths = c(15, min(numchars, 100), 20, "auto"))
     
   } else if (links == "No" & applictabs == "No" & is.null(colwid_spec)) {
     
-    openxlsx::setColWidths(wb, "Notes", cols = c(1,2,3:max(ncol(notesdf),3)), 
+    openxlsx::setColWidths(zzz_wb_zzz, "Notes", cols = c(1,2,3:max(ncol(zzz_notesdf_zzz),3)), 
                            widths = c(15, min(numchars, 100), "auto"))
     
   } else if (!is.null(colwid_spec) & is.numeric(colwid_spec) & 
-             length(colwid_spec) == ncol(notesdf)) {
+             length(colwid_spec) == ncol(zzz_notesdf_zzz)) {
     
-    openxlsx::setColWidths(wb, "Notes", cols = c(1:ncol(notesdf)), widths = colwid_spec)
+    openxlsx::setColWidths(zzz_wb_zzz, "Notes", cols = c(1:ncol(zzz_notesdf_zzz)), 
+                           widths = colwid_spec)
     
   }
   
-  openxlsx::setRowHeights(wb, "Notes", startingrow - 1, fontsz * (25/12))
+  openxlsx::setRowHeights(zzz_wb_zzz, "Notes", startingrow - 1, zzz_fontsz_zzz * (25/12))
   
   # Creating the text to be inserted in the main data tables regarding which notes are ...
   # ... associated with which table
   
-  if (applictabs == "Yes" & autonotes2 == "Yes") {
+  if (applictabs == "Yes" & zzz_autonotes2_zzz == "Yes") {
     
-    tabcontents2 <- tabcontents %>%
+    tabcontents2 <- zzz_tabcontents_zzz %>%
       dplyr::filter(.[[1]] != "Notes" & .[[1]] != "Definitions")
     
     tablelist <- tabcontents2[[1]]
     
     for (i in seq_along(tablelist)) {
       
-      notesdf7 <- notesdf %>%
+      notesdf7 <- zzz_notesdf_zzz %>%
         dplyr::rename(applic_tab = "Applicable tables") %>%
         dplyr::mutate(applic_tab = 
                         dplyr::case_when(applic_tab == "All" ~ paste(tablelist, collapse = ", "),
@@ -4357,9 +4484,9 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
         
       }
       
-      tempstartrow <- get(paste0(tablelist[i], "_startrow"), envir = .GlobalEnv)
+      tempstartrow <- get(paste0("zzz_", tablelist[i], "_startrow_zzz"), envir = .GlobalEnv)
       
-      openxlsx::writeData(wb, tablelist[i], notes7, startCol = 1, startRow = tempstartrow)
+      openxlsx::writeData(zzz_wb_zzz, tablelist[i], notes7, startCol = 1, startRow = tempstartrow)
       
       rm(notes, notes6, notes7, tempstartrow, notesdf7)
       
@@ -4373,13 +4500,13 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   if (applictabs == "Yes") {
     
-    tabcontents2 <- tabcontents %>%
+    tabcontents2 <- zzz_tabcontents_zzz %>%
       dplyr::filter(.[[1]] != "Notes" & .[[1]] != "Definitions")
     
     tablelist <- tabcontents2[[1]]
     tablelist2 <- paste(tablelist, collapse = ", ")
     
-    notesdf8 <- notesdf %>%
+    notesdf8 <- zzz_notesdf_zzz %>%
       dplyr::rename(applic_tab = "Applicable tables") %>%
       dplyr::mutate(applic_tab2 = tablelist2) %>%
       dplyr::mutate(applic_tab3 = dplyr::case_when(applic_tab == applic_tab2 ~ 1,
@@ -4394,7 +4521,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
       
     }
     
-    notesdf9 <- notesdf %>%
+    notesdf9 <- zzz_notesdf_zzz %>%
       dplyr::rename(applic_tab = "Applicable tables") %>%
       dplyr::filter(applic_tab != "All")
     
@@ -4419,15 +4546,15 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
   }
   
-  rm(list = ls(pattern = "_startrow", envir = .GlobalEnv), envir = .GlobalEnv)
+  rm(list = ls(pattern = "_startrow_zzz", envir = .GlobalEnv), envir = .GlobalEnv)
   
-  rm(notesdf, envir = .GlobalEnv)
+  rm(zzz_notesdf_zzz, envir = .GlobalEnv)
   
   # If gridlines are not wanted, then they are removed
   
   if (gridlines == "No") {
     
-    openxlsx::showGridLines(wb, "Notes", showGridLines = FALSE)
+    openxlsx::showGridLines(zzz_wb_zzz, "Notes", showGridLines = FALSE)
     
   }
   
@@ -4528,16 +4655,16 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
   conflicted::conflict_prefer_all("base", quiet = TRUE)
   `%>%` <- dplyr::`%>%`
   
-  if (!(exists("wb", envir = .GlobalEnv))) {
+  if (!(exists("zzz_wb_zzz", envir = .GlobalEnv))) {
     
-    stop("Run the \"workbook\" function first to ensure that a workbook named wb exists")
+    stop("Run the \"workbook\" function first to ensure that a workbook named zzz_wb_zzz exists")
     
   }
   
   # Checking that a definitions page is wanted, based on whether a worksheet was created in the ...
   # ... initial workbook
   
-  if (!("Definitions" %in% names(wb))) {
+  if (!("Definitions" %in% names(zzz_wb_zzz))) {
     
     stop("definitionstab has not been set to \"Yes\" in the workbook function call")
     
@@ -4614,7 +4741,7 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
   
   # Check for any duplication of definitions
   
-  definitionsdfx <- definitionsdf %>%
+  definitionsdfx <- zzz_definitionsdf_zzz %>%
     dplyr::add_row("Term" = term, "Definition" = definition, "Link1" = linktext1, 
                    "Link2" = linktext2) %>%
     dplyr::mutate(Link2 = dplyr::case_when(Link1 == "No additional link" ~ "No additional link",
@@ -4679,9 +4806,12 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
   
   # Create definitions data frame in the global environment
   
-  definitionsdf <<- definitionsdfx
+  definitionsdfx_temp <- definitionsdfx
   
-  rm(definitionsdf2, definitionsdf3, definitionsdf4, definitionsdf5, definitionsdfx)
+  assign("zzz_definitionsdf_zzz", definitionsdfx_temp, envir = .GlobalEnv)
+  
+  rm(definitionsdf2, definitionsdf3, definitionsdf4, definitionsdf5, definitionsdfx, 
+     definitionsdfx_temp)
   
 }
 
@@ -4780,16 +4910,16 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   conflicted::conflict_prefer_all("base", quiet = TRUE)
   `%>%` <- dplyr::`%>%`
   
-  if (!(exists("wb", envir = .GlobalEnv))) {
+  if (!(exists("zzz_wb_zzz", envir = .GlobalEnv))) {
     
-    stop("Run the \"workbook\" function first to ensure that a workbook named wb exists")
+    stop("Run the \"workbook\" function first to ensure that a workbook named zzz_wb_zzz exists")
     
   }
   
   # Checking that a definitions page is wanted, based on whether a worksheet was created in the ...
   # ... initial workbook
   
-  if (!("Definitions" %in% names(wb))) {
+  if (!("Definitions" %in% names(zzz_wb_zzz))) {
     
     stop("definitionstab has not been set to \"Yes\" in the workbook function call")
     
@@ -4853,20 +4983,20 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   # Automatically detecting if links have been provided or not
   
-  definitionsdfx <- definitionsdf %>%
+  definitionsdfx <- zzz_definitionsdf_zzz %>%
     dplyr::filter(!is.na(Link1) & Link1 != "No additional link")
   
   if (nrow(definitionsdfx) > 0) {
     
     links <- "Yes"
     
-  } else if (nrow(definitionsdf) > 0 & nrow(definitionsdfx) == 0) {
+  } else if (nrow(zzz_definitionsdf_zzz) > 0 & nrow(definitionsdfx) == 0) {
     
     links <- "No"
     
-  } else if (nrow(definitionsdf) == 0) {
+  } else if (nrow(zzz_definitionsdf_zzz) == 0) {
     
-    stop("The definitionsdf dataframe contains no observations")
+    stop("The zzz_definitionsdf_zzz dataframe contains no observations")
     
   }
   
@@ -4874,7 +5004,7 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   # Identifying the row number of definitions which have a link associated to them
   
-  definitionsdfy <- definitionsdf %>%
+  definitionsdfy <- zzz_definitionsdf_zzz %>%
     dplyr::mutate(linkno = dplyr::case_when(is.na(Link1) | Link1 == "No additional link" ~ NA_real_,
                                             TRUE ~ dplyr::row_number())) %>%
     dplyr::filter(!is.na(linkno))
@@ -4893,21 +5023,21 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   # Checking for any duplication of definitions
   
-  if (nrow(definitionsdf) == 0) {stop("No rows in the definitions table")}
+  if (nrow(zzz_definitionsdf_zzz) == 0) {stop("No rows in the definitions table")}
   
-  definitionsdf2 <- definitionsdf %>%
+  definitionsdf2 <- zzz_definitionsdf_zzz %>%
     dplyr::group_by(Term) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::summarise(check = sum(count) / dplyr::n())
   
-  definitionsdf3 <- definitionsdf %>%
+  definitionsdf3 <- zzz_definitionsdf_zzz %>%
     dplyr::group_by(Definition) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::summarise(check = sum(count) / dplyr::n())
   
-  definitionsdf4 <- definitionsdf %>%
+  definitionsdf4 <- zzz_definitionsdf_zzz %>%
     dplyr::group_by(Link1) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
@@ -4915,7 +5045,7 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
                                            TRUE ~ count)) %>%
     dplyr::summarise(check = sum(as.numeric(count)) / dplyr::n()) 
   
-  definitionsdf5 <- definitionsdf %>%
+  definitionsdf5 <- zzz_definitionsdf_zzz %>%
     dplyr::group_by(Link2) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
@@ -4975,11 +5105,11 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
     
   }
   
-  if (contentslink == "No" | !("Contents" %in% names(wb))) {
+  if (contentslink == "No" | !("Contents" %in% names(zzz_wb_zzz))) {
     
     contentstab <- "No"
     
-  } else if ("Contents" %in% names(wb)) {
+  } else if ("Contents" %in% names(zzz_wb_zzz)) {
     
     contentstab <- "Yes"
     
@@ -4991,7 +5121,7 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   if (extracols == "Yes" & exists("extracols_definitions", envir = .GlobalEnv)) {
     
-    if (nrow(extracols_definitions) != nrow(definitionsdf)) {
+    if (nrow(extracols_definitions) != nrow(zzz_definitionsdf_zzz)) {
       
       stop(strwrap("The number of rows in the definitions table and the extracols_definitions 
            dataframe is not the same", prefix = " ", initial = ""))
@@ -5012,25 +5142,31 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   if (links == "Yes") {
     
-    definitionsdf <<- definitionsdf %>%
+    definitionsdf_temp <- zzz_definitionsdf_zzz %>%
       dplyr::select("Term", "Definition", "Link") %>%
       {if (exists("extracols_definitions", envir = .GlobalEnv)) 
         dplyr::bind_cols(., extracols_definitions) else .}
     
-    class(definitionsdf$Link) <- "formula"
+    assign("zzz_definitionsdf_zzz", definitionsdf_temp, envir = .GlobalEnv)
+    rm(definitionsdf_temp)
+    
+    class(zzz_definitionsdf_zzz$Link) <- "formula"
     
   } else if (links == "No") {
     
-    definitionsdf <<- definitionsdf %>%
+    definitionsdf_temp <- zzz_definitionsdf_zzz %>%
       dplyr::select("Term", "Definition") %>%
       {if (exists("extracols_definitions", envir = .GlobalEnv)) 
         dplyr::bind_cols(., extracols_definitions) else .}
     
+    assign("zzz_definitionsdf_zzz", definitionsdf_temp, envir = .GlobalEnv)
+    rm(definitionsdf_temp)
+    
   }
   
-  if ("Link" %in% colnames(definitionsdf)) {
+  if ("Link" %in% colnames(zzz_definitionsdf_zzz)) {
     
-    definitionsdfcols <- colnames(definitionsdf)
+    definitionsdfcols <- colnames(zzz_definitionsdf_zzz)
     
     for (i in seq_along(definitionsdfcols)) {
       
@@ -5042,7 +5178,7 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   if (extracols == "Yes" & exists("extracols_definitions", envir = .GlobalEnv)) {
     
-    if (any(duplicated(colnames(definitionsdf))) == TRUE) {
+    if (any(duplicated(colnames(zzz_definitionsdf_zzz))) == TRUE) {
       
       warning(strwrap("There is at least one duplicate column name in the definitions table and the 
               extracols_definitions dataframe", prefix = " ", initial = ""))
@@ -5058,26 +5194,28 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   linkformat <- openxlsx::createStyle(fontColour = "blue", textDecoration = "underline", 
                                       valign = "top")
   
-  openxlsx::addStyle(wb, "Definitions", normalformat, rows = 1:(nrow(definitionsdf) + 4), 
-                     cols = 1:ncol(definitionsdf), gridExpand = TRUE)
+  openxlsx::addStyle(zzz_wb_zzz, "Definitions", normalformat, 
+                     rows = 1:(nrow(zzz_definitionsdf_zzz) + 4), 
+                     cols = 1:ncol(zzz_definitionsdf_zzz), gridExpand = TRUE)
   
-  openxlsx::writeData(wb, "Definitions", "Definitions", startCol = 1, startRow = 1)
+  openxlsx::writeData(zzz_wb_zzz, "Definitions", "Definitions", startCol = 1, startRow = 1)
   
-  titleformat <- openxlsx::createStyle(fontSize = fontszt, textDecoration = "bold")
+  titleformat <- openxlsx::createStyle(fontSize = zzz_fontszt_zzz, textDecoration = "bold")
   
-  openxlsx::addStyle(wb, "Definitions", titleformat, rows = 1, cols = 1)
+  openxlsx::addStyle(zzz_wb_zzz, "Definitions", titleformat, rows = 1, cols = 1)
   
-  openxlsx::writeData(wb, "Definitions", "This worksheet contains one table.", startCol = 1, 
+  openxlsx::writeData(zzz_wb_zzz, "Definitions", "This worksheet contains one table.", startCol = 1, 
                       startRow = 2)
-  openxlsx::addStyle(wb, "Definitions", topformat, rows = 2, cols = 1)
+  
+  openxlsx::addStyle(zzz_wb_zzz, "Definitions", topformat, rows = 2, cols = 1)
   
   extraformat <- openxlsx::createStyle(valign = "top")
   
   if (contentstab == "Yes") {
     
-    openxlsx::addStyle(wb, "Definitions", linkformat, rows = 3, cols = 1)
+    openxlsx::addStyle(zzz_wb_zzz, "Definitions", linkformat, rows = 3, cols = 1)
     
-    openxlsx::writeFormula(wb, "Definitions", startRow = 3, 
+    openxlsx::writeFormula(zzz_wb_zzz, "Definitions", startRow = 3, 
                            x = openxlsx::makeHyperlinkString("Contents", row = 1, 
                                                              col = 1, text = "Link to contents"))
     
@@ -5087,7 +5225,7 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
     
     startingrow <- 3
     
-    openxlsx::addStyle(wb, "Definitions", extraformat, rows = 2, cols = 1, stack = TRUE)
+    openxlsx::addStyle(zzz_wb_zzz, "Definitions", extraformat, rows = 2, cols = 1, stack = TRUE)
     
   }
   
@@ -5098,24 +5236,24 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
     
   } else if (links == "Yes" & !is.null(linkrange)) {
     
-    openxlsx::addStyle(wb, "Definitions", linkformat, rows = linkrange + startingrow, 
+    openxlsx::addStyle(zzz_wb_zzz, "Definitions", linkformat, rows = linkrange + startingrow, 
                        cols = linkcolpos, gridExpand = TRUE)
     
   }
   
-  openxlsx::writeDataTable(wb, "Definitions", definitionsdf, tableName = "definitions", 
-                           startRow = startingrow, startCol = 1, withFilter = FALSE, 
-                           tableStyle = "none")
+  openxlsx::writeDataTable(zzz_wb_zzz, "Definitions", zzz_definitionsdf_zzz, 
+                           tableName = "definitions", startRow = startingrow, startCol = 1, 
+                           withFilter = FALSE, tableStyle = "none")
   
-  if ("Link" %in% colnames(definitionsdf)) {
+  if ("Link" %in% colnames(zzz_definitionsdf_zzz)) {
     
-    noaddlinks <- definitionsdf[["Link"]]
+    noaddlinks <- zzz_definitionsdf_zzz[["Link"]]
     
     for (i in seq_along(noaddlinks)) {
       
       if (noaddlinks[i] == "No additional link") {
         
-        openxlsx::writeData(wb, "Definitions", "No additional link", startCol = linkcolpos, 
+        openxlsx::writeData(zzz_wb_zzz, "Definitions", "No additional link", startCol = linkcolpos, 
                             startRow = startingrow + i)
         
       } 
@@ -5127,17 +5265,17 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   headingsformat <- openxlsx::createStyle(textDecoration = "bold", wrapText = TRUE, border = NULL, 
                                           valign = "top")
   
-  openxlsx::addStyle(wb, "Definitions", headingsformat, rows = startingrow, 
-                     cols = 1:ncol(definitionsdf))
+  openxlsx::addStyle(zzz_wb_zzz, "Definitions", headingsformat, rows = startingrow, 
+                     cols = 1:ncol(zzz_definitionsdf_zzz))
   
   extraformat2 <- openxlsx::createStyle(wrapText = TRUE)
   
-  openxlsx::addStyle(wb, "Definitions", extraformat2, 
-                     rows = (startingrow + 1):(nrow(definitionsdf) + startingrow + 1), 
+  openxlsx::addStyle(zzz_wb_zzz, "Definitions", extraformat2, 
+                     rows = (startingrow + 1):(nrow(zzz_definitionsdf_zzz) + startingrow + 1), 
                      cols = 1:2, stack = TRUE, gridExpand = TRUE)
   
   if ((!is.null(colwid_spec) & !is.numeric(colwid_spec)) | 
-      (!is.null(colwid_spec) & length(colwid_spec) != ncol(definitionsdf))) {
+      (!is.null(colwid_spec) & length(colwid_spec) != ncol(zzz_definitionsdf_zzz))) {
     
     warning(strwrap("colwid_spec is either a non-numeric value or a vector not of the same length as 
             the number of columns desired in the definitions tab. The widths will be determined 
@@ -5146,35 +5284,38 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
     
   }
   
-  numchars1 <- max(nchar(definitionsdf$"Term")) + 10
-  numchars2 <- max(nchar(definitionsdf$"Definition")) + 10
+  numchars1 <- max(nchar(zzz_definitionsdf_zzz$"Term")) + 10
+  numchars2 <- max(nchar(zzz_definitionsdf_zzz$"Definition")) + 10
   
   if (links == "Yes" & is.null(colwid_spec)) {
     
-    openxlsx::setColWidths(wb, "Definitions", cols = c(1,2,3,4:max(ncol(definitionsdf),4)), 
+    openxlsx::setColWidths(zzz_wb_zzz, "Definitions", 
+                           cols = c(1,2,3,4:max(ncol(zzz_definitionsdf_zzz),4)), 
                            widths = c(min(numchars1, 30), min(numchars2, 75), "auto", "auto"))
     
   } else if (links == "No" & is.null(colwid_spec)) {
     
-    openxlsx::setColWidths(wb, "Definitions", cols = c(1,2,3:max(ncol(definitionsdf),3)), 
+    openxlsx::setColWidths(zzz_wb_zzz, "Definitions", 
+                           cols = c(1,2,3:max(ncol(zzz_definitionsdf_zzz),3)), 
                            widths = c(min(numchars1, 30), min(numchars2, 75), "auto"))
     
   } else if (!is.null(colwid_spec) & is.numeric(colwid_spec) & 
-             length(colwid_spec) == ncol(definitionsdf)) {
+             length(colwid_spec) == ncol(zzz_definitionsdf_zzz)) {
     
-    openxlsx::setColWidths(wb, "Definitions", cols = c(1:ncol(definitionsdf)), widths = colwid_spec)
+    openxlsx::setColWidths(zzz_wb_zzz, "Definitions", cols = c(1:ncol(zzz_definitionsdf_zzz)), 
+                           widths = colwid_spec)
     
   }
   
-  openxlsx::setRowHeights(wb, "Definitions", startingrow - 1, fontsz * (25/12))
+  openxlsx::setRowHeights(zzz_wb_zzz, "Definitions", startingrow - 1, zzz_fontsz_zzz * (25/12))
   
-  rm(definitionsdf, envir = .GlobalEnv)
+  rm(zzz_definitionsdf_zzz, envir = .GlobalEnv)
   
   # If gridlines are not wanted, then they are removed
   
   if (gridlines == "No") {
     
-    openxlsx::showGridLines(wb, "Definitions", showGridLines = FALSE)
+    openxlsx::showGridLines(zzz_wb_zzz, "Definitions", showGridLines = FALSE)
     
   }
   
@@ -5279,9 +5420,9 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
   conflicted::conflict_prefer_all("base", quiet = TRUE)
   `%>%` <- dplyr::`%>%`
   
-  if (!(exists("wb", envir = .GlobalEnv))) {
+  if (!(exists("zzz_wb_zzz", envir = .GlobalEnv))) {
     
-    stop("Run the \"workbook\" function first to ensure that a workbook named wb exists")
+    stop("Run the \"workbook\" function first to ensure that a workbook named zzz_wb_zzz exists")
     
   }
   
@@ -5397,9 +5538,9 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
   
   rm(filename2, filename3, filename4, filename5)
   
-  if ("Cover" %in% names(wb)) {
+  if ("Cover" %in% names(zzz_wb_zzz)) {
     
-    if (suppressWarnings(length(openxlsx::readWorkbook(wb, "Cover")) == 0)) {
+    if (suppressWarnings(length(openxlsx::readWorkbook(zzz_wb_zzz, "Cover")) == 0)) {
       
       warning("The cover page is empty")
       
@@ -5407,9 +5548,9 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
     
   }
   
-  if ("Contents" %in% names(wb)) {
+  if ("Contents" %in% names(zzz_wb_zzz)) {
     
-    if (suppressWarnings(length(openxlsx::readWorkbook(wb, "Contents")) == 0)) {
+    if (suppressWarnings(length(openxlsx::readWorkbook(zzz_wb_zzz, "Contents")) == 0)) {
       
       warning("The contents page is empty")
       
@@ -5417,9 +5558,9 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
     
   }
   
-  if ("Notes" %in% names(wb)) {
+  if ("Notes" %in% names(zzz_wb_zzz)) {
     
-    if (suppressWarnings(length(openxlsx::readWorkbook(wb, "Notes")) == 0)) {
+    if (suppressWarnings(length(openxlsx::readWorkbook(zzz_wb_zzz, "Notes")) == 0)) {
       
       warning("The notes page is empty")
       
@@ -5427,9 +5568,9 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
     
   }
   
-  if ("Definitions" %in% names(wb)) {
+  if ("Definitions" %in% names(zzz_wb_zzz)) {
     
-    if (suppressWarnings(length(openxlsx::readWorkbook(wb, "Definitions")) == 0)) {
+    if (suppressWarnings(length(openxlsx::readWorkbook(zzz_wb_zzz, "Definitions")) == 0)) {
       
       warning("The definitions page is empty")
       
@@ -5437,10 +5578,10 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
     
   }
   
-  sheetnames <- names(wb) 
+  sheetnames <- names(zzz_wb_zzz) 
   sheetnames2 <- sheetnames[-which(sheetnames %in% c("Cover", "Contents", "Notes", "Definitions"))]
   
-  tablestarts <- unlist(mget(paste0(sheetnames2, "_tablestart"), envir = .GlobalEnv))
+  tablestarts <- unlist(mget(paste0("zzz_", sheetnames2, "_tablestart_zzz"), envir = .GlobalEnv))
   
   if (length(unique(tablestarts)) > 1) {
     
@@ -5453,7 +5594,7 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
   
   rm(sheetnames, sheetnames2, tablestarts)
   
-  openxlsx::saveWorkbook(wb, filename, overwrite = TRUE)
+  openxlsx::saveWorkbook(zzz_wb_zzz, filename, overwrite = TRUE)
   
   if (odsfile == "Yes" & deletexlsx == "Yes" & 
       substr(filename, nchar(filename) - 4, nchar(filename)) == ".xlsx") {
@@ -5494,40 +5635,40 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
   # Remove data frames and variables from the global environment in case accessible tables needs ...
   # ... to be run again
   
-  rm(wb, envir = .GlobalEnv)
+  rm(zzz_wb_zzz, envir = .GlobalEnv)
   
-  if (exists("notesdf", envir = .GlobalEnv)) {
+  if (exists("zzz_notesdf_zzz", envir = .GlobalEnv)) {
     
-    rm(notesdf, envir = .GlobalEnv)
+    rm(zzz_notesdf_zzz, envir = .GlobalEnv)
     
   }
   
-  if (exists("tabcontents", envir = .GlobalEnv)) {
+  if (exists("zzz_tabcontents_zzz", envir = .GlobalEnv)) {
     
-    rm(tabcontents, envir = .GlobalEnv)
-    
-  }
-  
-  if (exists("definitionsdf", envir = .GlobalEnv)) {
-    
-    rm(definitionsdf, envir = .GlobalEnv)
+    rm(zzz_tabcontents_zzz, envir = .GlobalEnv)
     
   }
   
-  rm(list = ls(pattern = "_startrow", envir = .GlobalEnv), envir = .GlobalEnv)
-  rm(list = ls(pattern = "_tablestart", envir = .GlobalEnv), envir = .GlobalEnv)
-  
-  if (exists("autonotes2", envir = .GlobalEnv)) {
+  if (exists("zzz_definitionsdf_zzz", envir = .GlobalEnv)) {
     
-    rm(autonotes2, envir = .GlobalEnv)
+    rm(zzz_definitionsdf_zzz, envir = .GlobalEnv)
     
   }
   
-  rm(fontsz, fontszst, fontszt, envir = .GlobalEnv)
+  rm(list = ls(pattern = "_startrow_zzz", envir = .GlobalEnv), envir = .GlobalEnv)
+  rm(list = ls(pattern = "_tablestart_zzz", envir = .GlobalEnv), envir = .GlobalEnv)
   
-  if (exists("covernumrow", envir = .GlobalEnv)) {
+  if (exists("zzz_autonotes2_zzz", envir = .GlobalEnv)) {
     
-    rm(covernumrow, envir = .GlobalEnv)
+    rm(zzz_autonotes2_zzz, envir = .GlobalEnv)
+    
+  }
+  
+  rm(zzz_fontsz_zzz, zzz_fontszst_zzz, zzz_fontszt_zzz, envir = .GlobalEnv)
+  
+  if (exists("zzz_covernumrow_zzz", envir = .GlobalEnv)) {
+    
+    rm(zzz_covernumrow_zzz, envir = .GlobalEnv)
     
   }
   
