@@ -95,18 +95,19 @@ package will look to resolve the issue. However, for the time being it is advise
 prior to using accessibletablesR that none of the following objects are in the global environment:  
 <br>
 
-* zzz_wb_zzz
-* zzz_table_data2_zzz
-* zzz_tabcontents_zzz
-* zzz_notesdf_zzz
-* zzz_definitions_zzz
-* zzz_covernumrow_zzz
-* zzz_autonotes2_zzz
-* zzz_fontsz_zzz
-* zzz_fontszst_zzz
-* zzz_fontszt_zzz
-* Objects with a prefix zzz_ and a suffix _startrow_zzz
-* Objects with a prefix zzz_ and a suffix _tablestart_zzz  
+  * zzz_wb_zzz
+  * zzz_table_data2_zzz
+  * zzz_tabcontents_zzz
+  * zzz_notesdf_zzz
+  * zzz_definitions_zzz
+  * zzz_covernumrow_zzz
+  * zzz_autonotes2_zzz
+  * zzz_fontsz_zzz
+  * zzz_fontszst_zzz
+  * zzz_fontszt_zzz
+  * Objects with a prefix zzz_ and a suffix _startrow_zzz
+  * Objects with a prefix zzz_ and a suffix _tablestart_zzz  
+
 <br>
 The default setting of accessibletablesR is to error if any of the above objects are present in
 the global environment when trying to run the package. It is possible to change this setting
