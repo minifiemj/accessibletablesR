@@ -65,7 +65,8 @@
 <span>  title <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  creator <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  subject <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  category <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  category <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  autodel <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -130,12 +131,18 @@
 <dd><p>Define the category to go into the document information in the final output
 (optional)</p></dd>
 
+
+<dt>autodel</dt>
+<dd><p>Define whether to automatically delete any objects in the global environment
+which are called the same as objects with the code needs to create (default is
+set to no) (optional)</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A workbook called wb will appear in the global environment. Necessary R packages will be
+<p>A workbook called zzz_wb_zzz will appear in the global environment. Necessary R packages will be
 installed.</p>
     </div>
     <div class="section level2">

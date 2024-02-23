@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   accessibletablesR: accessibletablesR.html
-last_built: 2024-02-19T17:01Z
+last_built: 2024-02-23T21:44Z
 urls:
   reference: https://minifiemj.github.io/accessibletablesR/reference
   article: https://minifiemj.github.io/accessibletablesR/articles

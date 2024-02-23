@@ -123,7 +123,7 @@ manually from “department-for-transport/odsconvertr”.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>workbook <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">covertab =</span> <span class="cn">NULL</span>, <span class="at">contentstab =</span> <span class="cn">NULL</span>, <span class="at">notestab =</span> <span class="cn">NULL</span>, <span class="at">autonotes =</span> <span class="cn">NULL</span>,</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">definitionstab =</span> <span class="cn">NULL</span>, <span class="at">fontnm =</span> <span class="st">"Arial"</span>, <span class="at">fontcol =</span> <span class="st">"black"</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fontsz =</span> <span class="dv">12</span>, <span class="at">fontszst =</span> <span class="dv">14</span>, <span class="at">fontszt =</span> <span class="dv">16</span>, <span class="at">title =</span> <span class="cn">NULL</span>, <span class="at">creator =</span> <span class="cn">NULL</span>,</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">subject =</span> <span class="cn">NULL</span>, <span class="at">category =</span> <span class="cn">NULL</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">subject =</span> <span class="cn">NULL</span>, <span class="at">category =</span> <span class="cn">NULL</span>, <span class="at">autodel =</span> <span class="cn">NULL</span>)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>creatingtables <span class="ot">&lt;-</span> <span class="cf">function</span>(title, <span class="at">subtitle =</span> <span class="cn">NULL</span>, <span class="at">extraline1 =</span> <span class="cn">NULL</span>, <span class="at">extraline2 =</span> <span class="cn">NULL</span>, </span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                           <span class="at">extraline3 =</span> <span class="cn">NULL</span>, <span class="at">extraline4 =</span> <span class="cn">NULL</span>, <span class="at">extraline5 =</span> <span class="cn">NULL</span>, </span>
@@ -163,7 +163,29 @@ within a single worksheet. The columns in the R dataframes must be named
 as they are wanted in the final spreadsheet. The R dataframes should be
 sorted as they are wanted in the final spreadsheet.<br><br> For this vignette, a dummy dataframe (dummydf) will be used. This
 dataframe has been generated from mtcars and will be installed when
-accessibletablesR is installed.</p>
+accessibletablesR is installed.<br><br> This package will save objects to the global environment as certain
+objects are required by different functions within the package. This
+approach is not ideal and future development of the package will look to
+resolve the issue. However, for the time being it is advised to ensure
+that prior to using accessibletablesR that none of the following objects
+are in the global environment:<br><br></p>
+<ul>
+<li>zzz_wb_zzz</li>
+<li>zzz_table_data2_zzz</li>
+<li>zzz_tabcontents_zzz</li>
+<li>zzz_notesdf_zzz</li>
+<li>zzz_definitions_zzz</li>
+<li>zzz_covernumrow_zzz</li>
+<li>zzz_autonotes2_zzz</li>
+<li>zzz_fontsz_zzz</li>
+<li>zzz_fontszst_zzz</li>
+<li>zzz_fontszt_zzz</li>
+<li>Objects with a prefix zzz_ and a suffix _startrow_zzz</li>
+<li>Objects with a prefix zzz_ and a suffix _tablestart_zzz<br><br> The default setting of accessibletablesR is to error if any of the
+above objects are present in the global environment when trying to run
+the package. It is possible to change this setting (see the section on
+creating a workbook).</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="creating-a-workbook">Creating a workbook<a class="anchor" aria-label="anchor" href="#creating-a-workbook"></a>
@@ -181,17 +203,21 @@ section of a spreadsheet.</p>
 <span>  definitionstab <span class="op">=</span> <span class="st">"Yes"</span>, autonotes <span class="op">=</span> <span class="st">"Yes"</span>, </span>
 <span>  title <span class="op">=</span> <span class="st">"Fuel consumption and aspects of car design and performance for various cars"</span>,</span>
 <span>  creator <span class="op">=</span> <span class="st">"An organisation"</span><span class="op">)</span></span></code></pre></div>
-<p>All arguments within the “workbook” function are optional. The
-default setting for most of the arguments is NULL (e.g., no cover page
+<p>All parameters within the “workbook” function are optional. The
+default setting for most of the parameters is NULL (e.g., no cover page
 will be created). The “workbook” function will create a workbook named
-wb in the R global environment. The arguments “subject” and “category”
-are not used in the example code above. These are related to fields
-within the “Info” section of a spreadsheet. It is possible for the font,
-font colour and font sizes (different sizes can be specified for
-subtitles, titles and the rest of the spreadsheet) to be amended. The
-default colour is black, the default font is Arial and the default font
-sizes are 16 for titles, 14 for subtitles and 12 for the rest of the
-spreadsheet.</p>
+zzz_wb_zzz in the R global environment. The parameters “subject” and
+“category” are not used in the example code above. These are related to
+fields within the “Info” section of a spreadsheet. It is possible for
+the font, font colour and font sizes (different sizes can be specified
+for subtitles, titles and the rest of the spreadsheet) to be amended.
+The default colour is black, the default font is Arial and the default
+font sizes are 16 for titles, 14 for subtitles and 12 for the rest of
+the spreadsheet.<br><br> It is advised to keep the parameter autodel set to NULL. However,
+if it is desired to be able to run the package without worrying about
+existing objects in the global environment then set autodel to “Yes”.
+This may be desirable when initially trying out the accessibletablesR
+package.</p>
 </div>
 <div class="section level2">
 <h2 id="inserting-data-tables-as-worksheets">Inserting data tables as worksheets<a class="anchor" aria-label="anchor" href="#inserting-data-tables-as-worksheets"></a>
@@ -201,9 +227,9 @@ tables (stored within the R global environment as dataframes). Each data
 table will form a separate worksheet in the final spreadsheet.<br><br> The code below is creating three worksheets. For the purposes of
 this example, each spreadsheet will have the same data. In reality,
 different dataframes will likely be used for different worksheets.<br><br> Links to the contents, notes and definitions pages can be generated
-by setting one of the extralines arguments to “Link to contents” or
+by setting one of the extralines parameters to “Link to contents” or
 “Link to notes” or “Link to definitions”. Although there are six
-extralines arguments, each one can be a vector and there is no limit to
+extralines parameters, each one can be a vector and there is no limit to
 how many rows can appear above the main data (except the limit of rows
 that Excel can cope with).<br><br> The example code will create three worksheets which are identical
 with the exception of column widths. Table 1 has its column widths
@@ -262,10 +288,10 @@ example of how to do this is:</p>
 <div class="section level2">
 <h2 id="creating-a-contents-page">Creating a contents page<a class="anchor" aria-label="anchor" href="#creating-a-contents-page"></a>
 </h2>
-<p>If a contents page is desired, the contentstab argument in the
+<p>If a contents page is desired, the contentstab parameter in the
 “workbook” function must have been set to “Yes”. Run the “contentstable”
 function after all of the data tables have been converted to worksheets
-(i.e., run through the “creatingtables” function). All the arguments in
+(i.e., run through the “creatingtables” function). All the parameters in
 the “contentstable” function are optional.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">accessibletablesR</span><span class="fu">::</span><span class="fu"><a href="../reference/contentstable.html">contentstable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -285,15 +311,15 @@ contents table.</p>
 function for as many notes as are needed. The function will create a row
 in the notes page for each note. notenumber is the number of the note
 and should be written as “note” followed by a number (e.g., note1).
-notetext is the description associated with the note.<br><br> notenumber and notetext are the only compulsory arguments. If an
+notetext is the description associated with the note.<br><br> notenumber and notetext are the only compulsory parameters. If an
 additional column is wanted to specify which table (sheet name) a note
 applies to then populate applictabtext (e.g., applictabtext =
 c(“Table_1”, “Table_2”)).<br><br> An optional column can be included that provides a link to a piece
 of information. To do so, populate linktext1 and linktext2. For example,
 set linktext1 = “BBC” and set linktext2 to the relevant URL address
 (“https://www.bbc.co.uk”).<br><br> To automatically annotate each table with the notes that are
-applicable to it, ensure that the autonotes argument in the “workbook”
-function has been set to “Yes” and that the applictabtext argument in
+applicable to it, ensure that the autonotes parameter in the “workbook”
+function has been set to “Yes” and that the applictabtext parameter in
 the “addnote” function is populated.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">accessibletablesR</span><span class="fu">::</span><span class="fu"><a href="../reference/addnote.html">addnote</a></span><span class="op">(</span>notenumber <span class="op">=</span> <span class="st">"note1"</span>, notetext <span class="op">=</span> <span class="st">"Whatever you want note1 to be."</span>, </span>
@@ -316,11 +342,11 @@ the “addnote” function is populated.</p>
 running the “notestab” function. Run the function after all the data
 tables have been processed using the “creatingtables” function and after
 all the notes have been added using the “addnote” function. Ensure that
-the notestab argument in the “workbook” function has been set to
+the notestab parameter in the “workbook” function has been set to
 “Yes”.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">accessibletablesR</span><span class="fu">::</span><span class="fu"><a href="../reference/notestab.html">notestab</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>The arguments are optional. If a link to the contents page is not
+<p>The parameters are optional. If a link to the contents page is not
 wanted on the notes page set contentslink = “No”. If no gridlines are
 wanted on the notes page then set gridlines = “No”. Column widths are
 determined automatically but can be altered to specific widths by the
@@ -361,11 +387,11 @@ address (“https://www.bbc.co.uk”).</p>
 </h2>
 <p>Run the “definitionstab” function if a definitions page is wanted.
 Run the function after all the definitions have been added using the
-“adddefinition” function. Ensure that the definitionstab argument in the
-“workbook” function has been set to “Yes”.</p>
+“adddefinition” function. Ensure that the definitionstab parameter in
+the “workbook” function has been set to “Yes”.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">accessibletablesR</span><span class="fu">::</span><span class="fu"><a href="../reference/definitionstab.html">definitionstab</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>The arguments are optional. If a link to the contents page is not
+<p>The parameters are optional. If a link to the contents page is not
 wanted on the definitions page set contentslink = “No”. If no gridlines
 are wanted on the definitions page then set gridlines = “No”. Column
 widths are set automatically but can be altered using colwid_spec. Extra
@@ -379,8 +405,8 @@ number of rows as the definitions table.</p>
 <h2 id="creating-a-cover-page">Creating a cover page<a class="anchor" aria-label="anchor" href="#creating-a-cover-page"></a>
 </h2>
 <p>To create a cover page for the spreadsheet, run the “coverpage”
-function. Ensure that the covertab argument in the “workbook” function
-has been set to “Yes”.<br><br> title is the only compulsory argument. It is the title to be
+function. Ensure that the covertab parameter in the “workbook” function
+has been set to “Yes”.<br><br> title is the only compulsory parameter. It is the title to be
 displayed on the cover sheet. Other optional sections of a cover page
 that can be populated are “Introductory information” (info), “About
 these data” (about), “Source” (source), “Related publications”
@@ -416,12 +442,12 @@ function.</p>
 <span>  phone <span class="op">=</span> <span class="st">"01111 1111111111111"</span>,</span>
 <span>  reuse <span class="op">=</span> <span class="st">"Yes"</span>, govdept <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <p>The example code below is a more complex use of the “coverpage”
-function. Three extra fields have been added (see the arguments
+function. Three extra fields have been added (see the parameters
 extrafields and extrafieldsb). Additional links have been provided (see
-the arguments additlinks and addittext). The width of the column has
-been set to a specific value (see the colwid_spec argument). The
+the parameters additlinks and addittext). The width of the column has
+been set to a specific value (see the colwid_spec parameter). The
 ordering of the fields on the cover page has been altered (see the
-argument order). The argument source has been set to a hyperlink (the
+parameter order). The parameter source has been set to a hyperlink (the
 text “R mtcars” will appear and when clicked on will take the user to
 the website specified).</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
