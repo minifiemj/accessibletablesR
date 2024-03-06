@@ -18,8 +18,7 @@ workbook(
   title = NULL,
   creator = NULL,
   subject = NULL,
-  category = NULL,
-  autodel = NULL
+  category = NULL
 )
 }
 \arguments{
@@ -54,10 +53,6 @@ workbook(
 
 \item{category}{Define the category to go into the document information in the final output
 (optional)}
-
-\item{autodel}{Define whether to automatically delete any objects in the global environment
-which are called the same as objects with the code needs to create (default is
-set to no) (optional)}
 }
 \value{
 A workbook called zzz_wb_zzz will appear in the global environment. Necessary R packages will be

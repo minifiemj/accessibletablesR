@@ -78,7 +78,7 @@ adddefinition, definitionstab and savingtables.
 workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, autonotes = NULL,
                      definitionstab = NULL, fontnm = "Arial", fontcol = "black",
                      fontsz = 12, fontszst = 14, fontszt = 16, title = NULL, creator = NULL,
-                     subject = NULL, category = NULL, autodel = NULL)
+                     subject = NULL, category = NULL)
 ```
 
 This function needs to be run first. It creates the workbook within the
@@ -165,7 +165,7 @@ which is different to the tab name (sheetname) then populate tablename.
 If the gridlines are not desired in the final workbook, set gridlines =
 “No”.
 
-Automatic column widths can be a bit hit and miss. The default position
+Automatic column widths can be a bit hit or miss. The default position
 of the creatingtables function is to allow openxlsx to automatically
 determine the column widths. The user can instead use the maximum number
 of characters in a column by setting columnwidths = “characters”.

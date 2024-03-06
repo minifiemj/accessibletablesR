@@ -49,7 +49,7 @@ odsconvertr is also installed from GitHub. If a similar issue prevents the autom
 workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, autonotes = NULL,
                      definitionstab = NULL, fontnm = "Arial", fontcol = "black",
                      fontsz = 12, fontszst = 14, fontszt = 16, title = NULL, creator = NULL,
-                     subject = NULL, category = NULL, autodel = NULL)
+                     subject = NULL, category = NULL)
   
 creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2 = NULL, 
                            extraline3 = NULL, extraline4 = NULL, extraline5 = NULL, 
@@ -88,30 +88,6 @@ spreadsheet. The R dataframes should be sorted as they are wanted in the final s
 <br>
 For this vignette, a dummy dataframe (dummydf) will be used. This dataframe has been generated from
 mtcars and will be installed when accessibletablesR is installed.  
-<br>
-This package will save objects to the global environment as certain objects are required by
-different functions within the package. This approach is not ideal and future development of the
-package will look to resolve the issue. However, for the time being it is advised to ensure that
-prior to using accessibletablesR that none of the following objects are in the global environment:  
-<br>
-
-  * zzz_wb_zzz
-  * zzz_table_data2_zzz
-  * zzz_tabcontents_zzz
-  * zzz_notesdf_zzz
-  * zzz_definitions_zzz
-  * zzz_covernumrow_zzz
-  * zzz_autonotes2_zzz
-  * zzz_fontsz_zzz
-  * zzz_fontszst_zzz
-  * zzz_fontszt_zzz
-  * Objects with a prefix zzz_ and a suffix _startrow_zzz
-  * Objects with a prefix zzz_ and a suffix _tablestart_zzz  
-
-<br>
-The default setting of accessibletablesR is to error if any of the above objects are present in
-the global environment when trying to run the package. It is possible to change this setting
-(see the section on creating a workbook).
 
 ## Creating a workbook
 
@@ -132,15 +108,11 @@ accessibletablesR::workbook(
 
 All parameters within the "workbook" function are optional. The default setting for most of the
 parameters is NULL (e.g., no cover page will be created). The "workbook" function will create a
-workbook named zzz_wb_zzz in the R global environment. The parameters "subject" and "category" are 
+workbook named wb in the R global environment. The parameters "subject" and "category" are 
 not used in the example code above. These are related to fields within the "Info" section of a spreadsheet. It is possible for the font, font colour and font sizes (different sizes can be 
 specified for subtitles, titles and the rest of the spreadsheet) to be amended. The default colour 
 is black, the default font is Arial and the default font sizes are 16 for titles, 14 for subtitles 
 and 12 for the rest of the spreadsheet.  
-<br>
-It is advised to keep the parameter autodel set to NULL. However, if it is desired to be able to run
-the package without worrying about existing objects in the global environment then set autodel to 
-"Yes". This may be desirable when initially trying out the accessibletablesR package.
 
 ## Inserting data tables as worksheets
 
