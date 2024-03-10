@@ -3,6 +3,8 @@
 
 acctabs <- base::new.env(parent = base::emptyenv())
 
+utils::globalVariables(".")
+
 ###################################################################################################
 
 ###################################################################################################
@@ -108,8 +110,9 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   
   # Install the required packages if they are not already installed, then load the packages
   
-  listofpackages <- base::c("openxlsx", "conflicted", "devtools", "dplyr", "stringr", "purrr")
-  packageversions <- base::c("4.2.5.2", "1.2.0", "2.4.5", "1.1.2", "1.5.0", "1.0.1")
+  listofpackages <- base::c("openxlsx", "conflicted", "devtools", "dplyr", "stringr", "purrr",
+                            "rlang")
+  packageversions <- base::c("4.2.5.2", "1.2.0", "2.4.5", "1.1.2", "1.5.0", "1.0.1", "1.1.0")
   
   for (i in base::seq_along(listofpackages)) {
     
@@ -155,6 +158,12 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   
   conflicted::conflict_prefer_all("base", quiet = TRUE)
   `%>%` <- dplyr::`%>%`
+  
+  # Create tabcontents, covernumrow and table_data2 only for purpose of satisfying R CMD check
+  
+  tabcontents <- NULL
+  covernumrow <- NULL
+  table_data2 <- NULL
   
   # Cleaning some of the parameters to be either "Yes" or "No"
   
@@ -606,6 +615,8 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
 #'                              
 #' accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 #' 
+#' @importFrom rlang .data
+#' 
 #' @export
 
 creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2 = NULL, 
@@ -618,7 +629,8 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   if (!("dplyr" %in% utils::installed.packages()) | 
       !("conflicted" %in% utils::installed.packages()) | 
       !("openxlsx" %in% utils::installed.packages()) | 
-      !("stringr" %in% utils::installed.packages()) | !("purrr" %in% utils::installed.packages())) {
+      !("stringr" %in% utils::installed.packages()) | 
+      !("purrr" %in% utils::installed.packages()) | !("rlang" %in% utils::installed.packages())) {
     
     stop(base::strwrap("Not all required packages installed. Run the \"workbook\" function first to 
          ensure packages are installed.", prefix = " ", initial = ""))
@@ -627,7 +639,8 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
              utils::packageVersion("conflicted") < "1.2.0" |
              utils::packageVersion("openxlsx") < "4.2.5.2" | 
              utils::packageVersion("stringr") < "1.5.0" |
-             utils::packageVersion("purrr") < "1.0.1") {
+             utils::packageVersion("purrr") < "1.0.1" |
+             utils::packageVersion("rlang") < "1.1.0") {
     
     stop(base::strwrap("Older versions of packages detected. Run the \"workbook\" function first to 
          ensure up to date packages are installed.", prefix = " ", initial = ""))
@@ -673,7 +686,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     dplyr::mutate(numcellmiss = rowSums(is.na(.))) %>%
     dplyr::mutate(numcellmiss2 = dplyr::case_when(numcellmiss == ncol(table_data_temp) ~ 1,
                                                   TRUE ~ 0)) %>%
-    dplyr::summarise(numcellmiss3 = max(numcellmiss2, na.rm = TRUE))
+    dplyr::summarise(numcellmiss3 = max(.data$numcellmiss2, na.rm = TRUE))
   
   if (table_data_temp2[["numcellmiss3"]] == 1) {
     
@@ -730,7 +743,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
     stop(strwrap("One or more of title, subtitle, sheetname, headrowsize, tablename and gridlines 
          are not populated properly. They must be a single entity and not a vector.", prefix = " ",
-         initial = ""))
+                 initial = ""))
     
   }
   
@@ -1028,7 +1041,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     columnwidths <- "R_auto"
     warning(strwrap("columnwidths has not been set to \"R_auto\" or \"characters\" or \"specified\" 
             or NULL. It will be changed back to the default of \"R_auto\".", prefix = " ",
-            initial = ""))
+                    initial = ""))
     
   }
   
@@ -1064,7 +1077,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
     stop(strwrap("The number of elements in colwid_spec and the number of columns in the table need 
          to be the same, or colwid_spec set to one value to be applied to all columns in the table",
-         prefix = " ", initial = ""))
+                 prefix = " ", initial = ""))
     
   }
   
@@ -1103,7 +1116,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
         warning(strwrap("If autonotes2 is set to \"Yes\" then the information about the worksheet 
                 containing one table or the notes tab will automatically be inserted and so there is
                 no need to have one of the extralines already stating this", prefix = " ", 
-                initial = ""))
+                        initial = ""))
         
       }
       
@@ -1147,7 +1160,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     for (i in seq_along(extralines1)) {
       
       if (stringr::str_detect(extralines1[i], 
-          "This worksheet contains one table|this worksheet contains one table")) {
+                              "This worksheet contains one table|this worksheet contains one table")) {
         
         onetablenote <- 1
         
@@ -1200,20 +1213,23 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
                                                                "[low]", "[p]", "[r]", "[u]", "[w]",
                                                                "[x]", "[z]", "") ~ "0",
                                        is.na(.[[numcharcols]]) ~ "0",
-                                       !is.na(.[[numcharcols]]) ~ gsub(",", "", .[[numcharcols]]))) %>%
-      dplyr::mutate(zzz_temp_zzz = as.numeric(zzz_temp_zzz)) %>%
-      dplyr::mutate(zzz_temp_zzz2 = format(zzz_temp_zzz, big.mark = ",", scientific = FALSE)) %>%
+                                       !is.na(.[[numcharcols]]) 
+                                       ~ gsub(",", "", .[[numcharcols]]))) %>%
+      dplyr::mutate(zzz_temp_zzz = as.numeric(.data$zzz_temp_zzz)) %>%
+      dplyr::mutate(zzz_temp_zzz2 = format(.data$zzz_temp_zzz, big.mark = ",", 
+                                           scientific = FALSE)) %>%
       dplyr::mutate(zzz_temp_zzz3 = 
                       dplyr::case_when(.[[numcharcols]] %in% c("[b]", "[c]", "[e]", "[er]", "[f]",
                                                                "[low]", "[p]", "[r]", "[u]", "[w]",
-                                                               "[x]", "[z]", "") ~ as.character(.[[numcharcols]]),
+                                                               "[x]", "[z]", "") 
+                                       ~ as.character(.[[numcharcols]]),
                                        is.na(.[[numcharcols]]) ~ "",
-                                       TRUE ~ as.character(zzz_temp_zzz2)))
+                                       TRUE ~ as.character(.data$zzz_temp_zzz2)))
     
     dfx[[numcharcols]] <- dfx$zzz_temp_zzz3
     
     dfx_temp <- dfx %>%
-      dplyr::select(-zzz_temp_zzz, -zzz_temp_zzz2, -zzz_temp_zzz3)
+      dplyr::select(-.data$zzz_temp_zzz, -.data$zzz_temp_zzz2, -.data$zzz_temp_zzz3)
     
     assign("table_data2", dfx_temp, envir = as.environment(acctabs))
     rm(dfx_temp)
@@ -1238,24 +1254,24 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
                                                                "[x]", "[z]", "") ~ "0",
                                        is.na(.[[numcharcols]]) ~ "0",
                                        !is.na(.[[numcharcols]]) 
-                                                            ~ gsub(",", "", .[[numcharcols]]))) %>%
-      dplyr::mutate(zzz_temp_zzz = if (numcharcolsdp >= 2) as.numeric(zzz_temp_zzz) else 
-        round(as.numeric(zzz_temp_zzz), digits = numcharcolsdp)) %>%
+                                       ~ gsub(",", "", .[[numcharcols]]))) %>%
+      dplyr::mutate(zzz_temp_zzz = if (numcharcolsdp >= 2) as.numeric(.data$zzz_temp_zzz) else 
+        round(as.numeric(.data$zzz_temp_zzz), digits = numcharcolsdp)) %>%
       dplyr::mutate(zzz_temp_zzz2 = if (numcharcolsdp >= 2) 
-        format(zzz_temp_zzz, big.mark = ",", scientific = FALSE, nsmall = numcharcolsdp) else 
-          format(zzz_temp_zzz, big.mark = ",", scientific = FALSE)) %>%
+        format(.data$zzz_temp_zzz, big.mark = ",", scientific = FALSE, nsmall = numcharcolsdp) else 
+          format(.data$zzz_temp_zzz, big.mark = ",", scientific = FALSE)) %>%
       dplyr::mutate(zzz_temp_zzz3 = 
                       dplyr::case_when(.[[numcharcols]] %in% c("[b]", "[c]", "[e]", "[er]", "[f]",
                                                                "[low]", "[p]", "[r]", "[u]", "[w]",
                                                                "[x]", "[z]", "") 
-                                                                ~ as.character(.[[numcharcols]]),
+                                       ~ as.character(.[[numcharcols]]),
                                        is.na(.[[numcharcols]]) ~ "",
-                                       TRUE ~ as.character(zzz_temp_zzz2)))
+                                       TRUE ~ as.character(.data$zzz_temp_zzz2)))
     
     dfx[[numcharcols]] <- dfx$zzz_temp_zzz3
     
     dfx_temp <- dfx %>%
-      dplyr::select(-zzz_temp_zzz, -zzz_temp_zzz2, -zzz_temp_zzz3)
+      dplyr::select(-.data$zzz_temp_zzz, -.data$zzz_temp_zzz2, -.data$zzz_temp_zzz3)
     
     assign("table_data2", dfx_temp, envir = as.environment(acctabs))
     rm(dfx_temp)
@@ -1620,17 +1636,17 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
     tabcontents2 <- tabcontents %>%
       dplyr::rename(sheet_name = "Sheet name") %>%
-      dplyr::group_by(sheet_name) %>%
+      dplyr::group_by(.data$sheet_name) %>%
       dplyr::summarise(count = dplyr::n()) %>%
       dplyr::ungroup() %>%
-      dplyr::summarise(check = sum(count) / dplyr::n())
+      dplyr::summarise(check = sum(.data$count) / dplyr::n())
     
     tabcontents3 <- tabcontents %>%
       dplyr::rename(table_description = "Table description") %>%
-      dplyr::group_by(table_description) %>%
+      dplyr::group_by(.data$table_description) %>%
       dplyr::summarise(count = dplyr::n()) %>%
       dplyr::ungroup() %>%
-      dplyr::summarise(check = sum(count) / dplyr::n())
+      dplyr::summarise(check = sum(.data$count) / dplyr::n())
     
     if (tabcontents2$check > 1) {
       
@@ -1772,20 +1788,24 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
 #'                              
 #' accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 #' 
+#' @importFrom rlang .data
+#' 
 #' @export
 
 contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
   
   if (!("dplyr" %in% utils::installed.packages()) |
       !("conflicted" %in% utils::installed.packages()) |
-      !("openxlsx" %in% utils::installed.packages())) {
+      !("openxlsx" %in% utils::installed.packages()) | 
+      !("rlang" %in% utils::installed.packages())) {
     
     stop(base::strwrap("Not all required packages installed. Run the \"workbook\" function first to 
          ensure packages are installed.", prefix = " ", initial = ""))
     
   } else if (utils::packageVersion("dplyr") < "1.1.2" |
              utils::packageVersion("conflicted") < "1.2.0" |
-             utils::packageVersion("openxlsx") < "4.2.5.2") {
+             utils::packageVersion("openxlsx") < "4.2.5.2" |
+             utils::packageVersion("rlang") < "1.1.0") {
     
     stop(base::strwrap("Older versions of packages detected. Run the \"workbook\" function first to 
          ensure up to date packages are installed.", prefix = " ", initial = ""))
@@ -1933,6 +1953,8 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
   
   if (extracols == "Yes" & exists("extracols_contents", envir = .GlobalEnv)) {
     
+    extracols_contents <- get("extracols_contents", envir = .GlobalEnv)
+    
     if ((nrow(tabcontents) + nrow(notesdf2a) + nrow(notesdf2b)) != nrow(extracols_contents)) {
       
       stop(strwrap("The number of rows in the table of contents is not the same as in the dataframe 
@@ -1941,7 +1963,7 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
     }
     
     if ("Sheet name" %in% colnames(extracols_contents) | 
-        "Table description" %in% c(extracols_contents)) {
+        "Table description" %in% colnames(extracols_contents)) {
       
       warning(strwrap("There is at least one duplicate column name in the contents table and the 
               extracols_contents dataframe", prefix = " ", initial = ""))
@@ -1972,7 +1994,7 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
     
     warning(strwrap("extracols has been set to \"No\" but a dataframe extracols_contents exist. 
             Check if extra columns are wanted. No extra columns have been added.", prefix = " ",
-            initial = ""))
+                    initial = ""))
     
   }
   
@@ -1980,17 +2002,17 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
   
   tabcontents2 <- tabcontents %>%
     dplyr::rename(sheet_name = "Sheet name") %>%
-    dplyr::group_by(sheet_name) %>%
+    dplyr::group_by(.data$sheet_name) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / dplyr::n())
+    dplyr::summarise(check = sum(.data$count) / dplyr::n())
   
   tabcontents3 <- tabcontents %>%
     dplyr::rename(table_description = "Table description") %>%
-    dplyr::group_by(table_description) %>%
+    dplyr::group_by(.data$table_description) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / dplyr::n())
+    dplyr::summarise(check = sum(.data$count) / dplyr::n())
   
   # Checks to make sure there is no duplication of tables in the contents
   
@@ -3474,6 +3496,8 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
 #'                              
 #' accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 #' 
+#' @importFrom rlang .data
+#' 
 #' @export
 
 addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL, 
@@ -3481,14 +3505,16 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
   
   if (!("dplyr" %in% utils::installed.packages()) |
       !("stringr" %in% utils::installed.packages()) |
-      !("conflicted" %in% utils::installed.packages())) {
+      !("conflicted" %in% utils::installed.packages()) |
+      !("rlang" %in% utils::installed.packages())) {
     
     stop(base::strwrap("Not all required packages installed. Run the \"workbook\" function first to 
          ensure packages are installed.", prefix = " ", initial = ""))
     
   } else if (utils::packageVersion("dplyr") < "1.1.2" |
              utils::packageVersion("stringr") < "1.5.0" |
-             utils::packageVersion("conflicted") < "1.2.0") {
+             utils::packageVersion("conflicted") < "1.2.0" |
+             utils::packageVersion("rlang") < "1.1.0") {
     
     stop(base::strwrap("Older versions of packages detected. Run the \"workbook\" function first to 
          ensure up to date packages are installed.", prefix = " ", initial = ""))
@@ -3692,35 +3718,35 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
   
   notesdf2 <- notesdfx %>%
     dplyr::rename(note_number = "Note number") %>%
-    dplyr::group_by(note_number) %>%
+    dplyr::group_by(.data$note_number) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / dplyr::n())
+    dplyr::summarise(check = sum(.data$count) / dplyr::n())
   
   notesdf3 <- notesdfx %>%
     dplyr::rename(note_text = "Note text") %>%
-    dplyr::group_by(note_text) %>%
+    dplyr::group_by(.data$note_text) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / dplyr::n())
+    dplyr::summarise(check = sum(.data$count) / dplyr::n())
   
   notesdf4 <- notesdfx %>%
-    dplyr::group_by(Link1) %>%
+    dplyr::group_by(.data$Link1) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(count = dplyr::case_when(is.na(Link1) | Link1 == "" | 
                                              Link1 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
-    dplyr::summarise(check = sum(as.numeric(count)) / dplyr::n()) 
+    dplyr::summarise(check = sum(as.numeric(.data$count)) / dplyr::n()) 
   
   notesdf5 <- notesdfx %>%
-    dplyr::group_by(Link2) %>%
+    dplyr::group_by(.data$Link2) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(count = dplyr::case_when(is.na(Link2) | Link2 == "" | 
                                              Link2 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
-    dplyr::summarise(check = sum(as.numeric(count)) / dplyr::n()) 
+    dplyr::summarise(check = sum(as.numeric(.data$count)) / dplyr::n()) 
   
   if (notesdf2$check > 1) {
     
@@ -3828,6 +3854,8 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
 #'                              
 #' accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 #' 
+#' @importFrom rlang .data
+#' 
 #' @export
 
 notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
@@ -3835,7 +3863,8 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   if (!("dplyr" %in% utils::installed.packages()) | 
       !("openxlsx" %in% utils::installed.packages()) |
       !("conflicted" %in% utils::installed.packages()) |
-      !("stringr" %in% utils::installed.packages())) {
+      !("stringr" %in% utils::installed.packages()) |
+      !("rlang" %in% utils::installed.packages())) {
     
     stop(base::strwrap("Not all required packages installed. Run the \"workbook\" function first to 
          ensure packages are installed.", prefix = " ", initial = ""))
@@ -3843,7 +3872,8 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   } else if (utils::packageVersion("dplyr") < "1.1.2" | 
              utils::packageVersion("openxlsx") < "4.2.5.2" |
              utils::packageVersion("conflicted") < "1.2.0" |
-             utils::packageVersion("stringr") < "1.5.0") {
+             utils::packageVersion("stringr") < "1.5.0" |
+             utils::packageVersion("rlang") < "1.1.0") {
     
     stop(base::strwrap("Older versions of packages detected. Run the \"workbook\" function first to 
          ensure up to date packages are installed.", prefix = " ", initial = ""))
@@ -3935,7 +3965,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   notesdfx <- notesdf %>%
     dplyr::rename(applictab = "Applicable tables") %>%
-    dplyr::filter(applictab != "")
+    dplyr::filter(.data$applictab != "")
   
   if (nrow(notesdf) > 0 & nrow(notesdf) == nrow(notesdfx)) {
     
@@ -3961,7 +3991,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   # Automatically detecting if links have been provided or not
   
   notesdfx <- notesdf %>%
-    dplyr::filter(!is.na(Link1) & Link1 != "No additional link")
+    dplyr::filter(!is.na(.data$Link1) & .data$Link1 != "No additional link")
   
   if (nrow(notesdfx) > 0) {
     
@@ -3984,7 +4014,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   notesdfy <- notesdf %>%
     dplyr::mutate(linkno = dplyr::case_when(is.na(Link1) | Link1 == "No additional link" ~ NA_real_,
                                             TRUE ~ dplyr::row_number())) %>%
-    dplyr::filter(!is.na(linkno))
+    dplyr::filter(!is.na(.data$linkno))
   
   if (nrow(notesdfy) > 0) {
     
@@ -4042,37 +4072,37 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   notesdf2 <- notesdf %>%
     dplyr::rename(note_number = "Note number") %>%
-    dplyr::group_by(note_number) %>%
+    dplyr::group_by(.data$note_number) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / dplyr::n())
+    dplyr::summarise(check = sum(.data$count) / dplyr::n())
   
   notesdf3 <- notesdf %>%
     dplyr::rename(note_text = "Note text") %>%
-    dplyr::group_by(note_text) %>%
+    dplyr::group_by(.data$note_text) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / dplyr::n())
+    dplyr::summarise(check = sum(.data$count) / dplyr::n())
   
   notesdf4 <- notesdf %>%
-    dplyr::group_by(Link1) %>%
+    dplyr::group_by(.data$Link1) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(count = dplyr::case_when(is.na(Link1) | Link1 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
-    dplyr::summarise(check = sum(as.numeric(count)) / dplyr::n()) 
+    dplyr::summarise(check = sum(as.numeric(.data$count)) / dplyr::n()) 
   
   notesdf5 <- notesdf %>%
-    dplyr::group_by(Link2) %>%
+    dplyr::group_by(.data$Link2) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(count = dplyr::case_when(is.na(Link2) | Link2 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
-    dplyr::summarise(check = sum(as.numeric(count)) / dplyr::n()) 
+    dplyr::summarise(check = sum(as.numeric(.data$count)) / dplyr::n()) 
   
   notesdf6 <- notesdf %>%
     dplyr::rename(applictab = "Applicable tables") %>%
-    dplyr::filter(is.na(applictab))
+    dplyr::filter(is.na(.data$applictab))
   
   if (notesdf2$check > 1) {
     
@@ -4123,6 +4153,8 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
   
   if (extracols == "Yes" & exists("extracols_notes", envir = .GlobalEnv)) {
     
+    extracols_notes <- get("extracols_notes", envir = .GlobalEnv)
+    
     if (nrow(extracols_notes) != nrow(notesdf)) {
       
       stop(strwrap("The number of rows in the notes table is not the same as in the dataframe of 
@@ -4146,7 +4178,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
     notesdf_temp <- notesdf %>%
       dplyr::select("Note number", "Note text", "Applicable tables", "Link") %>%
-      {if (exists("extracols_notes", envir = .GlobalEnv)) 
+      {if (exists("extracols_notes", envir = .GlobalEnv) & extracols == "Yes") 
         dplyr::bind_cols(., extracols_notes) else .}
     
     class(notesdf_temp$Link) <- "formula"
@@ -4158,7 +4190,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
     notesdf_temp <- notesdf %>%
       dplyr::select("Note number", "Note text", "Link") %>%
-      {if (exists("extracols_notes", envir = .GlobalEnv)) 
+      {if (exists("extracols_notes", envir = .GlobalEnv) & extracols == "Yes") 
         dplyr::bind_cols(., extracols_notes) else .}
     
     class(notesdf_temp$Link) <- "formula"
@@ -4170,7 +4202,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
     notesdf_temp <- notesdf %>%
       dplyr::select("Note number", "Note text", "Applicable tables") %>%
-      {if (exists("extracols_notes", envir = .GlobalEnv)) 
+      {if (exists("extracols_notes", envir = .GlobalEnv) & extracols == "Yes") 
         dplyr::bind_cols(., extracols_notes) else .}
     
     assign("notesdf", notesdf_temp, envir = as.environment(acctabs))
@@ -4180,7 +4212,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
     notesdf_temp <- notesdf %>%
       dplyr::select("Note number", "Note text") %>%
-      {if (exists("extracols_notes", envir = .GlobalEnv)) 
+      {if (exists("extracols_notes", envir = .GlobalEnv) & extracols == "Yes") 
         dplyr::bind_cols(., extracols_notes) else .}
     
     assign("notesdf", notesdf_temp, envir = as.environment(acctabs))
@@ -4359,7 +4391,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
         dplyr::mutate(applic_tab = 
                         dplyr::case_when(applic_tab == "All" ~ paste(tablelist, collapse = ", "),
                                          TRUE ~ applic_tab)) %>%
-        dplyr::filter(stringr::str_detect(applic_tab, tablelist[i]) == TRUE)
+        dplyr::filter(stringr::str_detect(.data$applic_tab, tablelist[i]) == TRUE)
       
       notes <- paste0("[", notesdf7[[1]], "]")
       
@@ -4428,7 +4460,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
       dplyr::mutate(applic_tab2 = tablelist2) %>%
       dplyr::mutate(applic_tab3 = dplyr::case_when(applic_tab == applic_tab2 ~ 1,
                                                    TRUE ~ 0)) %>%
-      dplyr::summarise(applic_tab4 = sum(applic_tab3))
+      dplyr::summarise(applic_tab4 = sum(.data$applic_tab3))
     
     if (notesdf8$applic_tab4 >= 1) {
       
@@ -4440,7 +4472,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
     notesdf9 <- notesdf %>%
       dplyr::rename(applic_tab = "Applicable tables") %>%
-      dplyr::filter(applic_tab != "All")
+      dplyr::filter(.data$applic_tab != "All")
     
     applictablist <- notesdf9$applic_tab
     
@@ -4554,18 +4586,22 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
 #'                              
 #' accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 #' 
+#' @importFrom rlang .data
+#' 
 #' @export
 
 adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) {
   
   if (!("dplyr" %in% utils::installed.packages()) |
-      !("conflicted" %in% utils::installed.packages())) {
+      !("conflicted" %in% utils::installed.packages()) |
+      !("rlang" %in% utils::installed.packages())) {
     
     stop(base::strwrap("Not all required packages installed. Run the \"workbook\" function first to 
          ensure packages are installed.", prefix = " ", initial = ""))
     
   } else if (utils::packageVersion("dplyr") < "1.1.2" |
-             utils::packageVersion("conflicted") < "1.2.0") {
+             utils::packageVersion("conflicted") < "1.2.0" |
+             utils::packageVersion("rlang") < "1.1.0") {
     
     stop(base::strwrap("Older versions of packages detected. Run the \"workbook\" function first to 
          ensure up to date packages are installed.", prefix = " ", initial = ""))
@@ -4674,34 +4710,34 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
                                      TRUE ~ paste0("HYPERLINK(\"", Link2, "\", \"", Link1, "\")")))
   
   definitionsdf2 <- definitionsdfx %>%
-    dplyr::group_by(Term) %>%
+    dplyr::group_by(.data$Term) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / dplyr::n())
+    dplyr::summarise(check = sum(.data$count) / dplyr::n())
   
   definitionsdf3 <- definitionsdfx %>%
-    dplyr::group_by(Definition) %>%
+    dplyr::group_by(.data$Definition) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / dplyr::n())
+    dplyr::summarise(check = sum(.data$count) / dplyr::n())
   
   definitionsdf4 <- definitionsdfx %>%
-    dplyr::group_by(Link1) %>%
+    dplyr::group_by(.data$Link1) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(count = dplyr::case_when(is.na(Link1) | Link1 == "" | 
                                              Link1 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
-    dplyr::summarise(check = sum(as.numeric(count)) / dplyr::n()) 
+    dplyr::summarise(check = sum(as.numeric(.data$count)) / dplyr::n()) 
   
   definitionsdf5 <- definitionsdfx %>%
-    dplyr::group_by(Link2) %>%
+    dplyr::group_by(.data$Link2) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(count = dplyr::case_when(is.na(Link2) | Link2 == "" | 
                                              Link2 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
-    dplyr::summarise(check = sum(as.numeric(count)) / dplyr::n()) 
+    dplyr::summarise(check = sum(as.numeric(.data$count)) / dplyr::n()) 
   
   if (definitionsdf2$check > 1) {
     
@@ -4809,6 +4845,8 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
 #'                              
 #' accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 #' 
+#' @importFrom rlang .data
+#' 
 #' @export
 
 definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, 
@@ -4816,14 +4854,16 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   if (!("dplyr" %in% utils::installed.packages()) |
       !("conflicted" %in% utils::installed.packages()) |
-      !("openxlsx" %in% utils::installed.packages())) {
+      !("openxlsx" %in% utils::installed.packages()) |
+      !("rlang" %in% utils::installed.packages())) {
     
     stop(base::strwrap("Not all required packages installed. Run the \"workbook\" function first to 
          ensure packages are installed.", prefix = " ", initial = ""))
     
   } else if (utils::packageVersion("dplyr") < "1.1.2" |
              utils::packageVersion("conflicted") < "1.2.0" |
-             utils::packageVersion("openxlsx") < "4.2.5.2") {
+             utils::packageVersion("openxlsx") < "4.2.5.2" |
+             utils::packageVersion("rlang") < "1.1.0") {
     
     stop(base::strwrap("Older versions of packages detected. Run the \"workbook\" function first to 
          ensure up to date packages are installed.", prefix = " ", initial = ""))
@@ -4912,7 +4952,7 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   # Automatically detecting if links have been provided or not
   
   definitionsdfx <- definitionsdf %>%
-    dplyr::filter(!is.na(Link1) & Link1 != "No additional link")
+    dplyr::filter(!is.na(.data$Link1) & .data$Link1 != "No additional link")
   
   if (nrow(definitionsdfx) > 0) {
     
@@ -4935,7 +4975,7 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   definitionsdfy <- definitionsdf %>%
     dplyr::mutate(linkno = dplyr::case_when(is.na(Link1) | Link1 == "No additional link" ~ NA_real_,
                                             TRUE ~ dplyr::row_number())) %>%
-    dplyr::filter(!is.na(linkno))
+    dplyr::filter(!is.na(.data$linkno))
   
   if (nrow(definitionsdfy) > 0) {
     
@@ -4954,32 +4994,32 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   if (nrow(definitionsdf) == 0) {stop("No rows in the definitions table")}
   
   definitionsdf2 <- definitionsdf %>%
-    dplyr::group_by(Term) %>%
+    dplyr::group_by(.data$Term) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / dplyr::n())
+    dplyr::summarise(check = sum(.data$count) / dplyr::n())
   
   definitionsdf3 <- definitionsdf %>%
-    dplyr::group_by(Definition) %>%
+    dplyr::group_by(.data$Definition) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
-    dplyr::summarise(check = sum(count) / dplyr::n())
+    dplyr::summarise(check = sum(.data$count) / dplyr::n())
   
   definitionsdf4 <- definitionsdf %>%
-    dplyr::group_by(Link1) %>%
+    dplyr::group_by(.data$Link1) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(count = dplyr::case_when(is.na(Link1) | Link1 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
-    dplyr::summarise(check = sum(as.numeric(count)) / dplyr::n()) 
+    dplyr::summarise(check = sum(as.numeric(.data$count)) / dplyr::n()) 
   
   definitionsdf5 <- definitionsdf %>%
-    dplyr::group_by(Link2) %>%
+    dplyr::group_by(.data$Link2) %>%
     dplyr::summarise(count = dplyr::n()) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(count = dplyr::case_when(is.na(Link2) | Link2 == "No additional link" ~ 1,
                                            TRUE ~ count)) %>%
-    dplyr::summarise(check = sum(as.numeric(count)) / dplyr::n()) 
+    dplyr::summarise(check = sum(as.numeric(.data$count)) / dplyr::n()) 
   
   if (definitionsdf2$check > 1) {
     
@@ -5049,6 +5089,8 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   
   if (extracols == "Yes" & exists("extracols_definitions", envir = .GlobalEnv)) {
     
+    extracols_definitions <- get("extracols_definitions", envir = .GlobalEnv)
+    
     if (nrow(extracols_definitions) != nrow(definitionsdf)) {
       
       stop(strwrap("The number of rows in the definitions table and the extracols_definitions 
@@ -5072,7 +5114,7 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
     
     definitionsdf_temp <- definitionsdf %>%
       dplyr::select("Term", "Definition", "Link") %>%
-      {if (exists("extracols_definitions", envir = .GlobalEnv)) 
+      {if (exists("extracols_definitions", envir = .GlobalEnv) & extracols == "Yes") 
         dplyr::bind_cols(., extracols_definitions) else .}
     
     class(definitionsdf_temp$Link) <- "formula"
@@ -5084,7 +5126,7 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
     
     definitionsdf_temp <- definitionsdf %>%
       dplyr::select("Term", "Definition") %>%
-      {if (exists("extracols_definitions", envir = .GlobalEnv)) 
+      {if (exists("extracols_definitions", envir = .GlobalEnv) & extracols == "Yes") 
         dplyr::bind_cols(., extracols_definitions) else .}
     
     assign("definitionsdf", definitionsdf_temp, envir = as.environment(acctabs))
@@ -5349,6 +5391,18 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
   
   conflicted::conflict_prefer_all("base", quiet = TRUE)
   `%>%` <- dplyr::`%>%`
+  
+  # Create some objects only for purpose of satisfying R CMD check
+  
+  tabcontents <- NULL
+  notesdf <- NULL
+  definitionsdf <- NULL
+  autonotes2 <- NULL
+  covernumrow <- NULL
+  table_data2 <- NULL
+  fontsz <- NULL
+  fontszst <- NULL
+  fontszt <- NULL
   
   if (!(exists("wb", envir = as.environment(acctabs)))) {
     
