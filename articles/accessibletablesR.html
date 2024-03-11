@@ -87,15 +87,16 @@ as closely as possible to the UK Government Analysis Function
 recommendations for publishing statistics in spreadsheets.<br><br><a href="https://analysisfunction.civilservice.gov.uk/policy-store/releasing-statistics-in-spreadsheets/" class="external-link">Releasing
 statistics in spreadsheets</a><br><br> accessibletablesR was developed using R 4.1.3, dplyr version 1.1.2,
 openxlsx version 4.2.5.2, conflicted version 1.2.0, devtools version
-2.4.5, stringr version 1.5.0, purrr version 1.0.1 and odsconvertr
-version 0.2.2. It is unknown if the package will work with earlier
-versions of R, dplyr, openxlsx, conflicted, devtools, stringr, purrr and
-odsconvertr. accessibletablesR will install the latest versions of
-dplyr, openxlsx, conflicted, devtools, stringr, purrr and odsconvertr if
-these packages are not currently installed or if earlier versions of
-dplyr (&lt;1.1.2), openxlsx (&lt;4.2.5.2), conflicted (&lt;1.2.0),
-devtools (&lt;2.4.5), stringr (&lt;1.5.0), purrr (&lt;1.0.1) and
-odsconvertr (&lt;0.2.2) are currently installed.</p>
+2.4.5, stringr version 1.5.0, purrr version 1.0.1, rlang version 1.1.0
+and odsconvertr version 0.2.2. It is unknown if the package will work
+with earlier versions of R, dplyr, openxlsx, conflicted, devtools,
+stringr, purrr and odsconvertr. accessibletablesR will install the
+latest versions of dplyr, openxlsx, conflicted, devtools, stringr, purrr
+and odsconvertr if these packages are not currently installed or if
+earlier versions of dplyr (&lt;1.1.2), openxlsx (&lt;4.2.5.2),
+conflicted (&lt;1.2.0), devtools (&lt;2.4.5), stringr (&lt;1.5.0), purrr
+(&lt;1.0.1), rlang (&lt;1.1.0) and odsconvertr (&lt;0.2.2) are currently
+installed.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -104,7 +105,7 @@ odsconvertr (&lt;0.2.2) are currently installed.</p>
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="st">"devtools"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html" class="external-link">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> </span>
 <span>  <span class="op">{</span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span>, type <span class="op">=</span> <span class="st">"binary"</span><span class="op">)</span><span class="op">}</span></span>
 <span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"minifiemj/accessibletablesR"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"minifiemj/accessibletablesR"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Optional - attach package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/minifiemj/accessibletablesR" class="external-link">"accessibletablesR"</a></span><span class="op">)</span></span></code></pre></div>
@@ -332,12 +333,12 @@ have the same number of rows as the notes table.<br><br> Example code of how to 
 below.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">extracols_notes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">mutate</span><span class="op">(</span>col1 <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">add_row</span><span class="op">(</span>col1 <span class="op">=</span> <span class="st">"Whatever you want1"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">add_row</span><span class="op">(</span>col1 <span class="op">=</span> <span class="st">"Whatever you want2"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">add_row</span><span class="op">(</span>col1 <span class="op">=</span> <span class="st">"Whatever you want3"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">add_row</span><span class="op">(</span>col1 <span class="op">=</span> <span class="st">"Whatever you want4"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">rename</span><span class="op">(</span><span class="st">"Extra column name"</span> <span class="op">=</span> <span class="va">col1</span><span class="op">)</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>col1 <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/add_row.html" class="external-link">add_row</a></span><span class="op">(</span>col1 <span class="op">=</span> <span class="st">"Whatever you want1"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/add_row.html" class="external-link">add_row</a></span><span class="op">(</span>col1 <span class="op">=</span> <span class="st">"Whatever you want2"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/add_row.html" class="external-link">add_row</a></span><span class="op">(</span>col1 <span class="op">=</span> <span class="st">"Whatever you want3"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/add_row.html" class="external-link">add_row</a></span><span class="op">(</span>col1 <span class="op">=</span> <span class="st">"Whatever you want4"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span><span class="st">"Extra column name"</span> <span class="op">=</span> <span class="va">col1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">accessibletablesR</span><span class="fu">::</span><span class="fu"><a href="../reference/notestab.html">notestab</a></span><span class="op">(</span>extracols <span class="op">=</span> <span class="st">"Yes"</span><span class="op">)</span></span></code></pre></div>
 </div>
