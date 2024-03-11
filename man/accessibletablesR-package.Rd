@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Creates Excel spreadsheets which align as closely as possible to UK Government Statistical Service's accessibility criteria. Relies upon the R package 'openxlsx'. The package was developed using R 4.1.3, 'dplyr' version 1.1.2, 'openxlsx' version 4.2.5.2, 'devtools' version 2.4.5, 'conflicted' version 1.2.0, 'stringr' version 1.5.0, 'purrr' version 1.0.1, 'rlang' version 1.1.0 and 'odsconvertr' version 0.2.2. Alternative options include the R package 'a11ytables' and the Python package 'gptables'.
+Creates Excel spreadsheets which align as closely as possible to UK Government Statistical Service's accessibility criteria. Relies upon the R package 'openxlsx'. The package was developed using R 4.1.3, 'dplyr' version 1.1.2, 'openxlsx' version 4.2.5.2, 'devtools' version 2.4.5, 'conflicted' version 1.2.0, 'stringr' version 1.5.0, 'purrr' version 1.0.1, 'rlang' version 1.1.0 and 'odsconvertr' version 0.2.2. Alternative options include the R package 'a11ytables' and the Python package 'gptables' (which can be run in R via the package 'reticulate').
 }
 \seealso{
 Useful links:
