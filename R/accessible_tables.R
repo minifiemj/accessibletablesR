@@ -1111,12 +1111,12 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     for (i in seq_along(extralines1)) {
       
       if (stringr::str_detect(extralines1[i], 
-                              "This worksheet contains one table|this worksheet contains one table|\\[note")) {
+                   "This worksheet contains one table|this worksheet contains one table|\\[note")) {
         
         warning(strwrap("If autonotes2 is set to \"Yes\" then the information about the worksheet 
                 containing one table or the notes tab will automatically be inserted and so there is
                 no need to have one of the extralines already stating this", prefix = " ", 
-                        initial = ""))
+                initial = ""))
         
       }
       
@@ -1160,7 +1160,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     for (i in seq_along(extralines1)) {
       
       if (stringr::str_detect(extralines1[i], 
-                              "This worksheet contains one table|this worksheet contains one table")) {
+                           "This worksheet contains one table|this worksheet contains one table")) {
         
         onetablenote <- 1
         
@@ -2383,10 +2383,14 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
   }
   
-  if (stringr::str_remove_all(phone, "[\" \"\\[\\]\\(\\)+[:digit:]]") != "") {
-    
-    warning(strwrap("The phone number provided appears to contain characters which are unusual for a 
-            phone number. Check if there are any errors.", prefix = " ", initial = ""))
+  if (!is.null(phone)) {
+  
+    if (stringr::str_remove_all(phone, "[\" \"\\[\\]\\(\\)+[:digit:]]") != "") {
+      
+      warning(strwrap("The phone number provided appears to contain characters which are unusual 
+              for a phone number. Check if there are any errors.", prefix = " ", initial = ""))
+      
+    }
     
   }
   
