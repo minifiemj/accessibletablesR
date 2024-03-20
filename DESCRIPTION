@@ -18,7 +18,7 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
 Depends:
-    R (>= 3.3.0)
+    R (>= 3.5.0)
 Imports:
     conflicted (>= 1.2.0),
     devtools (>= 2.4.5),
