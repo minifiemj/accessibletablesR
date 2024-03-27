@@ -743,7 +743,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
     stop(strwrap("One or more of title, subtitle, sheetname, headrowsize, tablename and gridlines 
          are not populated properly. They must be a single entity and not a vector.", prefix = " ",
-                 initial = ""))
+         initial = ""))
     
   }
   
@@ -776,7 +776,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
   } else if (!is.null(sheetname) & !is.character(sheetname)) {
     
-    stop("sheetname must be of character class")
+    stop("sheetname must be of character class, ideally not with a number as the first character")
     
   }
   
@@ -807,7 +807,16 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   if (!grepl("\\D", sheetname, perl = TRUE) == TRUE) {
     
     warning(strwrap("sheetname is only comprised of numbers - this can cause an issue when opening 
-            up the final spreadsheet", prefix = " ", initial = ""))
+            up the final spreadsheet. Ideally sheetname should be a character string, which can
+            contain numbers, though the first character should not be a number.", prefix = " ", 
+            initial = ""))
+    
+  } else if (grepl("\\d", substr(sheetname, 1, 1), perl = TRUE) == TRUE) {
+    
+    warning(strwrap("sheetname should not start with a number - this can cause an issue when opening 
+            up the final spreadsheet. Ideally sheetname should be a character string, which can
+            contain numbers, though the first character should not be a number.", prefix = " ", 
+            initial = ""))
     
   }
   
@@ -1041,7 +1050,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     columnwidths <- "R_auto"
     warning(strwrap("columnwidths has not been set to \"R_auto\" or \"characters\" or \"specified\" 
             or NULL. It will be changed back to the default of \"R_auto\".", prefix = " ",
-                    initial = ""))
+            initial = ""))
     
   }
   
@@ -1071,13 +1080,13 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     colwid_spec <- rep(colwid_spec, length(colnames(table_data)))
     warning(strwrap("There is more than one column in the table. colwid_spec has only one value and 
             so it has been assumed that this one value represents the widths of all columns.",
-                    prefix = " ", initial = ""))
+            prefix = " ", initial = ""))
     
   } else if (columnwidths == "specified" & length(colwid_spec) != length(colnames(table_data))) {
     
     stop(strwrap("The number of elements in colwid_spec and the number of columns in the table need 
          to be the same, or colwid_spec set to one value to be applied to all columns in the table",
-                 prefix = " ", initial = ""))
+         prefix = " ", initial = ""))
     
   }
   
@@ -1994,7 +2003,7 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
     
     warning(strwrap("extracols has been set to \"No\" but a dataframe extracols_contents exist. 
             Check if extra columns are wanted. No extra columns have been added.", prefix = " ",
-                    initial = ""))
+            initial = ""))
     
   }
   
@@ -4470,7 +4479,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
       
       warning(strwrap("There is at least one occurrence where the list of applicable tables appears 
               to be all of the tables. The list could read \"All\" instead.", prefix = " ",
-                      initial = ""))
+              initial = ""))
       
     }
     
