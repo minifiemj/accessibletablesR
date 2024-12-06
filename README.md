@@ -20,14 +20,13 @@ recommendations for publishing statistics in spreadsheets.
 spreadsheets](https://analysisfunction.civilservice.gov.uk/policy-store/releasing-statistics-in-spreadsheets/)
 
 accessibletablesR was developed using R 4.1.3, dplyr version 1.1.2,
-openxlsx version 4.2.5.2, conflicted version 1.2.0, devtools version
-2.4.5, stringr version 1.5.0, purrr version 1.0.1 and rlang version
-1.1.0. It is unknown if the package will work with earlier versions of
-R, dplyr, openxlsx, conflicted, devtools, stringr and purrr.
-accessibletablesR will install the latest versions of dplyr, openxlsx,
-conflicted, devtools, stringr and purrr if these packages are not
-currently installed or if earlier versions of dplyr (\<1.1.2), openxlsx
-(\<4.2.5.2), conflicted (\<1.2.0), devtools (\<2.4.5), stringr
+openxlsx version 4.2.5.2, conflicted version 1.2.0, stringr version
+1.5.0, purrr version 1.0.1 and rlang version 1.1.0. It is unknown if the
+package will work with earlier versions of R, dplyr, openxlsx,
+conflicted, stringr and purrr. accessibletablesR will install the latest
+versions of dplyr, openxlsx, conflicted, stringr and purrr if these
+packages are not currently installed or if earlier versions of dplyr
+(\<1.1.2), openxlsx (\<4.2.5.2), conflicted (\<1.2.0), stringr
 (\<1.5.0), purrr (\<1.0.1) and rlang (\<1.1.0) are currently installed.
 
 ## Installation
