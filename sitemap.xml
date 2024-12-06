@@ -1,57 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://minifiemj.github.io/accessibletablesR/404.html</loc>
-  </url>
-  <url>
-    <loc>https://minifiemj.github.io/accessibletablesR/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://minifiemj.github.io/accessibletablesR/articles/accessibletablesR.html</loc>
-  </url>
-  <url>
-    <loc>https://minifiemj.github.io/accessibletablesR/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://minifiemj.github.io/accessibletablesR/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://minifiemj.github.io/accessibletablesR/index.html</loc>
-  </url>
-  <url>
-    <loc>https://minifiemj.github.io/accessibletablesR/reference/accessibletablesR-package.html</loc>
-  </url>
-  <url>
-    <loc>https://minifiemj.github.io/accessibletablesR/reference/adddefinition.html</loc>
-  </url>
-  <url>
-    <loc>https://minifiemj.github.io/accessibletablesR/reference/addnote.html</loc>
-  </url>
-  <url>
-    <loc>https://minifiemj.github.io/accessibletablesR/reference/contentstable.html</loc>
-  </url>
-  <url>
-    <loc>https://minifiemj.github.io/accessibletablesR/reference/coverpage.html</loc>
-  </url>
-  <url>
-    <loc>https://minifiemj.github.io/accessibletablesR/reference/creatingtables.html</loc>
-  </url>
-  <url>
-    <loc>https://minifiemj.github.io/accessibletablesR/reference/definitionstab.html</loc>
-  </url>
-  <url>
-    <loc>https://minifiemj.github.io/accessibletablesR/reference/dummydf.html</loc>
-  </url>
-  <url>
-    <loc>https://minifiemj.github.io/accessibletablesR/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://minifiemj.github.io/accessibletablesR/reference/notestab.html</loc>
-  </url>
-  <url>
-    <loc>https://minifiemj.github.io/accessibletablesR/reference/savingtables.html</loc>
-  </url>
-  <url>
-    <loc>https://minifiemj.github.io/accessibletablesR/reference/workbook.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://minifiemj.github.io/accessibletablesR/404.html</loc></url>
+<url><loc>https://minifiemj.github.io/accessibletablesR/LICENSE-text.html</loc></url>
+<url><loc>https://minifiemj.github.io/accessibletablesR/articles/accessibletablesR.html</loc></url>
+<url><loc>https://minifiemj.github.io/accessibletablesR/articles/index.html</loc></url>
+<url><loc>https://minifiemj.github.io/accessibletablesR/authors.html</loc></url>
+<url><loc>https://minifiemj.github.io/accessibletablesR/index.html</loc></url>
+<url><loc>https://minifiemj.github.io/accessibletablesR/reference/accessibletablesR-package.html</loc></url>
+<url><loc>https://minifiemj.github.io/accessibletablesR/reference/adddefinition.html</loc></url>
+<url><loc>https://minifiemj.github.io/accessibletablesR/reference/addnote.html</loc></url>
+<url><loc>https://minifiemj.github.io/accessibletablesR/reference/contentstable.html</loc></url>
+<url><loc>https://minifiemj.github.io/accessibletablesR/reference/coverpage.html</loc></url>
+<url><loc>https://minifiemj.github.io/accessibletablesR/reference/creatingtables.html</loc></url>
+<url><loc>https://minifiemj.github.io/accessibletablesR/reference/definitionstab.html</loc></url>
+<url><loc>https://minifiemj.github.io/accessibletablesR/reference/dummydf.html</loc></url>
+<url><loc>https://minifiemj.github.io/accessibletablesR/reference/index.html</loc></url>
+<url><loc>https://minifiemj.github.io/accessibletablesR/reference/notestab.html</loc></url>
+<url><loc>https://minifiemj.github.io/accessibletablesR/reference/savingtables.html</loc></url>
+<url><loc>https://minifiemj.github.io/accessibletablesR/reference/workbook.html</loc></url>
 </urlset>
+
