@@ -21,15 +21,14 @@ spreadsheets](https://analysisfunction.civilservice.gov.uk/policy-store/releasin
 
 accessibletablesR was developed using R 4.1.3, dplyr version 1.1.2,
 openxlsx version 4.2.5.2, conflicted version 1.2.0, devtools version
-2.4.5, stringr version 1.5.0, purrr version 1.0.1, rlang version 1.1.0
-and odsconvertr version 0.2.2. It is unknown if the package will work
-with earlier versions of R, dplyr, openxlsx, conflicted, devtools,
-stringr, purrr and odsconvertr. accessibletablesR will install the
-latest versions of dplyr, openxlsx, conflicted, devtools, stringr, purrr
-and odsconvertr if these packages are not currently installed or if
-earlier versions of dplyr (\<1.1.2), openxlsx (\<4.2.5.2), conflicted
-(\<1.2.0), devtools (\<2.4.5), stringr (\<1.5.0), purrr (\<1.0.1), rlang
-(\<1.1.0) and odsconvertr (\<0.2.2) are currently installed.
+2.4.5, stringr version 1.5.0, purrr version 1.0.1 and rlang version
+1.1.0. It is unknown if the package will work with earlier versions of
+R, dplyr, openxlsx, conflicted, devtools, stringr and purrr.
+accessibletablesR will install the latest versions of dplyr, openxlsx,
+conflicted, devtools, stringr and purrr if these packages are not
+currently installed or if earlier versions of dplyr (\<1.1.2), openxlsx
+(\<4.2.5.2), conflicted (\<1.2.0), devtools (\<2.4.5), stringr
+(\<1.5.0), purrr (\<1.0.1) and rlang (\<1.1.0) are currently installed.
 
 ## Installation
 
@@ -48,10 +47,6 @@ the green “Code” icon and choose “Download ZIP”. Copy the ZIP folder to
 a network drive. Use
 devtools::install_local(<link to the zipped folder>) to install the
 package.
-
-odsconvertr is also installed from GitHub. If a similar issue prevents
-the automatic installation of odsconvertr, then install manually from
-“department-for-transport/odsconvertr”.
 
 ## Final output
 

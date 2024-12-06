@@ -75,16 +75,14 @@
 
 savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
   
-  if (!("odsconvertr" %in% utils::installed.packages()) | 
-      !("openxlsx" %in% utils::installed.packages()) |
+  if (!("openxlsx" %in% utils::installed.packages()) |
       !("stringr" %in% utils::installed.packages()) |
       !("conflicted" %in% utils::installed.packages())) {
     
     stop(base::strwrap("Not all required packages installed. Run the \"workbook\" function first to 
          ensure packages are installed.", prefix = " ", initial = ""))
     
-  } else if (utils::packageVersion("odsconvertr") < "0.2.2" | 
-             utils::packageVersion("openxlsx") < "4.2.5.2" |
+  } else if (utils::packageVersion("openxlsx") < "4.2.5.2" |
              utils::packageVersion("stringr") < "1.5.0" |
              utils::packageVersion("conflicted") < "1.2.0") {
     
@@ -295,7 +293,7 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
       
     }
     
-    odsconvertr::convert_to_ods(filename)
+    convert_to_ods(filename)
     
     file.remove(filename)
     
@@ -308,7 +306,7 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
       
     }
     
-    odsconvertr::convert_to_ods(filename)
+    convert_to_ods(filename)
     
   } else if (odsfile == "Yes" & substr(filename, nchar(filename) - 3, nchar(filename)) == ".xls") {
     

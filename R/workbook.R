@@ -120,26 +120,6 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
     
   }
   
-  listofpackages2 <- base::c("odsconvertr")
-  packageversions2 <- base::c("0.2.2")
-  repogroupings <- base::c("department-for-transport")
-  
-  for (i in base::seq_along(listofpackages2)) {
-    
-    if (!(listofpackages2[i] %in% utils::installed.packages())) {
-      
-      devtools::install_github(base::paste0(repogroupings[i], "/", listofpackages2[i]))
-      
-    } else if (listofpackages2[i] %in% utils::installed.packages() & 
-               utils::packageVersion(listofpackages2[i]) < packageversions2[i]) {
-      
-      base::unloadNamespace(listofpackages2[i])
-      devtools::install_github(base::paste0(repogroupings[i], "/", listofpackages2[i]))
-      
-    } 
-    
-  }
-  
   # When functions are used in this script, the package from which the function comes from is... 
   # ...specified e.g., dplyr::filter
   # The exception to this is if the functions come from the R base package
