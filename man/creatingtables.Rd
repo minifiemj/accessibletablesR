@@ -19,6 +19,10 @@ creatingtables(
   numdatacols = NULL,
   numdatacolsdp = NULL,
   othdatacols = NULL,
+  datedatacols = NULL,
+  datedatafmt = NULL,
+  datenondatacols = NULL,
+  datenondatafmt = NULL,
   tablename = NULL,
   gridlines = "Yes",
   columnwidths = "R_auto",
@@ -54,6 +58,14 @@ creatingtables(
 \item{numdatacolsdp}{Number of decimal places wanted for each column of number data (optional)}
 
 \item{othdatacols}{Position of columns in table containing non-number data (optional)}
+
+\item{datedatacols}{Position of columns in tables containing date data (optional)}
+
+\item{datedatafmt}{Date format desired for each column of date data (optional)}
+
+\item{datenondatacols}{Position of columns in tables containing non-data dates (optional)}
+
+\item{datenondatafmt}{Date format desired for each column of non-data dates (optional)}
 
 \item{tablename}{Name for table in final output (optional)}
 
@@ -98,6 +110,12 @@ displayed figure will be the value rounded to the specified number of decimal pl
 Enter 0 in numdatacolsdp if no decimal places wanted. If an element in numdatacols represents a 
 non-character and non-numeric class column, enter 0 in the corresponding position in 
 numdatacolsdp.
+datedatacols is the column position(s) of columns containing date data values - it is useful for 
+horizontal and vertical aligning data columns
+datedatafmt is the date format for columns with date data
+datenondatacols is the column position(s) of non-data columns containing dates - it is useful for
+horizontal and vertical aligning columns
+datenondatafmt is the date format for non-data columns with dates
 tablename is the name of the table within the worksheet that a screen reader will detect. It is 
 automatically selected to be the same as the sheetname unless tablename is populated.
 gridlines is preset to "Yes", change to "No" if gridlines are not wanted.
@@ -132,8 +150,9 @@ accessibletablesR::creatingtables(
    extraline3 = "Link to definitions",
    sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
    numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
-   othdatacols = c(9,10), columnwidths = "specified",
-   colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
+   othdatacols = c(9,10), datedatacols = 15, datedatafmt = "dd-mm-yyyy", 
+   datenondatacols = 14, datenondatafmt = "yyyy-mm-dd", columnwidths = "specified",
+   colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12,12,12))
                                   
 accessibletablesR::contentstable()
 

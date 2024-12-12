@@ -5,7 +5,7 @@
 \alias{dummydf}
 \title{dummydf: an accessibletablesR demo data.frame object}
 \format{
-A data frame with 32 rows and 13 columns.
+A data frame with 32 rows and 15 columns.
 }
 \source{
 mtcars https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars
@@ -14,7 +14,8 @@ mtcars https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mt
 dummydf
 }
 \description{
-A dataset for the purpose of demonstrating how the accessibletablesR package can be used.
+A dataset for the purpose of demonstrating how the accessibletablesR package can 
+             be used.
 }
 \details{
 \describe{
@@ -23,7 +24,8 @@ A dataset for the purpose of demonstrating how the accessibletablesR package can
   \item{Number of cylinders}{Number of cylinders in car engine (numeric)}
   \item{Displacement (cubic inch)}{Total volume of all cylinders (numeric)}
   \item{Gross horsepower}{Power of engine (numeric)}
-  \item{Rear axle ratio}{Number of revolutions the output shaft needs to make to spin the rear axle one complete turn (numeric)}
+  \item{Rear axle ratio}{Number of revolutions the output shaft needs to make to spin the rear 
+        axle one complete turn (numeric)}
   \item{Weight(1000 lbs)}{Weight of car (numeric)}
   \item{Quarter mile time}{Time taken to travel quarter of a mile (numeric)}
   \item{Engine}{Type of engine (character)}
@@ -31,6 +33,8 @@ A dataset for the purpose of demonstrating how the accessibletablesR package can
   \item{Number of forward gears}{Number of forward gears (numeric)}
   \item{Number of carburettors}{Number of carburettors (numeric)}
   \item{Price(£)}{Price of car (character - numbers stored as text and [c] for missing values)}
+  \item{Date1}{Random date with no meaning (date)}
+  \item{Date2}{Random date with no meaning (date)}
 }
 }
 \keyword{datasets}

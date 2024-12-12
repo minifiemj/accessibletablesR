@@ -133,9 +133,7 @@ are specified in the call of the function (colwid_spec).
 Specifying the position of columns containing data as numbers (numdatacols) enables 
 accessibletablesR to format the columns correctly (e.g., right aligning, thousand commas). To
 specify the desired number of decimal places for each number data column, populate numdatacolsdp. 
-To format columns containing non-number data, populate othdatacols with the column positions. At
-present there is an issue formatting dates, so if any data in the form of dates are present, these
-may need to be formatted manually.  
+To format columns containing non-number data, populate othdatacols with the column positions. Columns with dates will not be properly formatted using othdatacols. Instead of using othdatacols, the parameters datedatacols, datedatafmt, datenondatacols and datenondatafmt should be used. Populating datedatacols and datedatafmt will ensure that dates are aligned top and right in data columns. Populating datenondatacols and datenondatafmt will ensure that dates are aligned top and left in non-data columns.
 
 ```{r, eval = FALSE}
 accessibletablesR::creatingtables(

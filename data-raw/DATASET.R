@@ -1,7 +1,5 @@
 ## code to prepare `dummydf` dataset goes here
 
-usethis::use_data(DATASET, overwrite = TRUE)
-
 library("tidyverse")
 
 dummydf <- mtcars %>% 
@@ -16,4 +14,9 @@ dummydf <- mtcars %>%
   dplyr::mutate(Transmission = dplyr::case_when(Transmission == 0 ~ "Automatic",
                                                 Transmission == 1 ~ "Manual")) %>%
   dplyr::mutate("Price\n(£)" = dplyr::case_when(Transmission == "Automatic" ~ "[c]",
-                                                Transmission == "Manual" ~ "15767.8752"))
+                                                Transmission == "Manual" ~ "15767.8752")) %>%
+  dplyr::mutate(Date1 = Sys.Date()) %>%
+  dplyr::mutate(Date2 = Sys.Date())
+
+usethis::use_data(dummydf, overwrite = TRUE)
+

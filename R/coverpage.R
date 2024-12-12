@@ -70,8 +70,9 @@
 #'    extraline3 = "Link to definitions",
 #'    sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
 #'    numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
-#'    othdatacols = c(9,10), columnwidths = "specified",
-#'    colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
+#'    othdatacols = c(9,10), datedatacols = 15, datedatafmt = "dd-mm-yyyy", 
+#'    datenondatacols = 14, datenondatafmt = "yyyy-mm-dd", columnwidths = "specified",
+#'    colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12,12,12))
 #'                                   
 #' accessibletablesR::contentstable()
 #' 
@@ -412,7 +413,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
         
         stop(strwrap("The relative positions of names, phone and email are not consistent with the 
              expected stucture (i.e., names, phone or email, email or phone)", prefix = " ",
-                     initial = ""))
+             initial = ""))
         
       }
       

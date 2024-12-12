@@ -32,6 +32,12 @@
 #' Enter 0 in numdatacolsdp if no decimal places wanted. If an element in numdatacols represents a 
 #' non-character and non-numeric class column, enter 0 in the corresponding position in 
 #' numdatacolsdp.
+#' datedatacols is the column position(s) of columns containing date data values - it is useful for 
+#' horizontal and vertical aligning data columns
+#' datedatafmt is the date format for columns with date data
+#' datenondatacols is the column position(s) of non-data columns containing dates - it is useful for
+#' horizontal and vertical aligning columns
+#' datenondatafmt is the date format for non-data columns with dates
 #' tablename is the name of the table within the worksheet that a screen reader will detect. It is 
 #' automatically selected to be the same as the sheetname unless tablename is populated.
 #' gridlines is preset to "Yes", change to "No" if gridlines are not wanted.
@@ -65,6 +71,10 @@
 #' @param numdatacols Position of columns in table containing number data (optional)
 #' @param numdatacolsdp Number of decimal places wanted for each column of number data (optional)
 #' @param othdatacols Position of columns in table containing non-number data (optional)
+#' @param datedatacols Position of columns in tables containing date data (optional)
+#' @param datedatafmt Date format desired for each column of date data (optional)
+#' @param datenondatacols Position of columns in tables containing non-data dates (optional)
+#' @param datenondatafmt Date format desired for each column of non-data dates (optional)
 #' @param tablename Name for table in final output (optional)
 #' @param gridlines Define whether gridlines are present (optional)
 #' @param columnwidths Define method for assigning widths of columns (optional)
@@ -88,8 +98,9 @@
 #'    extraline3 = "Link to definitions",
 #'    sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
 #'    numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
-#'    othdatacols = c(9,10), columnwidths = "specified",
-#'    colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12))
+#'    othdatacols = c(9,10), datedatacols = 15, datedatafmt = "dd-mm-yyyy", 
+#'    datenondatacols = 14, datenondatafmt = "yyyy-mm-dd", columnwidths = "specified",
+#'    colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12,12,12))
 #'                                   
 #' accessibletablesR::contentstable()
 #' 
@@ -131,8 +142,9 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
                            extraline3 = NULL, extraline4 = NULL, extraline5 = NULL, 
                            extraline6 = NULL, sheetname, table_data, headrowsize = NULL, 
                            numdatacols = NULL, numdatacolsdp = NULL, othdatacols = NULL, 
-                           tablename = NULL, gridlines = "Yes", columnwidths = "R_auto", 
-                           width_adj = NULL, colwid_spec = NULL) {
+                           datedatacols = NULL, datedatafmt = NULL, datenondatacols = NULL,
+                           datenondatafmt = NULL, tablename = NULL, gridlines = "Yes", 
+                           columnwidths = "R_auto", width_adj = NULL, colwid_spec = NULL) {
   
   if (!("dplyr" %in% utils::installed.packages()) | 
       !("conflicted" %in% utils::installed.packages()) | 
@@ -251,7 +263,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
     stop(strwrap("One or more of title, subtitle, sheetname, headrowsize, tablename and gridlines 
          are not populated properly. They must be a single entity and not a vector.", prefix = " ",
-                 initial = ""))
+         initial = ""))
     
   }
   
@@ -317,14 +329,14 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     warning(strwrap("sheetname is only comprised of numbers - this can cause an issue when opening 
             up the final spreadsheet. Ideally sheetname should be a character string, which can
             contain numbers, though the first character should not be a number.", prefix = " ", 
-                    initial = ""))
+            initial = ""))
     
   } else if (grepl("\\d", substr(sheetname, 1, 1), perl = TRUE) == TRUE) {
     
     warning(strwrap("sheetname should not start with a number - this can cause an issue when opening 
             up the final spreadsheet. Ideally sheetname should be a character string, which can
             contain numbers, though the first character should not be a number.", prefix = " ", 
-                    initial = ""))
+            initial = ""))
     
   }
   
@@ -444,6 +456,161 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
   }
   
+  if (!is.null(datedatacols) & !is.numeric(datedatacols)) {
+    
+    stop(strwrap("datedatacols either needs to be numeric (e.g., datedatacols = 6 or datedatacols = 
+         c(2,5) or NULL", prefix = " ", initial = ""))
+    
+  }
+  
+  if (!is.null(datedatacols)) {
+    
+    if (any(datedatacols <= 0)) {
+      
+      stop("Column positions for datedatacols cannot be 0 or negative")
+      
+    } else if (any(datedatacols > ncol(table_data))) {
+      
+      stop("Column positions for datedatacols should not exceed the number of columns in the data")
+      
+    }
+    
+  }
+  
+  if (!is.null(datedatafmt) & !is.character(datedatafmt)) {
+    
+    stop(strwrap("datedatafmt either needs to be character and define a date format 
+         (e.g., datedatafmt = \"dd-mm-yyyy\" or datedatafmt = c(\"dd-mm-yyyy\", \"yyyy-mm-dd\") 
+         or NULL", prefix = " ", initial = ""))
+    
+  }
+  
+  if (is.null(datedatacols) & !is.null(datedatafmt)) {
+    
+    stop(strwrap("datedatacols has not been populated but datedatafmt has. Need to also populate 
+         datedatacols or set datedatafmt to NULL.", prefix = " ", initial = ""))
+    
+  }
+  
+  if (!is.null(datedatacols) & !is.null(datedatafmt) & length(datedatacols) > 1 & 
+      length(datedatafmt) == 1) {
+    
+    datedatafmt <- rep(datedatafmt, length(datedatacols))
+    warning(strwrap("datedatacols specifies more than one column. datedatafmt has only one value 
+            and so it has been assumed that this one value represents the date format required for 
+            each column specified by datedatacols.", prefix = " ", initial = ""))
+    
+  } else if (!is.null(datedatacols) & !is.null(datedatafmt) & 
+             length(datedatacols) != length(datedatafmt)) {
+    
+    stop(strwrap("The number of elements in datedatacols and datedatafmt needs to be the same 
+         (e.g., if datedatacols = c(x,y,z) then datedatafmt = c(a,b,c)) or datedatafmt set to 
+         one value to be applied to all columns in datedatacols", prefix = " ", initial = ""))
+    
+  }
+  
+  if (any(duplicated(datedatacols)) == TRUE) {
+    
+    stop("There is at least one column number entered multiple times in datedatacols")
+    
+  }
+  
+  if (any(is.element(numdatacols, datedatacols)) == TRUE) {
+    
+    stop("There is at least one column number entered in both numdatacols and datedatacols")
+    
+  }
+  
+  if (!is.null(datedatacols) & is.null(datedatafmt)) {
+    
+    warning(strwrap("There are data columns of date class but the date format desired has not been 
+            specified. The default DATE format will be used. Please populate datedatafmt if you 
+            have a desired format.", prefix = " ", initial = ""))
+    datedatafmt <- "DATE"
+    
+  }
+  
+  if (!is.null(datenondatacols) & !is.numeric(datenondatacols)) {
+    
+    stop(strwrap("datenondatacols either needs to be numeric (e.g., datenondatacols = 6 or 
+         datenondatacols = c(2,5) or NULL", prefix = " ", initial = ""))
+    
+  }
+  
+  if (!is.null(datenondatacols)) {
+    
+    if (any(datenondatacols <= 0)) {
+      
+      stop("Column positions for datenondatacols cannot be 0 or negative")
+      
+    } else if (any(datenondatacols > ncol(table_data))) {
+      
+      stop(strwrap("Column positions for datenondatacols should not exceed the number of columns 
+           in the data", prefix = " ", initial = ""))
+      
+    } else if (any(is.element(datenondatacols, datedatacols)) == TRUE) {
+      
+      stop("There is at least one column number entered in both datenondatacols and datedatacols")
+      
+    } else if (any(is.element(datenondatacols, numdatacols)) == TRUE) {
+      
+      stop("There is at least one column number entered in both datenondatacols and numdatacols")
+      
+    } else if (any(is.element(datenondatacols, othdatacols)) == TRUE) {
+      
+      stop("There is at least one column number entered in both datenondatacols and othdatacols")
+      
+    }
+    
+  }
+  
+  if (!is.null(datenondatafmt) & !is.character(datenondatafmt)) {
+    
+    stop(strwrap("datenondatafmt either needs to be character and define a date format 
+         (e.g., datenondatafmt = \"dd-mm-yyyy\" or datenondatafmt = c(\"dd-mm-yyyy\", 
+         \"yyyy-mm-dd\") or NULL", prefix = " ", initial = ""))
+    
+  }
+  
+  if (is.null(datenondatacols) & !is.null(datenondatafmt)) {
+    
+    stop(strwrap("datenondatacols has not been populated but datenondatafmt has. Need to also 
+         populate datenondatacols or set datenondatafmt to NULL.", prefix = " ", initial = ""))
+    
+  }
+  
+  if (!is.null(datenondatacols) & !is.null(datenondatafmt) & length(datenondatacols) > 1 & 
+      length(datenondatafmt) == 1) {
+    
+    datenondatafmt <- rep(datenondatafmt, length(datenondatacols))
+    warning(strwrap("datenondatacols specifies more than one column. datenondatafmt has only one 
+            value and so it has been assumed that this one value represents the date format 
+            required for each column specified by datenondatacols.", prefix = " ", initial = ""))
+    
+  } else if (!is.null(datenondatacols) & !is.null(datenondatafmt) & 
+             length(datenondatacols) != length(datenondatafmt)) {
+    
+    stop(strwrap("The number of elements in datenondatacols and datenondatafmt needs to be the same 
+         (e.g., if datenondatacols = c(x,y,z) then datenondatafmt = c(a,b,c)) or dateondatafmt set 
+         to one value to be applied to all columns in datenondatacols", prefix = " ", initial = ""))
+    
+  }
+  
+  if (any(duplicated(datenondatacols)) == TRUE) {
+    
+    stop("There is at least one column number entered multiple times in datenondatacols")
+    
+  }
+  
+  if (!is.null(datenondatacols) & is.null(datenondatafmt)) {
+    
+    warning(strwrap("There are non-data columns of date class but the date format desired has not 
+            been specified. The default DATE format will be used. Please populate datenondatafmt if 
+            you have a desired format.", prefix = " ", initial = ""))
+    datenondatafmt <- "DATE"
+    
+  }
+  
   numcharcols <- NULL
   numcharcolsdp <- NULL
   numericcols <- NULL
@@ -558,7 +725,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     columnwidths <- "R_auto"
     warning(strwrap("columnwidths has not been set to \"R_auto\" or \"characters\" or \"specified\" 
             or NULL. It will be changed back to the default of \"R_auto\".", prefix = " ",
-                    initial = ""))
+            initial = ""))
     
   }
   
@@ -588,13 +755,13 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     colwid_spec <- rep(colwid_spec, length(colnames(table_data)))
     warning(strwrap("There is more than one column in the table. colwid_spec has only one value and 
             so it has been assumed that this one value represents the widths of all columns.",
-                    prefix = " ", initial = ""))
+            prefix = " ", initial = ""))
     
   } else if (columnwidths == "specified" & length(colwid_spec) != length(colnames(table_data))) {
     
     stop(strwrap("The number of elements in colwid_spec and the number of columns in the table need 
          to be the same, or colwid_spec set to one value to be applied to all columns in the table",
-                 prefix = " ", initial = ""))
+         prefix = " ", initial = ""))
     
   }
   
@@ -633,7 +800,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
         warning(strwrap("If autonotes2 is set to \"Yes\" then the information about the worksheet 
                 containing one table or the notes tab will automatically be inserted and so there is
                 no need to have one of the extralines already stating this", prefix = " ", 
-                        initial = ""))
+                initial = ""))
         
       }
       
@@ -1125,6 +1292,41 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     openxlsx::setRowHeights(wb, sheetname, tablestart, headrowsize)
     
   }
+  
+  # Ensuring date data columns are formatted as intended
+  
+  if (!is.null(datedatacols)) {
+    
+    for (i in seq_along(datedatacols)) {
+      
+      openxlsx::addStyle(wb, sheetname, headingsformat2, rows = tablestart, 
+                         cols = datedatacols[i])
+      
+      openxlsx::addStyle(wb, sheetname, 
+                         style = openxlsx::createStyle(numFmt = datedatafmt[i], halign = "right", 
+                                                       valign = "top"),
+                         rows = (tablestart + 1):(nrow(table_data2) + tablestart + 1), 
+                         cols = datedatacols[i], stack = TRUE, gridExpand = TRUE)
+      
+    }
+    
+  } 
+  
+  # Ensuring date non-data columns are formatted as intended
+  
+  if (!is.null(datenondatacols)) {
+    
+    for (i in seq_along(datenondatacols)) {
+      
+      openxlsx::addStyle(wb, sheetname, 
+                         style = openxlsx::createStyle(numFmt = datenondatafmt[i], halign = "left",
+                                                       valign = "top"),
+                         rows = (tablestart + 1):(nrow(table_data2) + tablestart + 1), 
+                         cols = datenondatacols[i], stack = TRUE, gridExpand = TRUE)
+      
+    }
+    
+  } 
   
   # Updating the data frame to be used to create a table of contents
   

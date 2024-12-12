@@ -104,8 +104,9 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
                            extraline3 = NULL, extraline4 = NULL, extraline5 = NULL, 
                            extraline6 = NULL, sheetname, table_data, headrowsize = NULL, 
                            numdatacols = NULL, numdatacolsdp = NULL, othdatacols = NULL, 
-                           tablename = NULL, gridlines = "Yes", columnwidths = "R_auto", 
-                           width_adj = NULL, colwid_spec = NULL)
+                           datedatacols = NULL, datedatafmt = NULL, datenondatacols = NULL,
+                           datenondatafmt = NULL, tablename = NULL, gridlines = "Yes", 
+                           columnwidths = "R_auto", width_adj = NULL, colwid_spec = NULL)
 ```
 
 This function takes the raw data and transfers them into an accessible
@@ -150,8 +151,13 @@ of if the numbers are numerical or stored as text.
 If there are columns containing data not in the form of numbers (e.g.,
 text) then the user can populate othdatcols with the appropriate
 numerical positions of columns to ensure the automatic formatting of the
-columns in the final workbook. At present it is not possible to fully
-format dates.
+columns in the final workbook. Columns with dates will not be properly
+formatted using othdatacols. Instead of using othdatacols, the
+parameters datedatacols, datedatafmt, datenondatacols and datenondatafmt
+should be used. Populating datedatacols and datedatafmt will ensure that
+dates are aligned top and right in data columns. Populating
+datenondatacols and datenondatafmt will ensure that dates are aligned
+top and left in non-data columns.
 
 If the user wants to give a name to a table in the final Excel workbook
 which is different to the tab name (sheetname) then populate tablename.
