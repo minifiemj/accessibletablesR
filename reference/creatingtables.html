@@ -53,6 +53,10 @@
 <span>  numdatacols <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  numdatacolsdp <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  othdatacols <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  datedatacols <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  datedatafmt <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  datenondatacols <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  datenondatafmt <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  tablename <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  gridlines <span class="op">=</span> <span class="st">"Yes"</span>,</span>
 <span>  columnwidths <span class="op">=</span> <span class="st">"R_auto"</span>,</span>
@@ -121,6 +125,22 @@
 <dd><p>Position of columns in table containing non-number data (optional)</p></dd>
 
 
+<dt id="arg-datedatacols">datedatacols<a class="anchor" aria-label="anchor" href="#arg-datedatacols"></a></dt>
+<dd><p>Position of columns in tables containing date data (optional)</p></dd>
+
+
+<dt id="arg-datedatafmt">datedatafmt<a class="anchor" aria-label="anchor" href="#arg-datedatafmt"></a></dt>
+<dd><p>Date format desired for each column of date data (optional)</p></dd>
+
+
+<dt id="arg-datenondatacols">datenondatacols<a class="anchor" aria-label="anchor" href="#arg-datenondatacols"></a></dt>
+<dd><p>Position of columns in tables containing non-data dates (optional)</p></dd>
+
+
+<dt id="arg-datenondatafmt">datenondatafmt<a class="anchor" aria-label="anchor" href="#arg-datenondatafmt"></a></dt>
+<dd><p>Date format desired for each column of non-data dates (optional)</p></dd>
+
+
 <dt id="arg-tablename">tablename<a class="anchor" aria-label="anchor" href="#arg-tablename"></a></dt>
 <dd><p>Name for table in final output (optional)</p></dd>
 
@@ -173,6 +193,12 @@ displayed figure will be the value rounded to the specified number of decimal pl
 Enter 0 in numdatacolsdp if no decimal places wanted. If an element in numdatacols represents a
 non-character and non-numeric class column, enter 0 in the corresponding position in
 numdatacolsdp.
+datedatacols is the column position(s) of columns containing date data values - it is useful for
+horizontal and vertical aligning data columns
+datedatafmt is the date format for columns with date data
+datenondatacols is the column position(s) of non-data columns containing dates - it is useful for
+horizontal and vertical aligning columns
+datenondatafmt is the date format for non-data columns with dates
 tablename is the name of the table within the worksheet that a screen reader will detect. It is
 automatically selected to be the same as the sheetname unless tablename is populated.
 gridlines is preset to "Yes", change to "No" if gridlines are not wanted.
@@ -209,8 +235,9 @@ extralines1-6 can be set to hyperlinks - e.g., extraline5 = "[BBC](https://www.b
 <span class="r-in"><span>   extraline3 <span class="op">=</span> <span class="st">"Link to definitions"</span>,</span></span>
 <span class="r-in"><span>   sheetname <span class="op">=</span> <span class="st">"Table_3"</span>, table_data <span class="op">=</span> <span class="va">dummydf</span>, tablename <span class="op">=</span> <span class="st">"thirdtable"</span>, headrowsize <span class="op">=</span> <span class="fl">40</span>,</span></span>
 <span class="r-in"><span>   numdatacols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">8</span>,<span class="fl">11</span><span class="op">:</span><span class="fl">13</span><span class="op">)</span>, numdatacolsdp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>   othdatacols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9</span>,<span class="fl">10</span><span class="op">)</span>, columnwidths <span class="op">=</span> <span class="st">"specified"</span>,</span></span>
-<span class="r-in"><span>   colwid_spec <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">18</span>,<span class="fl">18</span>,<span class="fl">18</span>,<span class="fl">15</span>,<span class="fl">17</span>,<span class="fl">15</span>,<span class="fl">12</span>,<span class="fl">17</span>,<span class="fl">12</span>,<span class="fl">13</span>,<span class="fl">23</span>,<span class="fl">22</span>,<span class="fl">12</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   othdatacols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9</span>,<span class="fl">10</span><span class="op">)</span>, datedatacols <span class="op">=</span> <span class="fl">15</span>, datedatafmt <span class="op">=</span> <span class="st">"dd-mm-yyyy"</span>, </span></span>
+<span class="r-in"><span>   datenondatacols <span class="op">=</span> <span class="fl">14</span>, datenondatafmt <span class="op">=</span> <span class="st">"yyyy-mm-dd"</span>, columnwidths <span class="op">=</span> <span class="st">"specified"</span>,</span></span>
+<span class="r-in"><span>   colwid_spec <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">18</span>,<span class="fl">18</span>,<span class="fl">18</span>,<span class="fl">15</span>,<span class="fl">17</span>,<span class="fl">15</span>,<span class="fl">12</span>,<span class="fl">17</span>,<span class="fl">12</span>,<span class="fl">13</span>,<span class="fl">23</span>,<span class="fl">22</span>,<span class="fl">12</span>,<span class="fl">12</span>,<span class="fl">12</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>                                  </span></span>
 <span class="r-in"><span><span class="fu">accessibletablesR</span><span class="fu">::</span><span class="fu"><a href="contentstable.html">contentstable</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
