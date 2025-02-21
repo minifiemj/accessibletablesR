@@ -188,7 +188,6 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
   }
   
-  
   # Checking some of the parameters to ensure they are properly populated, if not the function...
   # ...will error or display a warning in the console
   
@@ -351,7 +350,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     
     stop(strwrap("The variable(s) zzz_temp_zzz or zzz_temp_zzz2 or zzz_temp_zzz3 exist on the table
          data file. The code needs to create temporary variables of the same name. The columns on
-         the table data file will have to named differently.", prefix = " ", initial = ""))
+         the table data file will have to be named differently.", prefix = " ", initial = ""))
     
   }
   
@@ -795,7 +794,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     for (i in seq_along(extralines1)) {
       
       if (stringr::str_detect(extralines1[i], 
-                              "This worksheet contains one table|this worksheet contains one table|\\[note")) {
+                  "This worksheet contains one table|this worksheet contains one table|\\[note")) {
         
         warning(strwrap("If autonotes2 is set to \"Yes\" then the information about the worksheet 
                 containing one table or the notes tab will automatically be inserted and so there is
@@ -844,7 +843,7 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
     for (i in seq_along(extralines1)) {
       
       if (stringr::str_detect(extralines1[i], 
-                              "This worksheet contains one table|this worksheet contains one table")) {
+                          "This worksheet contains one table|this worksheet contains one table")) {
         
         onetablenote <- 1
         

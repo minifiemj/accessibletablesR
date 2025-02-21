@@ -212,9 +212,9 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
       
       if (stringr::str_detect(applictabtext[i], " ") | stringr::str_detect(applictabtext[i], ",")) {
         
-        stop(strwrap("The applictabtext contains whitespace or a comma. applictabtext should either 
-             be a single word (e.g., \"All\") or expressed as a vector (e.g., c(\"Table_1\", 
-             \"Table_2\"))", prefix = " ", initial = ""))
+        stop(strwrap("The applictabtext parameter contains whitespace or a comma. applictabtext 
+             should either be a single word (e.g., \"All\") or expressed as a vector 
+             (e.g., c(\"Table_1\", \"Table_2\"))", prefix = " ", initial = ""))
         
       }
       
@@ -1048,7 +1048,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
       
       warning(strwrap("There is at least one occurrence where the list of applicable tables appears 
               to be all of the tables. The list could read \"All\" instead.", prefix = " ",
-                      initial = ""))
+              initial = ""))
       
     }
     
