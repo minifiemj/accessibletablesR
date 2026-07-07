@@ -1,0 +1,162 @@
+# accessibletablesR::workbook
+
+Create the openxlsx workbook where data tables are added.
+
+## Usage
+
+``` r
+workbook(
+  covertab = NULL,
+  contentstab = NULL,
+  notestab = NULL,
+  autonotes = NULL,
+  definitionstab = NULL,
+  fontnm = "Arial",
+  fontcol = "black",
+  fontsz = 12,
+  fontszst = 14,
+  fontszt = 16,
+  title = NULL,
+  creator = NULL,
+  subject = NULL,
+  category = NULL
+)
+```
+
+## Arguments
+
+- covertab:
+
+  Define whether a cover page is required (optional)
+
+- contentstab:
+
+  Define whether a contents page is required (optional)
+
+- notestab:
+
+  Define whether a notes page is required (optional)
+
+- autonotes:
+
+  Define whether automated listing of notes associated with a table is
+  required (optional)
+
+- definitionstab:
+
+  Define whether a definitions page is required (optional)
+
+- fontnm:
+
+  Define the font name used in the final output (optional)
+
+- fontcol:
+
+  Define the font colour used in the final output (optional)
+
+- fontsz:
+
+  Define the general font size used in the final output (optional)
+
+- fontszst:
+
+  Define the font size for subtitles used in the final output (optional)
+
+- fontszt:
+
+  Define the font size for titles used in the final output (optional)
+
+- title:
+
+  Define the title to go into the document information in the final
+  output (optional)
+
+- creator:
+
+  Define the creator to go into the document information in the final
+  output (optional)
+
+- subject:
+
+  Define the subject to go into the document information in the final
+  output (optional)
+
+- category:
+
+  Define the category to go into the document information in the final
+  output (optional)
+
+## Value
+
+A workbook called zzz_wb_zzz will appear in the global environment.
+Necessary R packages will be installed.
+
+## Details
+
+The workbook function creates a new workbook with the required metadata
+worksheets and defines the workbook's font name, colour and sizes. All
+parameters are optional and preset. If a cover page, contents page,
+notes page or definitions page are required then set the parameter to
+"Yes" when calling the function. autonotes is required if a line is
+wanted towards the top of the worksheet which lists all the note numbers
+associated with the worksheet (set to "Yes" if wanted). Default font is
+Arial with a black colour and size ranging from 12 to 16 - change if
+want to when calling the function. title, creator, subject and category
+refer to the document information properties displayed in the final
+Excel workbook.
+
+## Examples
+
+``` r
+accessibletablesR::workbook(
+   covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes", 
+   autonotes = "Yes", 
+   title = "Fuel consumption and aspects of car design and performance for various cars",
+   creator = "An organisation")
+                            
+accessibletablesR::creatingtables(
+   title = "Fuel consumption and aspects of car design and performance for various cars C",
+   subtitle = "Cars",
+   extraline1 = "Link to contents",
+   extraline2 = "Link to notes",
+   extraline3 = "Link to definitions",
+   sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
+   numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
+   othdatacols = c(9,10), datedatacols = 15, datedatafmt = "dd-mm-yyyy", 
+   datenondatacols = 14, datenondatafmt = "yyyy-mm-dd", columnwidths = "specified",
+   colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12,12,12))
+                                  
+accessibletablesR::contentstable()
+
+accessibletablesR::addnote(notenumber = "note1", 
+   notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google",
+               linktext2 = "https://www.ons.google.co.uk") 
+
+accessibletablesR::notestab()
+
+accessibletablesR::adddefinition(term = "Usual resident", 
+   definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and 
+                 had stayed or intended to stay in the UK for a period of 12 months or more, or 
+                 had a permanent UK address and was outside the UK and intended to be outside the
+                 UK for less than 12 months.")
+
+accessibletablesR::definitionstab()
+
+accessibletablesR::coverpage(
+  title = "Fuel consumption and aspects of car design and performance for various cars",
+  intro = "Some made up data about cars",
+  about = "The output of an example of how to use accessibletablesR",
+  source = "R mtcars",
+  relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+  relatedtext = "mtcars: Motor trend car road tests",
+  dop = "26 October 2023",
+  blank = "There should be no blank cells",
+  names = "Your name",
+  email = "yourname@emailprovider.com",
+  phone = "01111 1111111111111",
+  reuse = "Yes", govdept = NULL)
+                             
+accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
+#> Warning: cannot create file 'D:/mtcarsexample.xlsx', reason 'No such file or directory'
+#> Error in convert_to_ods(filename): File not found
+```

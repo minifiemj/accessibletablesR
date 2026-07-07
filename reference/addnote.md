@@ -1,0 +1,110 @@
+# accessibletablesR::addnote
+
+Add a note to a particular table or tables
+
+## Usage
+
+``` r
+addnote(
+  notenumber,
+  notetext,
+  applictabtext = NULL,
+  linktext1 = NULL,
+  linktext2 = NULL
+)
+```
+
+## Arguments
+
+- notenumber:
+
+  Note number
+
+- notetext:
+
+  Note description
+
+- applictabtext:
+
+  Table(s) a note is applicable to (optional)
+
+- linktext1:
+
+  Text to appear in place of a link associated to a note (optional)
+
+- linktext2:
+
+  Link associated to a note (optional)
+
+## Value
+
+A dataframe containing all information associated to notes
+
+## Details
+
+addnote function will add a note and its description to the workbook,
+specifically in the notes worksheet. Add notes if wanted, if not then do
+not run the addnote function. A link can be provided with each note as
+well a list of tables that the note applies to. notenumber and notetext
+are the only compulsory parameters. All other parameters are optional
+and preset to NULL, so only need to be defined if they are wanted.
+applictabtext should be set to a vector of sheet names if a column is
+wanted which lists which worksheets a note is applicable to. linktext1
+and linktext2: linktext1 should be the text you want to appear and
+linktext2 should be the underlying link to a website, file etc.
+
+## Examples
+
+``` r
+accessibletablesR::workbook(
+   covertab = "Yes", contentstab = "Yes", notestab = "Yes", definitionstab = "Yes", 
+   autonotes = "Yes", 
+   title = "Fuel consumption and aspects of car design and performance for various cars",
+   creator = "An organisation")
+                            
+accessibletablesR::creatingtables(
+   title = "Fuel consumption and aspects of car design and performance for various cars C",
+   subtitle = "Cars",
+   extraline1 = "Link to contents",
+   extraline2 = "Link to notes",
+   extraline3 = "Link to definitions",
+   sheetname = "Table_3", table_data = dummydf, tablename = "thirdtable", headrowsize = 40,
+   numdatacols = c(2:8,11:13), numdatacolsdp = c(1,0,1,0,2,1,2,0,0,3),
+   othdatacols = c(9,10), datedatacols = 15, datedatafmt = "dd-mm-yyyy", 
+   datenondatacols = 14, datenondatafmt = "yyyy-mm-dd", columnwidths = "specified",
+   colwid_spec = c(18,18,18,15,17,15,12,17,12,13,23,22,12,12,12))
+                                  
+accessibletablesR::contentstable()
+
+accessibletablesR::addnote(notenumber = "note1", 
+   notetext = "Google is an internet search engine", applictabtext = "All", linktext1 = "Google",
+               linktext2 = "https://www.ons.google.co.uk") 
+
+accessibletablesR::notestab()
+
+accessibletablesR::adddefinition(term = "Usual resident", 
+   definition = "A usual resident is anyone who, on Census Day, 21 March 2021 was in the UK and 
+                 had stayed or intended to stay in the UK for a period of 12 months or more, or 
+                 had a permanent UK address and was outside the UK and intended to be outside the
+                 UK for less than 12 months.")
+
+accessibletablesR::definitionstab()
+
+accessibletablesR::coverpage(
+  title = "Fuel consumption and aspects of car design and performance for various cars",
+  intro = "Some made up data about cars",
+  about = "The output of an example of how to use accessibletablesR",
+  source = "R mtcars",
+  relatedlink = "https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)",
+  relatedtext = "mtcars: Motor trend car road tests",
+  dop = "26 October 2023",
+  blank = "There should be no blank cells",
+  names = "Your name",
+  email = "yourname@emailprovider.com",
+  phone = "01111 1111111111111",
+  reuse = "Yes", govdept = NULL)
+                             
+accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
+#> Warning: cannot create file 'D:/mtcarsexample.xlsx', reason 'No such file or directory'
+#> Error in convert_to_ods(filename): File not found
+```
