@@ -659,19 +659,55 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
     for (i in seq_along(order)) {
       
-      if (order[i] == intro) {introstartpos <- orderl[i] + length(title)}
-      else if (order[i] == about) {aboutstartpos <- orderl[i] + length(title)}
-      else if (order[i] == source) {sourcestartpos <- orderl[i] + length(title)}
-      else if (order[i] == relatedlink[1]) {relatedstartpos <- orderl[i] + length(title)}
-      else if (order[i] == dop) {dopstartpos <- orderl[i] + length(title)}
-      else if (order[i] == blank) {blankstartpos <- orderl[i] + length(title)}
-      else if (order[i] == names) {namesstartpos <- orderl[i] + length(title)}
-      else if (order[i] == email) {emailstartpos <- orderl[i] + length(title)}
-      else if (order[i] == phone) {phonestartpos <- orderl[i] + length(title)}
-      else if (order[i] == reuse) {reusestartpos <- orderl[i] + length(title)}
-      else if (order[i] %in% extrafields) 
-      {extrastartpos <- append(extrastartpos, orderl[i] + length(title))}
-      else if (order[i] == additlinks[1]) {additstartpos <- orderl[i] + length(title)}
+      if (!is.null(intro)) {
+        if (order[i] == intro) {introstartpos <- orderl[i] + length(title)}
+      } 
+      
+      if (!is.null(about)) {
+          if (order[i] == about) {aboutstartpos <- orderl[i] + length(title)}
+      } 
+      
+      if (!is.null(source)) {
+          if (order[i] == source) {sourcestartpos <- orderl[i] + length(title)}
+      } 
+      
+      if (!is.null(relatedlink)) {
+          if (order[i] == relatedlink[1]) {relatedstartpos <- orderl[i] + length(title)}
+      }
+      
+      if (!is.null(dop)) {
+          if (order[i] == dop) {dopstartpos <- orderl[i] + length(title)}
+      } 
+      
+      if (!is.null(blank)) {
+          if (order[i] == blank) {blankstartpos <- orderl[i] + length(title)}
+      }
+      
+      if (!is.null(names)) {
+          if (order[i] == names) {namesstartpos <- orderl[i] + length(title)}
+      }
+      
+      if (!is.null(email)) {
+          if (order[i] == email) {emailstartpos <- orderl[i] + length(title)}
+      } 
+      
+      if (!is.null(phone)) {
+          if (order[i] == phone) {phonestartpos <- orderl[i] + length(title)}
+      } 
+      
+      if (!is.null(reuse)) {
+          if (order[i] == reuse) {reusestartpos <- orderl[i] + length(title)}
+      }
+      
+      if (!is.null(extrafields)) {
+          if (order[i] %in% extrafields) {
+            extrastartpos <- append(extrastartpos, orderl[i] + length(title))
+          }
+      } 
+    
+      if (!is.null(additlinks)) {
+          if (order[i] == additlinks[1]) {additstartpos <- orderl[i] + length(title)}
+      }
       
     }
     
