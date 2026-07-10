@@ -22,3 +22,7 @@ Useful links:
 ## Author
 
 **Maintainer**: Matthew Minifie <minifiemj@gmail.com>
+
+Authors:
+
+- Matthew Minifie <minifiemj@gmail.com>

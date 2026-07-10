@@ -52,6 +52,7 @@
 <span>  phone <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  reuse <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  govdept <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cyear <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  gridlines <span class="op">=</span> <span class="st">"Yes"</span>,</span>
 <span>  extrafields <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  extrafieldsb <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -118,6 +119,10 @@
 <dd><p>UK Government department name (optional)</p></dd>
 
 
+<dt id="arg-cyear">cyear<a class="anchor" aria-label="anchor" href="#arg-cyear"></a></dt>
+<dd><p>Crown copyright year (optional)</p></dd>
+
+
 <dt id="arg-gridlines">gridlines<a class="anchor" aria-label="anchor" href="#arg-gridlines"></a></dt>
 <dd><p>Define whether gridlines are present (optional)</p></dd>
 
@@ -163,6 +168,8 @@ actual hyperlink, relatedtext is the text you want to appear to the user).
 names: Contact name / email: Contact email / phone: Contact telephone.
 reuse: Set to "Yes" if you want the information displayed about the reuse of the data (will
 automatically be populated).
+cyear: If reuse is set to "Yes" then set cyear to the year you want for the Crown copyright or
+leave as NULL if you want the current year or set to "No" if you do not want the year displayed
 govdept: Default is "ONS" but if want reuse information without reference to ONS change govdept.
 extrafields: Any additional fields that the user wants present on the cover page.
 extrafieldsb: The text to go in any additional fields. Only one row per field. extrafields and
@@ -227,7 +234,7 @@ e.g., source = "[ONS](https://www.ons.gov.uk)".</p>
 <span class="r-in"><span>  names <span class="op">=</span> <span class="st">"Your name"</span>,</span></span>
 <span class="r-in"><span>  email <span class="op">=</span> <span class="st">"yourname@emailprovider.com"</span>,</span></span>
 <span class="r-in"><span>  phone <span class="op">=</span> <span class="st">"01111 1111111111111"</span>,</span></span>
-<span class="r-in"><span>  reuse <span class="op">=</span> <span class="st">"Yes"</span>, govdept <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  reuse <span class="op">=</span> <span class="st">"Yes"</span>, govdept <span class="op">=</span> <span class="cn">NULL</span>, cyear <span class="op">=</span> <span class="fl">2023</span><span class="op">)</span></span></span>
 <span class="r-in"><span>                             </span></span>
 <span class="r-in"><span><span class="fu">accessibletablesR</span><span class="fu">::</span><span class="fu"><a href="savingtables.html">savingtables</a></span><span class="op">(</span><span class="st">"D:/mtcarsexample.xlsx"</span>, odsfile <span class="op">=</span> <span class="st">"Yes"</span>, deletexlsx <span class="op">=</span> <span class="st">"No"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>cannot create file 'D:/mtcarsexample.xlsx', reason 'No such file or directory'</span>
@@ -244,7 +251,7 @@ e.g., source = "[ONS](https://www.ons.gov.uk)".</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

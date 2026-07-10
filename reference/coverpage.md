@@ -19,6 +19,7 @@ coverpage(
   phone = NULL,
   reuse = NULL,
   govdept = NULL,
+  cyear = NULL,
   gridlines = "Yes",
   extrafields = NULL,
   extrafieldsb = NULL,
@@ -84,6 +85,10 @@ coverpage(
 
   UK Government department name (optional)
 
+- cyear:
+
+  Crown copyright year (optional)
+
 - gridlines:
 
   Define whether gridlines are present (optional)
@@ -129,21 +134,24 @@ publications associated with the data (relatedlink is the actual
 hyperlink, relatedtext is the text you want to appear to the user).
 names: Contact name / email: Contact email / phone: Contact telephone.
 reuse: Set to "Yes" if you want the information displayed about the
-reuse of the data (will automatically be populated). govdept: Default is
-"ONS" but if want reuse information without reference to ONS change
-govdept. extrafields: Any additional fields that the user wants present
-on the cover page. extrafieldsb: The text to go in any additional
-fields. Only one row per field. extrafields and extrafields must be
-vectors of the same length. additlinks: Any additional hyperlinks the
-user wants. addittext: The text to appear over any additional
-hyperlinks. additlinks and addittext must be vectors of the same length.
-order: If the user wants the cover page to be ordered in a specific way,
-list the fields in a vector with each field name in speech marks. e.g.,
-order = c("intro", "about", relatedlink", "names", "phone", "email",
-"extrafields"). Change gridlines to "No" if gridlines are not wanted.
-Column width automatically set unless user specifies a value in
-colwid_spec. intro, about, source, dop, blank, names, phone can be set
-to hyperlinks - e.g., source = "\[ONS\](https://www.ons.gov.uk)".
+reuse of the data (will automatically be populated). cyear: If reuse is
+set to "Yes" then set cyear to the year you want for the Crown copyright
+or leave as NULL if you want the current year or set to "No" if you do
+not want the year displayed govdept: Default is "ONS" but if want reuse
+information without reference to ONS change govdept. extrafields: Any
+additional fields that the user wants present on the cover page.
+extrafieldsb: The text to go in any additional fields. Only one row per
+field. extrafields and extrafields must be vectors of the same length.
+additlinks: Any additional hyperlinks the user wants. addittext: The
+text to appear over any additional hyperlinks. additlinks and addittext
+must be vectors of the same length. order: If the user wants the cover
+page to be ordered in a specific way, list the fields in a vector with
+each field name in speech marks. e.g., order = c("intro", "about",
+relatedlink", "names", "phone", "email", "extrafields"). Change
+gridlines to "No" if gridlines are not wanted. Column width
+automatically set unless user specifies a value in colwid_spec. intro,
+about, source, dop, blank, names, phone can be set to hyperlinks - e.g.,
+source = "\[ONS\](https://www.ons.gov.uk)".
 
 ## Examples
 
@@ -194,7 +202,7 @@ accessibletablesR::coverpage(
   names = "Your name",
   email = "yourname@emailprovider.com",
   phone = "01111 1111111111111",
-  reuse = "Yes", govdept = NULL)
+  reuse = "Yes", govdept = NULL, cyear = 2023)
                              
 accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 #> Warning: cannot create file 'D:/mtcarsexample.xlsx', reason 'No such file or directory'
