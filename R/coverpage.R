@@ -17,6 +17,8 @@
 #' names: Contact name / email: Contact email / phone: Contact telephone.
 #' reuse: Set to "Yes" if you want the information displayed about the reuse of the data (will 
 #' automatically be populated).
+#' cyear: If reuse is set to "Yes" then set cyear to the year you want for the Crown copyright or 
+#' leave as NULL if you want the current year or set to "No" if you do not want the year displayed
 #' govdept: Default is "ONS" but if want reuse information without reference to ONS change govdept.
 #' extrafields: Any additional fields that the user wants present on the cover page.
 #' extrafieldsb: The text to go in any additional fields. Only one row per field. extrafields and 
@@ -44,6 +46,7 @@
 #' @param email Contact email (optional)
 #' @param phone Contact phone number (optional)
 #' @param reuse Define whether want to use default text on reuse of publication (optional)
+#' @param cyear Crown copyright year (optional)
 #' @param gridlines Define whether gridlines are present (optional)
 #' @param govdept UK Government department name (optional)
 #' @param extrafields Additional fields for the cover page (optional)
@@ -102,7 +105,7 @@
 #'   names = "Your name",
 #'   email = "yourname@emailprovider.com",
 #'   phone = "01111 1111111111111",
-#'   reuse = "Yes", govdept = NULL)
+#'   reuse = "Yes", govdept = NULL, cyear = 2023)
 #'                              
 #' accessibletablesR::savingtables("D:/mtcarsexample.xlsx", odsfile = "Yes", deletexlsx = "No")
 #' 
@@ -110,7 +113,7 @@
 
 coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedlink = NULL, 
                       relatedtext = NULL, dop = NULL, blank = NULL, names = NULL, email = NULL, 
-                      phone = NULL, reuse = NULL, govdept = NULL, gridlines = "Yes",
+                      phone = NULL, reuse = NULL, govdept = NULL, cyear = NULL, gridlines = "Yes",
                       extrafields = NULL, extrafieldsb = NULL, additlinks = NULL, addittext = NULL, 
                       colwid_spec = NULL, order = NULL) {
   
@@ -165,10 +168,10 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   
   if (length(title) > 1 | length(intro) > 1 | length(about) > 1 | length(source) > 1 | 
       length(dop) > 1 | length(blank) > 1 | length(names) > 1 | length(email) > 1 | 
-      length(phone) > 1 | length(reuse) > 1 | length(govdept) > 1) {
+      length(phone) > 1 | length(reuse) > 1 | length(govdept) > 1 | length(cyear) > 1) {
     
-    stop(strwrap("One of title, intro, about, source, dop, blank, names, email, phone, reuse and 
-         govdept is more than a single entity", prefix = " ", initial = ""))
+    stop(strwrap("One of title, intro, about, source, dop, blank, names, email, phone, reuse, 
+         govdept and cyear is more than a single entity", prefix = " ", initial = ""))
     
   }
   
@@ -270,6 +273,32 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     
   }
   
+  if (reuse == "No" & !is.null(cyear)) {
+    
+    warning("reuse and cyear are inconsistent. Please check this.")
+    
+  }
+  
+  if (!is.null(cyear)) {
+      
+    if (tolower(cyear) == "no" | tolower(cyear) == "n") {
+        
+        cyear <- "No"
+        
+    } else if (grepl("\\D", cyear, perl = TRUE) == TRUE) {
+      
+      stop("cyear contains non-digits but should be numeric and an integer")
+      
+    }
+    
+  }
+  
+  if (reuse == "Yes" & is.null(cyear)) {
+    
+    cyear <- substr(Sys.Date(), 1, regexpr("-", Sys.Date()[1]) - 1)
+    
+  }
+  
   if (!is.null(phone)) {
     
     if (stringr::str_remove_all(phone, "[\" \"\\[\\]\\(\\)+[:digit:]]") != "") {
@@ -319,7 +348,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
   covernumrow <- length(title) + length(intro) + intro2 + length(about) + about2 + length(source) + 
     source2 + length(relatedlink) + related2 + length(dop) + dop2 + length(blank) + blank2 + 
     length(extrafields) + length(extrafieldsb) + additlinks2 + length(additlinks) + length(names) + 
-    names2 + length(email) + length(phone) + length(reuse) + 4
+    names2 + length(email) + length(phone) + length(reuse) + 5
   
   # Populating the cover page with the required text
   
@@ -585,7 +614,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
         
         for (i in (reusepos + 1):length(order)) {
           
-          orderl[i] <- orderl[i] + 3
+          orderl[i] <- orderl[i] + 4
           
         }
         
@@ -1297,6 +1326,17 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
                      "email: psi@nationalarchives.gov.uk")
     reuse3 <- paste0("Where we have identified any third party copyright information you will ",
                      "need to obtain permission from the copyright holders concerned.")
+    
+    if (cyear == "No") {
+      
+      reuse4 <- paste0("\u00A9 Crown copyright")
+      
+    } else {
+      
+      reuse4 <- paste0("\u00A9 Crown copyright ", cyear)
+      
+    }
+    
     licencelink <- "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
     licencetext <- "View the Open Government Licence"
     
@@ -1324,6 +1364,7 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
     openxlsx::writeData(wb, "Cover", reuselink, startRow = reusestart + 2, startCol = 1)
     openxlsx::writeData(wb, "Cover", reuse2, startRow = reusestart + 3, startCol = 1)
     openxlsx::writeData(wb, "Cover", reuse3, startRow = reusestart + 4, startCol = 1)
+    openxlsx::writeData(wb, "Cover", reuse4, startRow = reusestart + 5, startCol = 1)
     
     openxlsx::setRowHeights(wb, "Cover", reusestart, fontszst * (25/14))
     openxlsx::addStyle(wb, "Cover", subtitleformat, rows = reusestart, cols = 1)

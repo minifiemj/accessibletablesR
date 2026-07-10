@@ -143,7 +143,7 @@ accessibletablesR::coverpage(
   names = "Your name",
   email = "yourname@emailprovider.com",
   phone = "01111 1111111111111",
-  reuse = "Yes", govdept = NULL)
+  reuse = "Yes", cyear = NULL, govdept = NULL)
 
 # Below is an example of how to include extra fields, additional links and reordering the fields
 # The extrafields can be split out in the order argument if required
@@ -161,7 +161,7 @@ accessibletablesR::coverpage(
 #  names = "Your name",
 #  email = "yourname@emailprovider.com",
 #  phone = "01111 1111111111111",
-#  reuse = "Yes", govdept = NULL,
+#  reuse = "Yes", cyear = NULL, govdept = NULL,
 #  extrafields = c("Extra heading 1", "Extra heading2", "Extra heading3"),
 #  extrafieldsb = c("Another line", "Another line", "Another line"),
 #  additlinks = c("https://www.bbc.co.uk", "https://google.co.uk"),

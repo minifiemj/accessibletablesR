@@ -68,7 +68,7 @@ badge_repostatus <- function(status, alt = NULL) {
 }
 ```
 
-`r badge_repostatus("Active")`
+`r badger::badge_repostatus("Active")`
 `r badger::badge_github_version("minifiemj/accessibletablesR", "green")`
 `r badger::badge_cran_release("accessibletablesR", "orange")`
 `r badger::badge_license("MIT")`
@@ -206,7 +206,7 @@ a dataframe called extracols_contents in the global environment before running t
 ```{r, eval = FALSE}
 coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedlink = NULL,
                       relatedtext = NULL, dop = NULL, blank = NULL, names = NULL, email = NULL, 
-                      phone = NULL, reuse = NULL, govdept = NULL, gridlines = "Yes",
+                      phone = NULL, reuse = NULL, cyear = NULL, govdept = NULL, gridlines = "Yes",
                       extrafields = NULL, extrafieldsb = NULL, additlinks = NULL, addittext = NULL,
                       colwid_spec = NULL, order = NULL)
 ```
@@ -214,15 +214,14 @@ coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedl
 title is the only compulsory parameter. It is the title to be displayed on the cover sheet. Other optional sections of a cover page that can be populated are "Introductory information" (info), 
 "About these data" (about), "Source" (source), "Related publications" (relatedlink, relatedtext), 
 "Date of publication" (dop), "Blank cells" (blank), "Contact" (names, email, phone), 
-"Additional links" (additlinks) and "Reusing this publication" (reuse, govdept). Extra fields can be added using extrafields. One row is allowed for each extra field. The text to populate the extra 
-fields can be provided in extrafieldsb. If no gridlines are wanted on the cover page in the final workbook set gridlines = "No". The column width is automatically set but can be altered by using colwid_spec.
+"Additional links" (additlinks) and "Reusing this publication" (reuse, cyear, govdept). Extra fields can be added using extrafields. One row is allowed for each extra field. The text to populate the extra fields can be provided in extrafieldsb. If no gridlines are wanted on the cover page in the final workbook set gridlines = "No". The column width is automatically set but can be altered by using colwid_spec.
 
 The ordering of the fields can be amended by populating order. order can be set to a vector where 
 the field names are provided in speech marks.
 
 The "Reusing this publication" section has been designed for UK government departments and will not apply for other organisations. If a user is from the Office for National Statistics (ONS) and wants 
 a "Reusing this publication" section then set reuse = "Yes". If a user is from a UK government department but not the Office for National Statistics (ONS) set reuse = "Yes" and govdept = "name 
-of organisation".
+of organisation". cyear can be set to the year desired for the Crown copyright or left blank to generate the current year or set to "No" to not display any year.
 
 intro, about, source, dop, blank, names and phone can be set to hyperlinks if desired. An example of how to do so is: 
 

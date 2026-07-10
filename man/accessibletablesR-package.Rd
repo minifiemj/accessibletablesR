@@ -22,5 +22,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Matthew Minifie \email{minifiemj@gmail.com}
 
+Authors:
+\itemize{
+  \item Matthew Minifie \email{minifiemj@gmail.com}
+}
+
 }
 \keyword{internal}
