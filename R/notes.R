@@ -968,12 +968,14 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
     
     for (i in seq_along(tablelist)) {
       
+      patternx <- paste0("\\b", tablelist[i], "\\b")
+      
       notesdf7 <- notesdf %>%
         dplyr::rename(applic_tab = "Applicable tables") %>%
         dplyr::mutate(applic_tab = 
                         dplyr::case_when(applic_tab == "All" ~ paste(tablelist, collapse = ", "),
                                          TRUE ~ applic_tab)) %>%
-        dplyr::filter(stringr::str_detect(.data$applic_tab, tablelist[i]) == TRUE)
+        dplyr::filter(stringr::str_detect(.data$applic_tab, patternx) == TRUE)
       
       notes <- paste0("[", notesdf7[[1]], "]")
       
@@ -1019,7 +1021,7 @@ notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL,
       
       openxlsx::writeData(wb, tablelist[i], notes7, startCol = 1, startRow = tempstartrow)
       
-      rm(notes, notes6, notes7, tempstartrow, notesdf7)
+      rm(notes, notes6, notes7, tempstartrow, notesdf7, patternx)
       
     }
     
