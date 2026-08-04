@@ -166,6 +166,8 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
     
   }
   
+  notenumber <- stringr::str_remove_all(notenumber, " ")
+  
   if (is.numeric(notenumber)) {
     
     notenumber <- paste0("note", as.character(notenumber))
@@ -181,7 +183,7 @@ addnote <- function(notenumber, notetext, applictabtext = NULL, linktext1 = NULL
   
   if (tolower(notetemp1) == "note") {
     
-    notenumber <- paste0("note", notetemp2)
+    notenumber <- paste0("note ", notetemp2)
     notetemp1 <- "note"
     
   }
