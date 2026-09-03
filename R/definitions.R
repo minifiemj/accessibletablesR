@@ -273,11 +273,20 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
 #' Column widths are automatically set but the user can specify the required widths in colwid_spec.
 #' Extra columns can be added by setting extracols to "Yes" and creating a dataframe 
 #' extracols_definitions with the desired extra columns.
+#' If borders around each cell of the table are required then set borders = "all"; if borders are
+#' only wanted around the edge of the table then set borders = "table"; if borders are wanted only
+#' in the table headings row then set borders = "heading" or "heading2", the difference being that
+#' heading will generate borders around all the edges of a cell and heading2 will generate borders
+#' only along the top and bottom of cells; if borders are wanted around the table and in the table 
+#' headings row then set borders = c("table", "heading") or c("table", "heading2); if a border is 
+#' wanted along the bottom of the table rather than around the whole table then set 
+#' borders = "bottom".
 #' 
 #' @param contentslink Define whether a link to the contents page is wanted (optional)
 #' @param gridlines Define whether gridlines are present (optional)
 #' @param colwid_spec Define widths of columns (optional)
 #' @param extracols Define whether additional columns required (optional)
+#' @param borders Define whether any borders are wanted and, if so, where (optional)
 #' 
 #' @returns A worksheet of the definitions page for the workbook.
 #' 
@@ -337,7 +346,7 @@ adddefinition <- function(term, definition, linktext1 = NULL, linktext2 = NULL) 
 #' @export
 
 definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, 
-                           extracols = NULL) {
+                           extracols = NULL, borders = NULL) {
   
   if (!("dplyr" %in% utils::installed.packages()) |
       !("conflicted" %in% utils::installed.packages()) |
@@ -433,6 +442,27 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
     
     stop(strwrap("extracols has not been populated properly. It must be a single word, either 
          \"Yes\" or \"No\".", prefix = " ", initial = ""))
+    
+  }
+  
+  if (!is.null(borders)) {
+    
+    borders <- tolower(borders)
+    
+    if (!("all" %in% borders | "heading" %in% borders | "table" %in% borders |
+          "heading2" %in% borders | "bottom" %in% borders)) {
+      
+      stop(strwrap("None of the expected elements in borders can be detected. borders should be NULL 
+           or contain one or more of \"all\", \"heading\" or \"table\".", 
+                   prefix = " ", initial = ""))
+      
+    } else if ("heading" %in% borders & "heading2" %in% borders) {
+      
+      warning(strwrap("Both heading and heading2 have been specified in borders, but only heading 
+              will be considered. If you want the heading2 formatting option then please remove 
+              heading from borders."))
+      
+    }
     
   }
   
@@ -731,6 +761,87 @@ definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec =
   openxlsx::addStyle(wb, "Definitions", extraformat2, 
                      rows = (startingrow + 1):(nrow(definitionsdf) + startingrow + 1), 
                      cols = 1:2, stack = TRUE, gridExpand = TRUE)
+  
+  # Formatting borders, if required
+  
+  if (!is.null(borders)) {
+    
+    if ("all" %in% borders) {
+      
+      borderstyle <- openxlsx::createStyle(border = "TopBottomLeftRight", borderColour = "#000000")
+      
+      openxlsx::addStyle(wb, "Definitions", borderstyle, 
+                         rows = startingrow:(nrow(definitionsdf) + startingrow),
+                         cols = 1:ncol(definitionsdf), stack = TRUE, gridExpand = TRUE)
+      
+      rm(borderstyle)
+      
+    } else if (!("all" %in% borders)) {
+      
+      if ("heading" %in% borders) {
+        
+        borderstyle <- openxlsx::createStyle(border = "TopBottomLeftRight", 
+                                             borderColour = "#000000")
+        
+        openxlsx::addStyle(wb, "Definitions", borderstyle,
+                           rows = startingrow, cols = 1:ncol(definitionsdf), stack = TRUE, 
+                           gridExpand = TRUE)
+        
+        rm(borderstyle)
+        
+      } else if ("heading2" %in% borders) {
+        
+        borderstyle <- openxlsx::createStyle(border = c("top", "bottom"), 
+                                             borderColour = "#000000")
+        
+        openxlsx::addStyle(wb, "Definitions", borderstyle,
+                           rows = startingrow, cols = 1:ncol(definitionsdf), stack = TRUE, 
+                           gridExpand = TRUE)
+        
+        rm(borderstyle)
+        
+      }
+      
+      if ("table" %in% borders) {
+        
+        borderstyle <- openxlsx::createStyle(border = "top", borderColour = "#000000")
+        borderstyle2 <- openxlsx::createStyle(border = "bottom", borderColour = "#000000")
+        borderstyle3 <- openxlsx::createStyle(border = "left", borderColour = "#000000")
+        borderstyle4 <- openxlsx::createStyle(border = "right", borderColour = "#000000")
+        
+        openxlsx::addStyle(wb, "Definitions", borderstyle, rows = startingrow, 
+                           cols = 1:ncol(definitionsdf), stack = TRUE, gridExpand = TRUE)
+        
+        openxlsx::addStyle(wb, "Definitions", borderstyle2, 
+                           rows = startingrow + nrow(definitionsdf), 
+                           cols = 1:ncol(definitionsdf), stack = TRUE, gridExpand = TRUE)
+        
+        openxlsx::addStyle(wb, "Definitions", borderstyle3, 
+                           rows = startingrow:(nrow(definitionsdf) + startingrow), 
+                           cols = 1, stack = TRUE, gridExpand = TRUE)
+        
+        openxlsx::addStyle(wb, "Definitions", borderstyle4, 
+                           rows = startingrow:(nrow(definitionsdf) + startingrow), 
+                           cols = ncol(definitionsdf), stack = TRUE, gridExpand = TRUE)
+        
+      }
+      
+      if ("bottom" %in% borders) {
+        
+        borderstyle <- openxlsx::createStyle(border = "bottom", 
+                                             borderColour = "#000000")
+        
+        openxlsx::addStyle(wb, "Definitions", borderstyle,
+                           rows = startingrow + nrow(definitionsdf), cols = 1:ncol(definitionsdf), 
+                           stack = TRUE, gridExpand = TRUE)
+        
+        rm(borderstyle)
+        
+      }
+      
+    }
+    
+  }
   
   if ((!is.null(colwid_spec) & !is.numeric(colwid_spec)) | 
       (!is.null(colwid_spec) & length(colwid_spec) != ncol(definitionsdf))) {

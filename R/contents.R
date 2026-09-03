@@ -12,10 +12,19 @@
 #' Column widths are automatically set unless user defines specific values in colwid_spec.
 #' Extra columns can be added, need to set extracols to "Yes" and create a dataframe 
 #' extracols_contents with the desired extra columns.
+#' If borders around each cell of the table are required then set borders = "all"; if borders are
+#' only wanted around the edge of the table then set borders = "table"; if borders are wanted only
+#' in the table headings row then set borders = "heading" or "heading2", the difference being that
+#' heading will generate borders around all the edges of a cell and heading2 will generate borders
+#' only along the top and bottom of cells; if borders are wanted around the table and in the table 
+#' headings row then set borders = c("table", "heading") or c("table", "heading2); if a border is 
+#' wanted along the bottom of the table rather than around the whole table then set 
+#' borders = "bottom".
 #' 
 #' @param gridlines Define whether gridlines are present (optional)
 #' @param colwid_spec Define widths of columns (optional)
 #' @param extracols Define whether additional columns required (optional)
+#' @param borders Define whether any borders are wanted and, if so, where (optional)
 #' 
 #' @returns A worksheet with a contents page of tables in the workbook.
 #' 
@@ -74,7 +83,8 @@
 #' 
 #' @export
 
-contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NULL) {
+contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NULL,
+                          borders = NULL) {
   
   if (!("dplyr" %in% utils::installed.packages()) |
       !("conflicted" %in% utils::installed.packages()) |
@@ -171,6 +181,27 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
     
     stop(strwrap("extracols has not been populated properly. It must be a single word, either 
          \"Yes\" or \"No\".", prefix = " ", initial = ""))
+    
+  }
+  
+  if (!is.null(borders)) {
+    
+    borders <- tolower(borders)
+    
+    if (!("all" %in% borders | "heading" %in% borders | "table" %in% borders |
+          "heading2" %in% borders | "bottom" %in% borders)) {
+      
+      stop(strwrap("None of the expected elements in borders can be detected. borders should be NULL 
+           or contain one or more of \"all\", \"heading\" or \"table\".", 
+                   prefix = " ", initial = ""))
+      
+    } else if ("heading" %in% borders & "heading2" %in% borders) {
+      
+      warning(strwrap("Both heading and heading2 have been specified in borders, but only heading 
+              will be considered. If you want the heading2 formatting option then please remove 
+              heading from borders."))
+      
+    }
     
   }
   
@@ -368,6 +399,86 @@ contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NUL
   openxlsx::setRowHeights(wb, "Contents", 2, fontsz * (25/12))
   
   contentrows <- nrow(tabcontents)
+  
+  # Formatting borders, if required
+  
+  if (!is.null(borders)) {
+    
+    if ("all" %in% borders) {
+      
+      borderstyle <- openxlsx::createStyle(border = "TopBottomLeftRight", borderColour = "#000000")
+      
+      openxlsx::addStyle(wb, "Contents", borderstyle, 
+                         rows = 3:(nrow(tabcontents) + 3),
+                         cols = 1:ncol(tabcontents), stack = TRUE, gridExpand = TRUE)
+      
+      rm(borderstyle)
+      
+    } else if (!("all" %in% borders)) {
+      
+      if ("heading" %in% borders) {
+        
+        borderstyle <- openxlsx::createStyle(border = "TopBottomLeftRight", 
+                                             borderColour = "#000000")
+        
+        openxlsx::addStyle(wb, "Contents", borderstyle,
+                           rows = 3, cols = 1:ncol(tabcontents), stack = TRUE, 
+                           gridExpand = TRUE)
+        
+        rm(borderstyle)
+        
+      } else if ("heading2" %in% borders) {
+        
+        borderstyle <- openxlsx::createStyle(border = c("top", "bottom"), 
+                                             borderColour = "#000000")
+        
+        openxlsx::addStyle(wb, "Contents", borderstyle,
+                           rows = 3, cols = 1:ncol(tabcontents), stack = TRUE, 
+                           gridExpand = TRUE)
+        
+        rm(borderstyle)
+        
+      }
+      
+      if ("table" %in% borders) {
+        
+        borderstyle <- openxlsx::createStyle(border = "top", borderColour = "#000000")
+        borderstyle2 <- openxlsx::createStyle(border = "bottom", borderColour = "#000000")
+        borderstyle3 <- openxlsx::createStyle(border = "left", borderColour = "#000000")
+        borderstyle4 <- openxlsx::createStyle(border = "right", borderColour = "#000000")
+        
+        openxlsx::addStyle(wb, "Contents", borderstyle, rows = 3, 
+                           cols = 1:ncol(tabcontents), stack = TRUE, gridExpand = TRUE)
+        
+        openxlsx::addStyle(wb, "Contents", borderstyle2, rows = 3 + nrow(tabcontents), 
+                           cols = 1:ncol(tabcontents), stack = TRUE, gridExpand = TRUE)
+        
+        openxlsx::addStyle(wb, "Contents", borderstyle3, 
+                           rows = 3:(nrow(tabcontents) + 3), cols = 1, 
+                           stack = TRUE, gridExpand = TRUE)
+        
+        openxlsx::addStyle(wb, "Contents", borderstyle4, 
+                           rows = 3:(nrow(tabcontents) + 3), cols = ncol(tabcontents), 
+                           stack = TRUE, gridExpand = TRUE)
+        
+      }
+      
+      if ("bottom" %in% borders) {
+        
+        borderstyle <- openxlsx::createStyle(border = "bottom", 
+                                             borderColour = "#000000")
+        
+        openxlsx::addStyle(wb, "Contents", borderstyle,
+                           rows = 3 + nrow(tabcontents), cols = 1:ncol(tabcontents), 
+                           stack = TRUE, gridExpand = TRUE)
+        
+        rm(borderstyle)
+        
+      }
+      
+    }
+    
+  }
   
   # Creating hyperlinks so user can quickly navigate through the spreadsheet
   

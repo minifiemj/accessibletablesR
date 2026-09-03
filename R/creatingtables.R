@@ -56,6 +56,14 @@
 #' If a link to the definitions page is required, set one of the extralines to "Link to 
 #' definitions".
 #' extralines1-6 can be set to hyperlinks - e.g., extraline5 = "[BBC](https://www.bbc.co.uk)".
+#' If borders around each cell of the table are required then set borders = "all"; if borders are
+#' only wanted around the edge of the table then set borders = "table"; if borders are wanted only
+#' in the table headings row then set borders = "heading" or "heading2", the difference being that
+#' heading will generate borders around all the edges of a cell and heading2 will generate borders
+#' only along the top and bottom of cells; if borders are wanted around the table and in the table 
+#' headings row then set borders = c("table", "heading") or c("table", "heading2); if a border is 
+#' wanted along the bottom of the table rather than around the whole table then set 
+#' borders = "bottom".
 #' 
 #' @param title Title of worksheet
 #' @param subtitle Subtitle of worksheet (optional)
@@ -80,6 +88,7 @@
 #' @param columnwidths Define method for assigning widths of columns (optional)
 #' @param width_adj Additional width adjustment for columns (optional)
 #' @param colwid_spec Define widths of columns (optional)
+#' @param borders Define whether any borders are wanted and, if so, where (optional)
 #' 
 #' @returns A worksheet with data formatted to meet accessibility criteria.
 #' 
@@ -144,7 +153,8 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
                            numdatacols = NULL, numdatacolsdp = NULL, othdatacols = NULL, 
                            datedatacols = NULL, datedatafmt = NULL, datenondatacols = NULL,
                            datenondatafmt = NULL, tablename = NULL, gridlines = "Yes", 
-                           columnwidths = "R_auto", width_adj = NULL, colwid_spec = NULL) {
+                           columnwidths = "R_auto", width_adj = NULL, colwid_spec = NULL,
+                           borders = NULL) {
   
   if (!("dplyr" %in% utils::installed.packages()) | 
       !("conflicted" %in% utils::installed.packages()) | 
@@ -776,6 +786,27 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
       stop(strwrap("The number of elements in width_adj is not equal to the number of columns in the 
            table data. The number of elements and columns should either be equal or width_adj should 
            be set to only a single value.", prefix = " ", initial = ""))
+      
+    }
+    
+  }
+  
+  if (!is.null(borders)) {
+    
+    borders <- tolower(borders)
+    
+    if (!("all" %in% borders | "heading" %in% borders | "table" %in% borders |
+          "heading2" %in% borders | "bottom" %in% borders)) {
+      
+      stop(strwrap("None of the expected elements in borders can be detected. borders should be NULL 
+           or contain one or more of \"all\", \"heading\" or \"table\".", 
+           prefix = " ", initial = ""))
+      
+    } else if ("heading" %in% borders & "heading2" %in% borders) {
+      
+      warning(strwrap("Both heading and heading2 have been specified in borders, but only heading 
+              will be considered. If you want the heading2 formatting option then please remove 
+              heading from borders."))
       
     }
     
@@ -1431,6 +1462,88 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
   rm(table_data2, envir = as.environment(acctabs))
   
   assign("wb", wb, envir = as.environment(acctabs))
+  
+  # Formatting borders, if required
+  
+  if (!is.null(borders)) {
+  
+    if ("all" %in% borders) {
+      
+      borderstyle <- openxlsx::createStyle(border = "TopBottomLeftRight", borderColour = "#000000")
+      
+      openxlsx::addStyle(wb, sheetname, borderstyle, 
+                         rows = tablestart:(nrow(table_data2) + tablestart),
+                         cols = 1:ncol(table_data2), stack = TRUE, gridExpand = TRUE)
+      
+      rm(borderstyle)
+      
+    } else if (!("all" %in% borders)) {
+    
+        if ("heading" %in% borders) {
+          
+          borderstyle <- openxlsx::createStyle(border = "TopBottomLeftRight", 
+                                               borderColour = "#000000")
+          
+          openxlsx::addStyle(wb, sheetname, borderstyle,
+                             rows = tablestart, cols = 1:ncol(table_data2), stack = TRUE, 
+                             gridExpand = TRUE)
+          
+          rm(borderstyle)
+          
+        } else if ("heading2" %in% borders) {
+          
+          borderstyle <- openxlsx::createStyle(border = c("top", "bottom"), 
+                                               borderColour = "#000000")
+          
+          openxlsx::addStyle(wb, sheetname, borderstyle,
+                             rows = tablestart, cols = 1:ncol(table_data2), stack = TRUE, 
+                             gridExpand = TRUE)
+          
+          rm(borderstyle)
+          
+        }
+      
+        if ("table" %in% borders) {
+          
+          borderstyle <- openxlsx::createStyle(border = "top", borderColour = "#000000")
+          borderstyle2 <- openxlsx::createStyle(border = "bottom", borderColour = "#000000")
+          borderstyle3 <- openxlsx::createStyle(border = "left", borderColour = "#000000")
+          borderstyle4 <- openxlsx::createStyle(border = "right", borderColour = "#000000")
+          
+          openxlsx::addStyle(wb, sheetname, borderstyle, rows = tablestart, 
+                             cols = 1:ncol(table_data2), stack = TRUE, gridExpand = TRUE)
+          
+          openxlsx::addStyle(wb, sheetname, borderstyle2, rows = tablestart + nrow(table_data2), 
+                             cols = 1:ncol(table_data2), stack = TRUE, gridExpand = TRUE)
+          
+          openxlsx::addStyle(wb, sheetname, borderstyle3, 
+                             rows = tablestart:(nrow(table_data2) + tablestart), 
+                             cols = 1, stack = TRUE, gridExpand = TRUE)
+          
+          openxlsx::addStyle(wb, sheetname, borderstyle4, 
+                             rows = tablestart:(nrow(table_data2) + tablestart), 
+                             cols = ncol(table_data2), stack = TRUE, gridExpand = TRUE)
+          
+          rm(borderstyle, borderstyle2, borderstyle3, borderstyle4)
+          
+        }
+      
+      if ("bottom" %in% borders) {
+        
+        borderstyle <- openxlsx::createStyle(border = "bottom", 
+                                             borderColour = "#000000")
+        
+        openxlsx::addStyle(wb, sheetname, borderstyle,
+                           rows = tablestart + nrow(table_data2), cols = 1:ncol(table_data2), 
+                           stack = TRUE, gridExpand = TRUE)
+        
+        rm(borderstyle)
+        
+      }
+    
+    }
+    
+  }
   
 }
 

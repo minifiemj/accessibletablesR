@@ -8,7 +8,8 @@ notestab(
   contentslink = NULL,
   gridlines = "Yes",
   colwid_spec = NULL,
-  extracols = NULL
+  extracols = NULL,
+  borders = NULL
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ notestab(
 \item{colwid_spec}{Define widths of columns (optional)}
 
 \item{extracols}{Define whether additional columns required (optional)}
+
+\item{borders}{Define whether any borders are wanted and, if so, where (optional)}
 }
 \value{
 A worksheet of the notes page for the workbook.
@@ -36,6 +39,14 @@ gridlines are not wanted.
 Column widths are automatically set but the user can specify the required widths in colwid_spec.
 Extra columns can be added by setting extracols to "Yes" and creating a dataframe 
 extracols_notes with the desired extra columns.
+If borders around each cell of the table are required then set borders = "all"; if borders are
+only wanted around the edge of the table then set borders = "table"; if borders are wanted only
+in the table headings row then set borders = "heading" or "heading2", the difference being that
+heading will generate borders around all the edges of a cell and heading2 will generate borders
+only along the top and bottom of cells; if borders are wanted around the table and in the table 
+headings row then set borders = c("table", "heading") or c("table", "heading2); if a border is 
+wanted along the bottom of the table rather than around the whole table then set 
+borders = "bottom".
 }
 \examples{
 accessibletablesR::workbook(
