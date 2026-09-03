@@ -3,8 +3,7 @@
 [![Project Status: Active - The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![](https://img.shields.io/badge/devel%20version-0.1.0-green.svg)](https://github.com/minifiemj/accessibletablesR)
-[![](https://www.r-pkg.org/badges/version/accessibletablesR?color=orange)](https://cran.r-project.org/package=accessibletablesR)
+![](https://img.shields.io/badge/devel%20version-0.1.0-green.svg)[![](https://www.r-pkg.org/badges/version/accessibletablesR?color=orange)](https://cran.r-project.org/package=accessibletablesR)
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://cran.r-project.org/web/licenses/MIT)
 [![](https://img.shields.io/github/last-commit/minifiemj/accessibletablesR.svg)](https://github.com/minifiemj/accessibletablesR/commits/main)
@@ -35,7 +34,7 @@ To install accessibletablesR:
 if (!("devtools" %in% utils::installed.packages())) 
   {utils::install.packages("devtools", dependencies = TRUE, type = "binary")}
 
-devtools::install_github("minifiemj/accessibletablesR", build_vignettes = TRUE)
+devtools::install_github("minifiemj/accessibletablesR", ref = "main", build_vignettes = TRUE)
 ```
 
 If a firewall prevents install_github from working (a time out message
@@ -102,7 +101,8 @@ creatingtables <- function(title, subtitle = NULL, extraline1 = NULL, extraline2
                            numdatacols = NULL, numdatacolsdp = NULL, othdatacols = NULL, 
                            datedatacols = NULL, datedatafmt = NULL, datenondatacols = NULL,
                            datenondatafmt = NULL, tablename = NULL, gridlines = "Yes", 
-                           columnwidths = "R_auto", width_adj = NULL, colwid_spec = NULL)
+                           columnwidths = "R_auto", width_adj = NULL, colwid_spec = NULL,
+                           borders = NULL)
 ```
 
 This function takes the raw data and transfers them into an accessible
@@ -170,7 +170,18 @@ width determined by the number of characters. If the user knows the
 desired widths of all columns then they should set columnwidths =
 “specified” and populate colwid_spec with the width of each column in a
 numerical vector. If default column widths are wanted then set
-columnwidths = NULL.
+columnwidths = NULL. If the user would like borders around the table
+then amend borders accordingly. If borders around each cell of the table
+are required then set borders = “all”. If borders around each cell in
+the table headings row but not all of the table are required then set
+borders = “heading”. If only top and bottom cell borders are wanted in
+the table headings row then set borders = “heading2”. If borders around
+the edges of the table are required then set borders = “table”. If
+borders around the edges of the table and around all cells of the table
+heading row are wanted then set borders = c(“heading”, “table”). If
+borders are wanted around the top and bottom of the table headings row
+and the bottom of the table then set borders = c(“heading2”, “table”).
+If no borders are required then leave borders as NULL.
 
 extralines1-6 can be set to hyperlinks if desired. An example of how to
 do this is:
@@ -186,7 +197,8 @@ definitions page in this way.
 ## contentstable
 
 ``` r
-contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NULL)
+contentstable <- function(gridlines = "Yes", colwid_spec = NULL, extracols = NULL, 
+                          borders = NULL)
 ```
 
 If a contents page is wanted then run contentstable(). Run the function
@@ -200,14 +212,26 @@ populating colwid_spec. Extra columns can be provided. To do so, set
 extracols = “Yes” and create a dataframe called extracols_contents in
 the global environment before running the contentstable function. The
 extracols_contents dataframe must contain the desired extra columns and
-have the same number of rows as the contents table.
+have the same number of rows as the contents table. If the user would
+like borders around the table then amend borders accordingly. If borders
+around each cell of the table are required then set borders = “all”. If
+borders around each cell in the table headings row but not all of the
+table are required then set borders = “heading”. If only top and bottom
+cell borders are wanted in the table headings row then set borders =
+“heading2”. If borders around the edges of the table are required then
+set borders = “table”. If borders around the edges of the table and
+around all cells of the table heading row are wanted then set borders =
+c(“heading”, “table”). If borders are wanted around the top and bottom
+of the table headings row and the bottom of the table then set borders =
+c(“heading2”, “table”). If no borders are required then leave borders as
+NULL.
 
 ## coverpage
 
 ``` r
 coverpage <- function(title, intro = NULL, about = NULL, source = NULL, relatedlink = NULL,
                       relatedtext = NULL, dop = NULL, blank = NULL, names = NULL, email = NULL, 
-                      phone = NULL, reuse = NULL, govdept = NULL, gridlines = "Yes",
+                      phone = NULL, reuse = NULL, cyear = NULL, govdept = NULL, gridlines = "Yes",
                       extrafields = NULL, extrafieldsb = NULL, additlinks = NULL, addittext = NULL,
                       colwid_spec = NULL, order = NULL)
 ```
@@ -218,9 +242,9 @@ populated are “Introductory information” (info), “About these data”
 (about), “Source” (source), “Related publications” (relatedlink,
 relatedtext), “Date of publication” (dop), “Blank cells” (blank),
 “Contact” (names, email, phone), “Additional links” (additlinks) and
-“Reusing this publication” (reuse, govdept). Extra fields can be added
-using extrafields. One row is allowed for each extra field. The text to
-populate the extra fields can be provided in extrafieldsb. If no
+“Reusing this publication” (reuse, cyear, govdept). Extra fields can be
+added using extrafields. One row is allowed for each extra field. The
+text to populate the extra fields can be provided in extrafieldsb. If no
 gridlines are wanted on the cover page in the final workbook set
 gridlines = “No”. The column width is automatically set but can be
 altered by using colwid_spec.
@@ -234,6 +258,9 @@ user is from the Office for National Statistics (ONS) and wants a
 “Reusing this publication” section then set reuse = “Yes”. If a user is
 from a UK government department but not the Office for National
 Statistics (ONS) set reuse = “Yes” and govdept = “name of organisation”.
+cyear can be set to the year desired for the Crown copyright or left
+blank to generate the current year or set to “No” to not display any
+year.
 
 intro, about, source, dop, blank, names and phone can be set to
 hyperlinks if desired. An example of how to do so is:
@@ -269,7 +296,7 @@ relevant URL address.
 ## notestab
 
 ``` r
-notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, extracols = NULL)
+notestab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, extracols = NULL, borders = NULL)
 ```
 
 Run this function if a notes page is wanted.
@@ -286,7 +313,19 @@ user in colwid_spec. Extra columns can be provided. To do so, set
 extracols = “Yes” and create a dataframe called extracols_notes in the
 global environment before running the notestab function. The
 extracols_notes dataframe must contain the desired extra columns and
-have the same number of rows as the notes table.
+have the same number of rows as the notes table. If the user would like
+borders around the table then amend borders accordingly. If borders
+around each cell of the table are required then set borders = “all”. If
+borders around each cell in the table headings row but not all of the
+table are required then set borders = “heading”. If only top and bottom
+cell borders are wanted in the table headings row then set borders =
+“heading2”. If borders around the edges of the table are required then
+set borders = “table”. If borders around the edges of the table and
+around all cells of the table heading row are wanted then set borders =
+c(“heading”, “table”). If borders are wanted around the top and bottom
+of the table headings row and the bottom of the table then set borders =
+c(“heading2”, “table”). If no borders are required then leave borders as
+NULL.
 
 ## adddefinition
 
@@ -307,7 +346,7 @@ relevant URL address.
 ## definitionstab
 
 ``` r
-definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, extracols = NULL)
+definitionstab <- function(contentslink = NULL, gridlines = "Yes", colwid_spec = NULL, extracols = NULL, borders = NULL)
 ```
 
 Run this function if a definitions page is wanted.
@@ -323,7 +362,18 @@ columns can be provided. To do so, set extracols = “Yes” and create a
 dataframe called extracols_definitions in the global environment before
 running the definitionstab function. The extracols_definitions dataframe
 must contain the desired extra columns and have the same number of rows
-as the definitions table.
+as the definitions table. If the user would like borders around the
+table then amend borders accordingly. If borders around each cell of the
+table are required then set borders = “all”. If borders around each cell
+in the table headings row but not all of the table are required then set
+borders = “heading”. If only top and bottom cell borders are wanted in
+the table headings row then set borders = “heading2”. If borders around
+the edges of the table are required then set borders = “table”. If
+borders around the edges of the table and around all cells of the table
+heading row are wanted then set borders = c(“heading”, “table”). If
+borders are wanted around the top and bottom of the table headings row
+and the bottom of the table then set borders = c(“heading2”, “table”).
+If no borders are required then leave borders as NULL.
 
 ## savingtables
 

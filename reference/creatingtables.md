@@ -29,7 +29,8 @@ creatingtables(
   gridlines = "Yes",
   columnwidths = "R_auto",
   width_adj = NULL,
-  colwid_spec = NULL
+  colwid_spec = NULL,
+  borders = NULL
 )
 ```
 
@@ -128,6 +129,10 @@ creatingtables(
 
   Define widths of columns (optional)
 
+- borders:
+
+  Define whether any borders are wanted and, if so, where (optional)
+
 ## Value
 
 A worksheet with data formatted to meet accessibility criteria.
@@ -186,7 +191,17 @@ contents". If a link to the notes page is required, set one of the
 extralines to "Link to notes". If a link to the definitions page is
 required, set one of the extralines to "Link to definitions".
 extralines1-6 can be set to hyperlinks - e.g., extraline5 =
-"\[BBC\](https://www.bbc.co.uk)".
+"\[BBC\](https://www.bbc.co.uk)". If borders around each cell of the
+table are required then set borders = "all"; if borders are only wanted
+around the edge of the table then set borders = "table"; if borders are
+wanted only in the table headings row then set borders = "heading" or
+"heading2", the difference being that heading will generate borders
+around all the edges of a cell and heading2 will generate borders only
+along the top and bottom of cells; if borders are wanted around the
+table and in the table headings row then set borders = c("table",
+"heading") or c("table", "heading2); if a border is wanted along the
+bottom of the table rather than around the whole table then set borders
+= "bottom".
 
 ## Examples
 

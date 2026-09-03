@@ -61,7 +61,8 @@
 <span>  gridlines <span class="op">=</span> <span class="st">"Yes"</span>,</span>
 <span>  columnwidths <span class="op">=</span> <span class="st">"R_auto"</span>,</span>
 <span>  width_adj <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  colwid_spec <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  colwid_spec <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  borders <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -160,6 +161,10 @@
 <dt id="arg-colwid-spec">colwid_spec<a class="anchor" aria-label="anchor" href="#arg-colwid-spec"></a></dt>
 <dd><p>Define widths of columns (optional)</p></dd>
 
+
+<dt id="arg-borders">borders<a class="anchor" aria-label="anchor" href="#arg-borders"></a></dt>
+<dd><p>Define whether any borders are wanted and, if so, where (optional)</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -216,7 +221,15 @@ If a link to the contents page is required, set one of the extralines to "Link t
 If a link to the notes page is required, set one of the extralines to "Link to notes".
 If a link to the definitions page is required, set one of the extralines to "Link to
 definitions".
-extralines1-6 can be set to hyperlinks - e.g., extraline5 = "[BBC](https://www.bbc.co.uk)".</p>
+extralines1-6 can be set to hyperlinks - e.g., extraline5 = "[BBC](https://www.bbc.co.uk)".
+If borders around each cell of the table are required then set borders = "all"; if borders are
+only wanted around the edge of the table then set borders = "table"; if borders are wanted only
+in the table headings row then set borders = "heading" or "heading2", the difference being that
+heading will generate borders around all the edges of a cell and heading2 will generate borders
+only along the top and bottom of cells; if borders are wanted around the table and in the table
+headings row then set borders = c("table", "heading") or c("table", "heading2); if a border is
+wanted along the bottom of the table rather than around the whole table then set
+borders = "bottom".</p>
     </div>
 
     <div class="section level2">

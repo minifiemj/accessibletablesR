@@ -5,7 +5,12 @@ Create a contents page for the workbook.
 ## Usage
 
 ``` r
-contentstable(gridlines = "Yes", colwid_spec = NULL, extracols = NULL)
+contentstable(
+  gridlines = "Yes",
+  colwid_spec = NULL,
+  extracols = NULL,
+  borders = NULL
+)
 ```
 
 ## Arguments
@@ -22,6 +27,10 @@ contentstable(gridlines = "Yes", colwid_spec = NULL, extracols = NULL)
 
   Define whether additional columns required (optional)
 
+- borders:
+
+  Define whether any borders are wanted and, if so, where (optional)
+
 ## Value
 
 A worksheet with a contents page of tables in the workbook.
@@ -34,7 +43,16 @@ gridlines is by default set to "Yes", change to "No" if gridlines are
 not wanted. Column widths are automatically set unless user defines
 specific values in colwid_spec. Extra columns can be added, need to set
 extracols to "Yes" and create a dataframe extracols_contents with the
-desired extra columns.
+desired extra columns. If borders around each cell of the table are
+required then set borders = "all"; if borders are only wanted around the
+edge of the table then set borders = "table"; if borders are wanted only
+in the table headings row then set borders = "heading" or "heading2",
+the difference being that heading will generate borders around all the
+edges of a cell and heading2 will generate borders only along the top
+and bottom of cells; if borders are wanted around the table and in the
+table headings row then set borders = c("table", "heading") or
+c("table", "heading2); if a border is wanted along the bottom of the
+table rather than around the whole table then set borders = "bottom".
 
 ## Examples
 
