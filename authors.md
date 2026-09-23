@@ -7,7 +7,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/minifiemj/accessibletablesR/blob/v0.1.1/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/minifiemj/accessibletablesR/blob/main/DESCRIPTION)
 
 Minifie M (2026). *accessibletablesR: Creating accessible tables in an
 Excel workbook*. R package version 0.1.0,
