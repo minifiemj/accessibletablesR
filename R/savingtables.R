@@ -93,7 +93,6 @@ savingtables <- function(filename, odsfile = "No", deletexlsx = NULL) {
   }
   
   conflicted::conflict_prefer_all("base", quiet = TRUE)
-  `%>%` <- dplyr::`%>%`
   
   # Create some objects only for purpose of satisfying R CMD check
   

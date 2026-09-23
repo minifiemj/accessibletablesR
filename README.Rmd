@@ -308,6 +308,16 @@ filename is the location and name of the final workbook.
 
 The default setting is to keep the xlsx workbook. If an ods file is wanted, set odsfile = "Yes". If both the ods and xlsx files are wanted, set odsfile = "Yes" and deletexlsx = "No".
 
+## readin_excel
+
+```{r, eval = FALSE}
+readin_excel <- function(filepath, sheetname = NULL, colnames = NULL)
+```
+
+An additional but non-essential function within accessibletablesR is readin_excel. This function allows the user to read in raw input data tables that are either xlsx, xls or csv files.
+
+filepath is the location and name of the raw input data table. sheetname is the name of the sheet in the input file. colnames can be populated to specify the desired final column names in the final output.
+
 ## Contact
 
 Please submit any suggestions or report bugs: https://github.com/minifiemj/accessibletablesR/issues  

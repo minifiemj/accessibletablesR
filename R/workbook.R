@@ -101,8 +101,9 @@ workbook <- function(covertab = NULL, contentstab = NULL, notestab = NULL, auton
   
   # Install the required packages if they are not already installed, then load the packages
   
-  listofpackages <- base::c("openxlsx", "conflicted", "dplyr", "stringr", "purrr", "rlang")
-  packageversions <- base::c("4.2.5.2", "1.2.0", "1.1.2", "1.5.0", "1.0.1", "1.1.0")
+  listofpackages <- base::c("openxlsx", "conflicted", "dplyr", "stringr", "purrr", "rlang", 
+                            "readxl")
+  packageversions <- base::c("4.2.5.2", "1.2.0", "1.1.2", "1.5.0", "1.0.1", "1.1.0", "1.5.0")
   
   for (i in base::seq_along(listofpackages)) {
     
