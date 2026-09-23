@@ -392,6 +392,20 @@ The default setting is to keep the xlsx workbook. If an ods file is
 wanted, set odsfile = “Yes”. If both the ods and xlsx files are wanted,
 set odsfile = “Yes” and deletexlsx = “No”.
 
+## readin_excel
+
+``` r
+readin_excel <- function(filepath, sheetname = NULL, colnames = NULL)
+```
+
+An additional but non-essential function within accessibletablesR is
+readin_excel. This function allows the user to read in raw input data
+tables that are either xlsx, xls or csv files.
+
+filepath is the location and name of the raw input data table. sheetname
+is the name of the sheet in the input file. colnames can be populated to
+specify the desired final column names in the final output.
+
 ## Contact
 
 Please submit any suggestions or report bugs:
@@ -418,6 +432,8 @@ Or email me: <minifiemj@gmail.com>
   : dummydf: an accessibletablesR demo data.frame object
 - [`notestab()`](https://minifiemj.github.io/accessibletablesR/reference/notestab.md)
   : accessibletablesR::notestab
+- [`readin_excel()`](https://minifiemj.github.io/accessibletablesR/reference/readin_excel.md)
+  : accessibletablesR::readin_excel
 - [`savingtables()`](https://minifiemj.github.io/accessibletablesR/reference/savingtables.md)
   : accessibletablesR::savingtables
 - [`workbook()`](https://minifiemj.github.io/accessibletablesR/reference/workbook.md)

@@ -18,6 +18,8 @@
   : dummydf: an accessibletablesR demo data.frame object
 - [`notestab()`](https://minifiemj.github.io/accessibletablesR/reference/notestab.md)
   : accessibletablesR::notestab
+- [`readin_excel()`](https://minifiemj.github.io/accessibletablesR/reference/readin_excel.md)
+  : accessibletablesR::readin_excel
 - [`savingtables()`](https://minifiemj.github.io/accessibletablesR/reference/savingtables.md)
   : accessibletablesR::savingtables
 - [`workbook()`](https://minifiemj.github.io/accessibletablesR/reference/workbook.md)
