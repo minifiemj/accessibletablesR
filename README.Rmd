@@ -69,7 +69,7 @@ badge_repostatus <- function(status, alt = NULL) {
 ```
 
 `r badge_repostatus("Active")`
-`r badger::badge_custom("devel version", "0.1.1", "green")`
+`r badger::badge_custom("devel version", "0.1.0", "green")`
 `r badger::badge_cran_release("accessibletablesR", "orange")`
 `r badger::badge_license("MIT")`
 `r badger::badge_last_commit("minifiemj/accessibletablesR")`

@@ -6,7 +6,7 @@
 [![Project Status: Active - The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-![](https://img.shields.io/badge/devel%20version-0.1.1-green.svg)
+![](https://img.shields.io/badge/devel%20version-0.1.0-green.svg)
 [![](https://www.r-pkg.org/badges/version/accessibletablesR?color=orange)](https://cran.r-project.org/package=accessibletablesR)
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://cran.r-project.org/web/licenses/MIT)
