@@ -3,7 +3,7 @@
 [![Project Status: Active - The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-![](https://img.shields.io/badge/devel%20version-0.1.0-green.svg)[![](https://www.r-pkg.org/badges/version/accessibletablesR?color=orange)](https://cran.r-project.org/package=accessibletablesR)
+![](https://img.shields.io/badge/devel%20version-0.1.1-green.svg)[![](https://www.r-pkg.org/badges/version/accessibletablesR?color=orange)](https://cran.r-project.org/package=accessibletablesR)
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://cran.r-project.org/web/licenses/MIT)
 [![](https://img.shields.io/github/last-commit/minifiemj/accessibletablesR.svg)](https://github.com/minifiemj/accessibletablesR/commits/main)
@@ -17,13 +17,14 @@ spreadsheets](https://analysisfunction.civilservice.gov.uk/policy-store/releasin
 
 accessibletablesR was developed using R 4.1.3, dplyr version 1.1.2,
 openxlsx version 4.2.5.2, conflicted version 1.2.0, stringr version
-1.5.0, purrr version 1.0.1 and rlang version 1.1.0. It is unknown if the
-package will work with earlier versions of R, dplyr, openxlsx,
-conflicted, stringr and purrr. accessibletablesR will install the latest
-versions of dplyr, openxlsx, conflicted, stringr and purrr if these
-packages are not currently installed or if earlier versions of dplyr
-(\<1.1.2), openxlsx (\<4.2.5.2), conflicted (\<1.2.0), stringr
-(\<1.5.0), purrr (\<1.0.1) and rlang (\<1.1.0) are currently installed.
+1.5.0, purrr version 1.0.1, rlang version 1.1.0 and readxl version
+1.5.0. It is unknown if the package will work with earlier versions of
+R, dplyr, openxlsx, conflicted, stringr, purrr, rlang and readxl.
+accessibletablesR will install the latest versions of dplyr, openxlsx,
+conflicted, stringr, purrr, rlang and readxl if these packages are not
+currently installed or if earlier versions of dplyr (\<1.1.2), openxlsx
+(\<4.2.5.2), conflicted (\<1.2.0), stringr (\<1.5.0), purrr (\<1.0.1),
+rlang (\<1.1.0) and readxl (\<1.5.0) are currently installed.
 
 ## Installation
 
